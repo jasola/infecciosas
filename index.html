@@ -1,0 +1,2116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UD9 · Las enfermedades infecciosas</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f2f5f9;--bg2:#e8ecf3;--sur:#ffffff;--sur2:#f0f3f8;
+  --bor:#d0d8e8;--txt:#18243a;--mut:#5a6a88;
+  --acc:#b06a10;--acc-bg:#fff4e0;--acc-bor:#e8c070;
+  --bac:#1a7a4a;--bac-bg:#e6f5ee;--bac-bor:#8ecfaa;
+  --vir:#b03040;--vir-bg:#fdedf0;--vir-bor:#f0a0b0;
+  --hon:#6040a0;--hon-bg:#f0ebff;--hon-bor:#b898e8;
+  --pri:#a05010;--pri-bg:#fff2e0;--pri-bor:#e0b870;
+  --cad:#1550a0;--cad-bg:#e4eeff;--cad-bor:#90b8f0;
+  --ok:#1a7a4a;--err:#b03040;
+  --r:10px;--rl:18px;--sh:0 2px 12px #0000001a;--shl:0 6px 28px #00000016;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--txt);line-height:1.7;padding-top:62px;}
+
+/* NAVBAR */
+.nav{position:fixed;top:0;left:0;right:0;height:62px;background:#ffffffee;backdrop-filter:blur(12px);border-bottom:1px solid var(--bor);display:flex;align-items:center;padding:0 1.5rem;gap:1rem;z-index:2000;box-shadow:0 2px 8px #00000010;}
+.nav-brand{font-family:'Fraunces',serif;font-weight:900;font-size:1.05rem;color:var(--acc);white-space:nowrap;flex-shrink:0;}
+.nav-links{display:flex;gap:3px;overflow-x:auto;scrollbar-width:none;flex:1;}
+.nav-links::-webkit-scrollbar{display:none;}
+.nav-a{padding:.32rem .9rem;border-radius:100px;font-size:.78rem;font-weight:600;color:var(--mut);text-decoration:none;white-space:nowrap;transition:all .2s;border:1px solid transparent;}
+.nav-a:hover,.nav-a.on{color:var(--acc);background:var(--acc-bg);border-color:var(--acc-bor);}
+.pbar-w{position:fixed;top:62px;left:0;right:0;height:3px;background:var(--bor);z-index:1999;}
+.pbar{height:100%;background:linear-gradient(90deg,var(--acc),var(--bac));width:0%;transition:width .15s;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#18243a 0%,#243660 55%,#183028 100%);color:#fff;padding:3.5rem 1.5rem 3rem;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 40%,#b06a1020 0%,transparent 60%);}
+.hero-badge{display:inline-block;background:var(--acc);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.35rem 1rem;border-radius:100px;margin-bottom:1.1rem;position:relative;}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(2rem,5vw,3.8rem);font-weight:900;line-height:1.08;margin-bottom:.6rem;position:relative;}
+.hero h1 span{color:#f0c070;}
+.hero p{font-size:.95rem;color:#9eb0cc;max-width:520px;margin:0 auto;position:relative;}
+
+/* LAYOUT */
+.wrap{max-width:980px;margin:0 auto;padding:0 1.5rem;}
+section{padding:3rem 0;}
+section+section{border-top:1px solid var(--bor);}
+.sec-lbl{font-size:.72rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--acc);margin-bottom:.4rem;}
+.sec-h{font-family:'Fraunces',serif;font-size:clamp(1.5rem,3vw,2.3rem);font-weight:900;line-height:1.1;margin-bottom:.5rem;}
+.sec-sub{color:var(--mut);font-size:.92rem;max-width:640px;margin-bottom:1.75rem;}
+.def-box{background:var(--acc-bg);border:1.5px solid var(--acc-bor);border-left:4px solid var(--acc);border-radius:var(--r);padding:1rem 1.3rem;margin-bottom:1.1rem;font-size:.93rem;}
+.def-lbl{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);margin-bottom:.25rem;}
+
+/* INTRO CARDS */
+.igrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.9rem;margin-bottom:1.25rem;}
+.icard{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rl);padding:1.4rem;box-shadow:var(--sh);transition:transform .2s,box-shadow .2s;}
+.icard:hover{transform:translateY(-3px);box-shadow:var(--shl);}
+.icard .ico{font-size:1.7rem;margin-bottom:.6rem;}
+.icard h3{font-family:'Fraunces',serif;font-size:1rem;font-weight:700;margin-bottom:.35rem;}
+.icard p{font-size:.84rem;color:var(--mut);}
+
+/* TABS */
+.tabs{display:flex;gap:3px;border-bottom:2px solid var(--bor);flex-wrap:wrap;}
+.tab{padding:.6rem 1.2rem;border-radius:var(--r) var(--r) 0 0;border:1px solid transparent;border-bottom:none;background:var(--sur2);color:var(--mut);font-family:'Plus Jakarta Sans',sans-serif;font-size:.83rem;font-weight:600;cursor:pointer;transition:all .2s;position:relative;bottom:-2px;}
+.tab:hover{color:var(--txt);background:var(--sur);}
+.tab[data-a="b"].on{background:var(--sur);border-color:var(--bor);border-bottom-color:var(--sur);color:var(--bac);border-top:3px solid var(--bac);}
+.tab[data-a="v"].on{background:var(--sur);border-color:var(--bor);border-bottom-color:var(--sur);color:var(--vir);border-top:3px solid var(--vir);}
+.tab[data-a="h"].on{background:var(--sur);border-color:var(--bor);border-bottom-color:var(--sur);color:var(--hon);border-top:3px solid var(--hon);}
+.tab[data-a="p"].on{background:var(--sur);border-color:var(--bor);border-bottom-color:var(--sur);color:var(--pri);border-top:3px solid var(--pri);}
+.panel{display:none;background:var(--sur);border:1px solid var(--bor);border-top:none;border-radius:0 0 var(--rl) var(--rl);padding:1.75rem;box-shadow:var(--sh);animation:fadeup .3s ease;}
+.panel.on{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;}
+@media(max-width:700px){.panel.on{grid-template-columns:1fr;}}
+@keyframes fadeup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* AGENT INFO */
+.ag-t{font-family:'Fraunces',serif;font-size:1.45rem;font-weight:900;margin-bottom:.2rem;}
+.ag-sub{font-size:.8rem;color:var(--mut);margin-bottom:.9rem;}
+.ag-def{border-radius:var(--r);padding:.85rem 1.05rem;font-size:.87rem;line-height:1.6;margin-bottom:.9rem;}
+.flist{list-style:none;display:flex;flex-direction:column;gap:.45rem;margin-bottom:.85rem;}
+.flist li{display:flex;gap:.55rem;align-items:flex-start;font-size:.85rem;color:var(--mut);}
+.flist li::before{content:"▸";flex-shrink:0;margin-top:.1rem;font-size:.72rem;}
+.flist li strong{color:var(--txt);}
+.cbox{background:var(--sur2);border:1px solid var(--bor);border-radius:var(--r);padding:.85rem 1.05rem;margin-top:.85rem;}
+.cbox .cl{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.3rem;}
+.cbox p{font-size:.83rem;color:var(--mut);}
+.subsec{background:var(--sur2);border-radius:var(--r);padding:.9rem 1.1rem;margin-top:.85rem;}
+.subsec-t{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem;}
+
+/* ── DIAGRAMS with labeled hotspots ───────────────────────── */
+.diag-wrap{position:relative;background:var(--sur2);border:1px solid var(--bor);border-radius:var(--rl);}
+.diag-lbl{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--mut);text-align:center;padding:.5rem 0 0;}
+.diag-desc{background:var(--sur);border:2px solid var(--bor);border-radius:var(--r);padding:.9rem 1.1rem;margin-top:.6rem;min-height:72px;transition:all .25s;font-size:.85rem;line-height:1.6;}
+.diag-desc.show{border-color:var(--acc);background:var(--acc-bg);}
+.diag-desc h5{font-size:.82rem;font-weight:700;color:var(--acc);margin-bottom:.25rem;}
+.diag-desc p{color:var(--mut);}
+
+/* SVG label buttons */
+.svg-btn{cursor:pointer;transition:all .2s;}
+.svg-btn rect,.svg-btn ellipse,.svg-btn circle{transition:fill .2s;}
+.svg-btn:hover rect{fill:#fff8ee!important;}
+.svg-btn:hover text{fill:var(--acc)!important;}
+.svg-btn.active-lbl rect{fill:var(--acc-bg)!important;stroke:var(--acc)!important;}
+.svg-btn.active-lbl text{fill:var(--acc)!important;font-weight:700;}
+
+/* GRAM */
+.gram-box{background:var(--sur2);border:1px solid var(--bor);border-radius:var(--r);padding:.9rem;margin-top:.9rem;}
+.gram-t{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--acc);margin-bottom:.6rem;}
+.gram-g{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
+.gram-c{border-radius:8px;padding:.8rem;text-align:center;}
+.gram-c .gn{font-weight:700;font-size:.83rem;margin-bottom:.25rem;}
+.gram-c p{font-size:.76rem;color:var(--mut);}
+
+/* MINI-ACT */
+.mact{background:var(--sur2);border:1px solid var(--bor);border-radius:var(--r);padding:1.1rem;margin-top:1.1rem;}
+.mbadge{display:inline-block;background:var(--acc);color:#fff;font-size:.67rem;font-weight:700;padding:.18rem .65rem;border-radius:100px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:.6rem;}
+.mact h4{font-size:.9rem;font-weight:600;margin-bottom:.45rem;}
+.mact .mq{font-size:.86rem;margin-bottom:.7rem;line-height:1.6;}
+.opts{display:flex;flex-direction:column;gap:.45rem;margin-bottom:.6rem;}
+.obt{width:100%;text-align:left;padding:.6rem .95rem;background:var(--sur);border:1px solid var(--bor);border-radius:var(--r);color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif;font-size:.83rem;cursor:pointer;transition:all .2s;}
+.obt:hover:not(:disabled){border-color:var(--acc);background:var(--acc-bg);}
+.obt.ok{border-color:var(--ok);background:#e6f5ee;color:var(--ok);}
+.obt.err{border-color:var(--err);background:#fdedf0;color:var(--err);}
+.hbtn{background:transparent;border:1px solid var(--bor);color:var(--mut);font-family:'Plus Jakarta Sans',sans-serif;font-size:.77rem;padding:.26rem .8rem;border-radius:100px;cursor:pointer;transition:all .2s;}
+.hbtn:hover{border-color:var(--cad);color:var(--cad);}
+.hbox{background:var(--cad-bg);border:1px solid var(--cad-bor);border-radius:var(--r);padding:.75rem 1rem;margin-top:.5rem;font-size:.83rem;color:var(--cad);display:none;line-height:1.6;}
+.hbox.on{display:block;}
+
+/* ── DnD TABLE ─────────────────────────────────────────────── */
+.dnd-wrap{overflow-x:auto;}
+.dnd-t{width:100%;border-collapse:separate;border-spacing:4px;font-size:.82rem;}
+.dnd-t th{padding:.6rem .8rem;border-radius:9px;font-weight:700;font-size:.75rem;letter-spacing:.05em;text-transform:uppercase;}
+.th-pr{background:var(--sur2);color:var(--mut);text-align:left;padding-left:1rem;}
+.th-b{background:var(--bac-bg);color:var(--bac);text-align:center;}
+.th-v{background:var(--vir-bg);color:var(--vir);text-align:center;}
+.th-h{background:var(--hon-bg);color:var(--hon);text-align:center;}
+.th-p{background:var(--pri-bg);color:var(--pri);text-align:center;}
+.dnd-t td{padding:3px;vertical-align:middle;}
+.pcell{background:var(--sur2);color:var(--mut);font-weight:600;padding:.45rem .9rem;border-radius:9px;white-space:nowrap;font-size:.8rem;}
+.dcell{background:var(--bg);border:2px dashed var(--bor);border-radius:9px;min-height:42px;min-width:115px;text-align:center;vertical-align:middle;transition:all .2s;position:relative;padding:3px;}
+.dcell.over{border-color:var(--acc);background:var(--acc-bg);}
+.dcell.ok{border-color:var(--ok);background:#e6f5ee;border-style:solid;}
+.dcell.err{border-color:var(--err);background:#fdedf0;border-style:solid;}
+/* Fila de banco de chips - compacta, integrada encima de la tabla */
+.chip-row{display:flex;align-items:center;gap:.35rem;padding:.45rem .6rem;background:var(--sur2);border:1px solid var(--bor);border-radius:9px;margin-bottom:3px;flex-wrap:wrap;}
+.chip-row-lbl{font-size:.65rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;min-width:80px;flex-shrink:0;}
+.chip{display:inline-flex;align-items:center;padding:.25rem .7rem;border-radius:100px;font-size:.76rem;font-weight:600;cursor:grab;user-select:none;border:1.5px solid var(--bor);background:var(--sur);color:var(--txt);transition:transform .15s,box-shadow .15s;white-space:nowrap;}
+.chip:hover{transform:scale(1.06);box-shadow:var(--sh);}
+.chip.dragging{opacity:.3;cursor:grabbing;}
+/* Banco retorno */
+.bank-return{min-height:36px;padding:.4rem .65rem;background:var(--sur);border:2px dashed var(--bor);border-radius:var(--r);margin-bottom:.75rem;display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;transition:border-color .2s;}
+.bank-return.over{border-color:var(--acc);background:var(--acc-bg);}
+.dnd-actions{display:flex;gap:.65rem;margin-top:1rem;flex-wrap:wrap;align-items:center;}
+.btn{padding:.5rem 1.2rem;border-radius:100px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.83rem;font-weight:600;cursor:pointer;transition:all .2s;border:none;}
+.btn-p{background:var(--acc);color:#fff;}
+.btn-p:hover{background:#8a4a08;transform:translateY(-1px);}
+.btn-g{background:transparent;border:1px solid var(--bor);color:var(--mut);}
+.btn-g:hover{border-color:var(--txt);color:var(--txt);}
+.score{margin-top:.65rem;padding:.8rem 1.05rem;background:var(--sur2);border-radius:var(--r);font-size:.87rem;display:none;}
+.score.on{display:block;}
+
+/* ── CADENA ─────────────────────────────────────────────────── */
+.cflow{display:flex;align-items:center;flex-wrap:wrap;gap:0;justify-content:center;margin-bottom:1.1rem;}
+.cn{display:flex;flex-direction:column;align-items:center;gap:.35rem;cursor:pointer;padding:.4rem;}
+.ccirc{width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;border:3px solid var(--bor);background:var(--sur);transition:all .2s;box-shadow:var(--sh);}
+.cn.on .ccirc{border-color:var(--cad);box-shadow:0 0 0 4px #1550a018;transform:scale(1.1);}
+.cn span{font-size:.7rem;font-weight:600;color:var(--mut);text-align:center;max-width:76px;}
+.carrow{color:var(--mut);font-size:1.2rem;flex-shrink:0;}
+.cdet{background:var(--cad-bg);border:1px solid var(--cad-bor);border-radius:var(--r);padding:1.1rem;min-height:90px;animation:fadeup .25s ease;}
+.cdet h4{font-family:'Fraunces',serif;font-size:1rem;font-weight:700;color:var(--cad);margin-bottom:.35rem;}
+.cdet p{font-size:.85rem;color:#1a3060;line-height:1.6;}
+.cdet ul{margin-top:.35rem;padding-left:1.1rem;}
+.cdet ul li{font-size:.82rem;color:#2a4080;margin-bottom:.22rem;}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:.75rem;margin-top:1.4rem;}
+.tcard{background:var(--sur);border:1px solid var(--bor);border-radius:var(--r);padding:1rem;cursor:pointer;transition:all .2s;box-shadow:var(--sh);}
+.tcard:hover{border-color:var(--cad);transform:translateY(-2px);}
+.tcard .tico{font-size:1.7rem;margin-bottom:.45rem;}
+.tcard h4{font-size:.85rem;font-weight:700;color:var(--cad);margin-bottom:.25rem;}
+.tcard p{font-size:.78rem;color:var(--mut);}
+.tdet{display:none;margin-top:.55rem;padding-top:.55rem;border-top:1px solid var(--bor);}
+.tdet p{font-size:.79rem;color:var(--mut);line-height:1.6;}
+
+/* ── ACTIVITIES ─────────────────────────────────────────────── */
+.acts{display:flex;flex-direction:column;gap:1rem;}
+.ac{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rl);overflow:hidden;box-shadow:var(--sh);}
+.ac-h{display:flex;align-items:center;gap:.8rem;padding:1rem 1.3rem;cursor:pointer;transition:background .2s;user-select:none;}
+.ac-h:hover{background:var(--sur2);}
+.ac-n{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:900;font-size:.92rem;flex-shrink:0;pointer-events:none;}
+.ac-h h4{font-size:.88rem;font-weight:600;flex:1;pointer-events:none;}
+.ac-chev{color:var(--mut);transition:transform .25s;font-size:1rem;pointer-events:none;}
+.ac.open .ac-chev{transform:rotate(90deg);}
+.ac-b{display:none;padding:0 1.3rem 1.3rem;border-top:1px solid var(--bor);}
+.ac.open .ac-b{display:block;}
+/* Evitar que clics en el cuerpo de la actividad cierren el acordeón */
+.ac-b *{pointer-events:auto;}
+.ac-b .aq{font-size:.88rem;line-height:1.7;margin:1rem 0 .8rem;}
+.caseblk{background:var(--sur2);border-radius:var(--r);padding:.85rem 1rem;margin-bottom:.65rem;}
+.case-lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--acc);margin-bottom:.3rem;}
+.caseblk p{font-size:.84rem;line-height:1.65;}
+
+/* Fill-blank */
+.fillblank{font-size:.88rem;line-height:2.2;margin-bottom:.75rem;}
+.blank{display:inline-block;border-bottom:2px solid var(--bor);min-width:100px;padding:0 .3rem;font-style:italic;color:var(--mut);transition:border-color .2s;}
+.blank:focus{outline:none;border-color:var(--acc);}
+.blank.ok{border-color:var(--ok);color:var(--ok);background:#e6f5ee;border-radius:4px;}
+.blank.err{border-color:var(--err);color:var(--err);background:#fdedf0;border-radius:4px;}
+
+/* Order drag */
+.order-list{display:flex;flex-direction:column;gap:.5rem;margin-bottom:.75rem;}
+.order-item{display:flex;align-items:center;gap:.75rem;background:var(--sur2);border:1px solid var(--bor);border-radius:var(--r);padding:.6rem 1rem;cursor:grab;user-select:none;transition:all .2s;}
+.order-item:hover{border-color:var(--acc);background:var(--acc-bg);}
+.order-item.dragging{opacity:.3;}
+.order-item.over{border-color:var(--cad);background:var(--cad-bg);}
+.order-num{width:26px;height:26px;border-radius:50%;background:var(--bor);display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:var(--mut);flex-shrink:0;}
+.order-item.ok-item{border-color:var(--ok);background:#e6f5ee;}
+.order-item.ok-item .order-num{background:var(--ok);color:#fff;}
+.order-item.err-item{border-color:var(--err);background:#fdedf0;}
+
+/* Match columns */
+.match-wrap{display:grid;grid-template-columns:1fr auto 1fr;gap:.5rem;align-items:start;margin-bottom:.75rem;}
+.match-col{display:flex;flex-direction:column;gap:.45rem;}
+.match-item{padding:.55rem .85rem;border-radius:var(--r);border:1px solid var(--bor);font-size:.83rem;background:var(--sur2);}
+.match-left{cursor:pointer;transition:all .2s;}
+.match-left:hover,.match-left.sel{border-color:var(--acc);background:var(--acc-bg);color:var(--acc);font-weight:600;}
+.match-right{cursor:pointer;transition:all .2s;}
+.match-right:hover{border-color:var(--cad);background:var(--cad-bg);}
+.match-right.matched-ok{border-color:var(--ok);background:#e6f5ee;color:var(--ok);}
+.match-right.matched-err{border-color:var(--err);background:#fdedf0;color:var(--err);}
+.match-lines{position:relative;width:32px;}
+
+/* PRINT */
+.print-sec{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rl);padding:1.5rem;margin-top:1.5rem;box-shadow:var(--sh);}
+.print-sec h3{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:700;margin-bottom:.5rem;}
+.print-sec p{font-size:.86rem;color:var(--mut);margin-bottom:1rem;}
+.name-input{width:100%;max-width:340px;padding:.55rem .9rem;border:1.5px solid var(--bor);border-radius:var(--r);font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;background:var(--sur2);color:var(--txt);margin-bottom:1rem;transition:border-color .2s;}
+.name-input:focus{outline:none;border-color:var(--acc);}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .5s ease,transform .5s ease;}
+.reveal.vis{opacity:1;transform:none;}
+
+/* FOOTER */
+footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem;border-top:1px solid var(--bor);background:var(--sur);}
+
+/* ── SELECT TABLE ───────────────────────────────────────────── */
+.sel-table{width:100%;border-collapse:separate;border-spacing:4px;font-size:.83rem;}
+.sel-table th{padding:.6rem .8rem;border-radius:9px;font-weight:700;font-size:.75rem;letter-spacing:.05em;text-transform:uppercase;}
+.sel-table td{padding:3px;vertical-align:middle;}
+.sel-table .prop-c{background:var(--sur2);color:var(--mut);font-weight:600;padding:.5rem .9rem;border-radius:9px;font-size:.8rem;}
+.sel-wrap{padding:2px;}
+.sel-wrap select{
+  width:100%;padding:.4rem .5rem;border:2px solid var(--bor);
+  border-radius:8px;background:var(--sur);color:var(--txt);
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;
+  cursor:pointer;transition:border-color .2s;
+  -webkit-appearance:auto;appearance:auto;
+}
+.sel-wrap select:focus{outline:none;border-color:var(--acc);}
+.sel-wrap select.ok{border-color:var(--ok);background:#e6f5ee;color:var(--ok);}
+.sel-wrap select.err{border-color:var(--err);background:#fdedf0;color:var(--err);}
+
+/* ── BOOK ACTIVITIES ────────────────────────────────────────── */
+.book-acts{display:flex;flex-direction:column;gap:1rem;}
+.bact{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rl);overflow:hidden;box-shadow:var(--sh);}
+.bact-h{display:flex;align-items:center;gap:.8rem;padding:.9rem 1.3rem;cursor:pointer;transition:background .2s;user-select:none;}
+.bact-h:hover{background:var(--sur2);}
+.bact-n{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:900;font-size:.9rem;flex-shrink:0;background:var(--acc-bg);color:var(--acc);}
+.bact-h p{font-size:.87rem;font-weight:600;flex:1;pointer-events:none;margin:0;}
+.bact-chev{color:var(--mut);transition:transform .25s;font-size:1rem;pointer-events:none;}
+.bact.open .bact-chev{transform:rotate(90deg);}
+.bact-b{display:none;padding:0 1.3rem 1.3rem;border-top:1px solid var(--bor);}
+.bact.open .bact-b{display:block;}
+.bact-b .bq{font-size:.88rem;font-weight:600;margin:1rem 0 .75rem;line-height:1.6;color:var(--txt);}
+
+/* Open question textarea */
+.bact-b textarea{
+  width:100%;background:var(--sur2);border:1.5px solid var(--bor);
+  border-radius:var(--r);color:var(--txt);
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.86rem;
+  padding:.75rem .9rem;resize:vertical;min-height:90px;
+  transition:border-color .2s;margin-bottom:.6rem;line-height:1.6;
+}
+.bact-b textarea:focus{outline:none;border-color:var(--acc);}
+.feedback-msg{font-size:.82rem;border-radius:var(--r);padding:.65rem .9rem;margin-top:.4rem;display:none;}
+.feedback-msg.show{display:block;}
+.feedback-msg.ok{background:#e6f5ee;border:1px solid var(--ok);color:var(--ok);}
+.feedback-msg.err{background:#fdedf0;border:1px solid var(--err);color:var(--err);}
+.feedback-msg.hint{background:var(--cad-bg);border:1px solid var(--cad-bor);color:var(--cad);}
+@media print{
+  .nav,.pbar-w,.hero,.nav-links,.hbtn,.btn,.dnd-acts,.print-sec .btn,.mbadge{display:none!important;}
+  body{padding-top:0;background:#fff;font-size:11pt;}
+  section{padding:1.2rem 0;border-top:1px solid #ccc;}
+  .panel.on{display:block!important;}
+  .ac-b{display:block!important;}
+  .print-header{display:block!important;}
+  .ac-h{background:none;}
+}
+.print-header{display:none;text-align:center;margin-bottom:1.5rem;}
+.print-header h2{font-family:'Fraunces',serif;font-size:1.4rem;}
+.print-header p{font-size:.9rem;color:#555;margin-top:.25rem;}
+</style>
+</head>
+<body>
+<div class="print-header" id="printHeader">
+  <h2>UD9 · Las enfermedades infecciosas</h2>
+  <p>Actividades — Alumna/o: <span id="printName">___________________</span></p>
+  <p>CFGS Higiene Bucodental · 1.º curso</p>
+</div>
+
+<!-- NAVBAR -->
+<nav class="nav">
+  <span class="nav-brand">UD9</span>
+  <div class="nav-links">
+    <a href="#intro"   class="nav-a">1. Introducción</a>
+    <a href="#agentes" class="nav-a">2. Agentes infecciosos</a>
+    <a href="#patogenos" class="nav-a">3. Patógenos y oportunistas</a>
+    <a href="#fases"   class="nav-a">4. Fases</a>
+    <a href="#comparativa" class="nav-a">5. Tabla comparativa</a>
+    <a href="#cadena"  class="nav-a">6. Cadena epidemiológica</a>
+    <a href="#actividades" class="nav-a">Actividades</a>
+  </div>
+</nav>
+<div class="pbar-w"><div class="pbar" id="pbar"></div></div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Unidad didáctica 9</div>
+  <h1>Las enfermedades<br><span>infecciosas</span></h1>
+  <p>Agentes infecciosos, cadena epidemiológica y salud bucodental. CFGS Higiene Bucodental · 1.º curso.</p>
+</div>
+
+<!-- ═══════════════ INTRO ═══════════════ -->
+<section id="intro">
+<div class="wrap">
+  <div class="reveal">
+    <p class="sec-lbl">Apartado 1</p>
+    <h2 class="sec-h">Las enfermedades infecciosas</h2>
+    <p class="sec-sub">Pueden estar causadas por distintos agentes y provocar cuadros muy diversos, aunque siempre siguen unas mismas fases.</p>
+  </div>
+  <div class="def-box reveal"><div class="def-lbl">Definición</div>
+    Las <strong>enfermedades infecciosas</strong> son las enfermedades que están causadas por microorganismos patógenos.
+  </div>
+  <div class="def-box reveal"><div class="def-lbl">Microorganismo</div>
+    Un <strong>microorganismo</strong> es cualquier entidad microbiológica capaz de reproducirse o de transferir material genético.
+  </div>
+  <div class="igrid reveal" style="margin-top:1.2rem;">
+    <div class="icard"><div class="ico">🦠</div><h3>Colonización vs. Infección</h3><p>No todo microorganismo presente en el cuerpo causa enfermedad. Solo los <strong>patógenos</strong> que superan las defensas del hospedador provocan infección activa.</p></div>
+    <div class="icard"><div class="ico">🔗</div><h3>Cadena epidemiológica</h3><p>Secuencia de elementos necesarios para que la infección se transmita. Conocerla permite establecer el mejor tratamiento y profilaxis.</p></div>
+    <div class="icard"><div class="ico">🦷</div><h3>Relevancia bucodental</h3><p>La cavidad oral alberga cientos de microorganismos. Bacterias, hongos y virus son protagonistas de las principales patologías bucodentales.</p></div>
+  </div>
+
+</div>
+</section>
+
+<!-- ═══════════════ AGENTES ═══════════════ -->
+<section id="agentes">
+<div class="wrap">
+  <div class="reveal">
+    <p class="sec-lbl">9.1.1 · Apartado 2</p>
+    <h2 class="sec-h">Agentes infecciosos</h2>
+    <p class="sec-sub">Cuatro tipos de microorganismos pueden causar enfermedades infecciosas. Selecciona cada pestaña y pulsa los <strong>nombres subrayados</strong> en el diagrama para ver la descripción de cada estructura.</p>
+  </div>
+  <div class="reveal">
+  <div class="tabs">
+    <button class="tab on" data-a="b" onclick="showTab('b')">🦠 Bacterias</button>
+    <button class="tab" data-a="v" onclick="showTab('v')">🔴 Virus</button>
+    <button class="tab" data-a="h" onclick="showTab('h')">🍄 Hongos</button>
+    <button class="tab" data-a="p" onclick="showTab('p')">🧬 Priones</button>
+  </div>
+
+<!-- ════ BACTERIA ════ -->
+<div class="panel on" id="pan-b">
+  <div>
+    <div class="ag-t" style="color:var(--bac)">Bacterias</div>
+    <div class="ag-sub">Organismos unicelulares procariotas</div>
+    <div class="ag-def" style="background:var(--bac-bg);border:1px solid var(--bac-bor);">Las <strong>bacterias</strong> son organismos unicelulares cuya célula no tiene un núcleo definido (procariotas). Se pueden ver con el microscopio óptico y presentan formas muy variadas: esférica (cocos), de bastoncillos (bacilos), de coma (vibrio), helicoidal (espirilo) o espiral (espiroqueta).</div>
+    <p style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--bac);margin-bottom:.45rem;">Componentes presentes en TODAS las bacterias</p>
+    <ul class="flist">
+      <li><span><strong>Pared celular.</strong> Formada por peptidoglucano. La tinción de Gram distingue grampositivas (pared gruesa) de gramnegativas (pared fina + membrana externa). <em>Excepción:</em> los micoplasmas carecen de pared → β-lactámicos sin efecto.</span></li>
+      <li><span><strong>Membrana plasmática.</strong> Doble membrana lipídica, sin colesterol, más rica en proteínas que las eucariotas.</span></li>
+      <li><span><strong>Citoplasma.</strong> Contiene ribosomas y el <strong>nucleoide</strong>: región sin membrana propia donde se aloja el ADN circular de doble cadena (cromosoma bacteriano).</span></li>
+    </ul>
+    <p style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--bac);margin:.7rem 0 .45rem;">Componentes NO presentes en todas las bacterias</p>
+    <ul class="flist">
+      <li><span><strong>Cápsula.</strong> Rodea la pared. Protege de la fagocitosis.</span></li>
+      <li><span><strong>Flagelos.</strong> Apéndices filamentosos responsables del movimiento.</span></li>
+      <li><span><strong>Fimbrias.</strong> Pelos cortos para adherirse a superficies.</span></li>
+      <li><span><strong>Pili.</strong> Similares a las fimbrias pero más largos (1-2 por bacteria). Intervienen en la conjugación: intercambio de material genético entre bacterias.</span></li>
+      <li><span><strong>Endosporas.</strong> Formas de resistencia extrema.</span></li>
+      <li><span><strong>Inclusiones citoplasmáticas</strong> de distinta naturaleza.</span></li>
+    </ul>
+    <div class="subsec" style="background:var(--bac-bg);border:1px solid var(--bac-bor);">
+      <p class="subsec-t" style="color:var(--bac)">Acción patógena de las bacterias</p>
+      <ul class="flist">
+        <li><span>La <strong>propia bacteria</strong> causa el daño directamente.</span></li>
+        <li><span>Una <strong>toxina</strong> secretada por la bacteria. La toxina puede causar alteraciones aunque la bacteria ya no esté presente.</span></li>
+        <li><span>La <strong>bacteria y la toxina</strong> al mismo tiempo.</span></li>
+      </ul>
+    </div>
+    <div class="gram-box">
+      <div class="gram-t">Tinción de Gram — herramienta diagnóstica clave</div>
+      <div class="gram-g">
+        <div class="gram-c" style="background:#f0e8ff;border:1px solid #c0a0e0;"><div class="gn" style="color:var(--hon)">🟣 Grampositiva</div><p>Pared gruesa → retiene cristal violeta → <strong>violeta/azul</strong></p></div>
+        <div class="gram-c" style="background:var(--bac-bg);border:1px solid var(--bac-bor);"><div class="gn" style="color:var(--bac)">🔴 Gramnegativa</div><p>Pared fina + mb. externa → pierde cristal violeta → <strong>rojo/rosa</strong></p></div>
+      </div>
+    </div>
+    <div class="cbox"><div class="cl" style="color:var(--bac)">💡 Relevancia bucodental</div><p><em>Streptococcus mutans</em> (grampositivo) produce ácidos → caries. <em>Porphyromonas gingivalis</em> (gramnegativo) libera toxinas → periodontitis. La bacteria puede haber desaparecido y la toxina seguir causando daño.</p></div>
+    <!-- mini-act bacteria -->
+    <div class="mact">
+      <span class="mbadge">Actividad rápida</span>
+      <h4>Bacterias en la clínica dental</h4>
+      <p class="mq">Una paciente con periodontitis severa tiene <em>P. gingivalis</em>. Se prescribe metronidazol en lugar de amoxicilina (β-lactámico). ¿Por qué?</p>
+      <div class="opts">
+        <button class="obt" onclick="chk(this,false,'bm')">Porque la amoxicilina no llega al tejido gingival.</button>
+        <button class="obt" onclick="chk(this,true,'bm')"><em>P. gingivalis</em> es gramnegativa y produce β-lactamasas; el metronidazol actúa contra anaerobios gramnegativos.</button>
+        <button class="obt" onclick="chk(this,false,'bm')">Porque la amoxicilina solo actúa sobre hongos.</button>
+        <button class="obt" onclick="chk(this,false,'bm')">Porque <em>P. gingivalis</em> carece de pared celular como los micoplasmas.</button>
+      </div>
+      <div class="hbox" id="bm-h">💡 <strong>Pista:</strong> Los β-lactámicos atacan la pared de peptidoglucano. Las gramnegativas tienen membrana externa que dificulta la entrada y muchas producen β-lactamasas. El metronidazol tiene mecanismo distinto, eficaz en anaerobios.</div>
+      <button class="hbtn" onclick="th('bm-h')">Ver pista</button>
+    </div>
+  </div>
+
+  <!-- SVG bacteria -->
+  <div>
+    <div class="diag-lbl" style="padding-bottom:.35rem;">Fig. 9.1 · Célula bacteriana</div>
+    <div class="diag-wrap" id="dw-b">
+      <svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" id="svg-b">
+        <!-- Cápsula -->
+        <ellipse cx="192" cy="182" rx="168" ry="122" fill="none" stroke="#1a7a4a" stroke-width="2" stroke-dasharray="7,4" opacity=".55"/>
+        <!-- Pared celular -->
+        <ellipse cx="192" cy="182" rx="148" ry="105" fill="#c8f0d8" stroke="#1a7a4a" stroke-width="3"/>
+        <!-- Membrana plasmática -->
+        <ellipse cx="192" cy="182" rx="130" ry="89" fill="#e8f8ee" stroke="#1a7a4a" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <!-- Citoplasma -->
+        <ellipse cx="192" cy="182" rx="120" ry="79" fill="#f2faf5"/>
+        <!-- Mesosoma -->
+        <path d="M192,104 Q207,116 202,130 Q197,143 212,150" fill="none" stroke="#1a7a4a" stroke-width="2" opacity=".7"/>
+        <ellipse cx="208" cy="140" rx="10" ry="6" fill="#c8f0d8" stroke="#1a7a4a" stroke-width="1.5" opacity=".85"/>
+        <!-- Nucleoide -->
+        <ellipse cx="192" cy="188" rx="48" ry="33" fill="#b2dfdb" stroke="#00796b" stroke-width="1.5" opacity=".75"/>
+        <!-- Cromosoma circular -->
+        <path d="M171,182 Q183,166 197,174 Q211,182 205,194 Q199,206 184,200 Q169,194 171,182Z" fill="none" stroke="#00796b" stroke-width="2.5" opacity=".9"/>
+        <!-- Ribosomas -->
+        <circle cx="148" cy="162" r="5" fill="#6040a0"/><circle cx="163" cy="151" r="4.5" fill="#6040a0"/>
+        <circle cx="178" cy="156" r="4" fill="#6040a0"/><circle cx="228" cy="155" r="5" fill="#6040a0"/>
+        <circle cx="243" cy="164" r="4.5" fill="#6040a0"/><circle cx="238" cy="150" r="4" fill="#6040a0"/>
+        <circle cx="153" cy="210" r="4.5" fill="#6040a0"/><circle cx="166" cy="220" r="4" fill="#6040a0"/>
+        <circle cx="230" cy="212" r="5" fill="#6040a0"/><circle cx="245" cy="202" r="4" fill="#6040a0"/>
+        <!-- Plásmido -->
+        <ellipse cx="160" cy="204" rx="15" ry="9" fill="none" stroke="#a05010" stroke-width="2.5"/>
+        <!-- Flagelos -->
+        <path d="M336,132 Q366,102 351,67 Q336,32 356,7" fill="none" stroke="#1a7a4a" stroke-width="3" stroke-linecap="round"/>
+        <path d="M339,162 Q374,147 364,110 Q354,74 372,57" fill="none" stroke="#1a7a4a" stroke-width="2.5" stroke-linecap="round" opacity=".75"/>
+        <path d="M334,192 Q368,187 361,154 Q354,121 369,107" fill="none" stroke="#1a7a4a" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+        <!-- Fimbrias -->
+        <line x1="192" y1="77" x2="188" y2="53" stroke="#1a7a4a" stroke-width="1.5"/>
+        <line x1="212" y1="81" x2="217" y2="57" stroke="#1a7a4a" stroke-width="1.5"/>
+        <line x1="232" y1="93" x2="241" y2="69" stroke="#1a7a4a" stroke-width="1.5"/>
+        <line x1="158" y1="83" x2="149" y2="59" stroke="#1a7a4a" stroke-width="1.5"/>
+        <line x1="138" y1="100" x2="124" y2="82" stroke="#1a7a4a" stroke-width="1.5"/>
+        <line x1="130" y1="192" x2="112" y2="188" stroke="#1a7a4a" stroke-width="1.5"/>
+        <line x1="134" y1="232" x2="118" y2="242" stroke="#1a7a4a" stroke-width="1.5"/>
+        <line x1="192" y1="287" x2="192" y2="307" stroke="#1a7a4a" stroke-width="1.5"/>
+        <line x1="215" y1="282" x2="219" y2="302" stroke="#1a7a4a" stroke-width="1.5"/>
+        <line x1="170" y1="283" x2="165" y2="303" stroke="#1a7a4a" stroke-width="1.5"/>
+
+        <!-- ─── ETIQUETAS CLICABLES (grupos SVG) ─── -->
+        <!-- Cada grupo tiene: línea guía + rectángulo + texto clicable -->
+
+        <!-- Cápsula -->
+        <g class="svg-btn" id="lbl-b-capsula" onclick="showDiagInfo('b','capsula')">
+          <line x1="80" y1="268" x2="112" y2="278" stroke="#1a7a4a" stroke-width="1.5"/>
+          <rect x="4" y="258" width="76" height="22" rx="5" fill="var(--bac-bg)" stroke="var(--bac-bor)" stroke-width="1.2"/>
+          <text x="42" y="273" font-family="Plus Jakarta Sans" font-size="10.5" fill="var(--bac)" text-anchor="middle" font-weight="600" text-decoration="underline">Cápsula</text>
+        </g>
+        <!-- Pared celular -->
+        <g class="svg-btn" id="lbl-b-pared" onclick="showDiagInfo('b','pared')">
+          <line x1="80" y1="242" x2="118" y2="252" stroke="#1a7a4a" stroke-width="1.5"/>
+          <rect x="2" y="232" width="78" height="22" rx="5" fill="var(--bac-bg)" stroke="var(--bac-bor)" stroke-width="1.2"/>
+          <text x="41" y="247" font-family="Plus Jakarta Sans" font-size="10.5" fill="var(--bac)" text-anchor="middle" font-weight="600" text-decoration="underline">Pared celular</text>
+        </g>
+        <!-- Membrana -->
+        <g class="svg-btn" id="lbl-b-membrana" onclick="showDiagInfo('b','membrana')">
+          <line x1="82" y1="218" x2="122" y2="225" stroke="#1a7a4a" stroke-width="1.5"/>
+          <rect x="2" y="207" width="80" height="22" rx="5" fill="var(--bac-bg)" stroke="var(--bac-bor)" stroke-width="1.2"/>
+          <text x="42" y="222" font-family="Plus Jakarta Sans" font-size="10" fill="var(--bac)" text-anchor="middle" font-weight="600" text-decoration="underline">Mb. plasmática</text>
+        </g>
+        <!-- Mesosoma -->
+        <g class="svg-btn" id="lbl-b-mesosoma" onclick="showDiagInfo('b','mesosoma')">
+          <line x1="250" y1="118" x2="218" y2="136" stroke="#1a7a4a" stroke-width="1.5"/>
+          <rect x="250" y="107" width="82" height="22" rx="5" fill="var(--bac-bg)" stroke="var(--bac-bor)" stroke-width="1.2"/>
+          <text x="291" y="122" font-family="Plus Jakarta Sans" font-size="10.5" fill="var(--bac)" text-anchor="middle" font-weight="600" text-decoration="underline">Mesosoma</text>
+        </g>
+        <!-- Ribosoma -->
+        <g class="svg-btn" id="lbl-b-ribosoma" onclick="showDiagInfo('b','ribosoma')">
+          <line x1="256" y1="142" x2="248" y2="157" stroke="#6040a0" stroke-width="1.5"/>
+          <rect x="256" y="131" width="82" height="22" rx="5" fill="var(--hon-bg)" stroke="var(--hon-bor)" stroke-width="1.2"/>
+          <text x="297" y="146" font-family="Plus Jakarta Sans" font-size="10.5" fill="var(--hon)" text-anchor="middle" font-weight="600" text-decoration="underline">Ribosoma</text>
+        </g>
+        <!-- Plásmido -->
+        <g class="svg-btn" id="lbl-b-plasmido" onclick="showDiagInfo('b','plasmido')">
+          <line x1="176" y1="212" x2="192" y2="222" stroke="#a05010" stroke-width="1.5"/>
+          <rect x="96" y="222" width="72" height="22" rx="5" fill="var(--pri-bg)" stroke="var(--pri-bor)" stroke-width="1.2"/>
+          <text x="132" y="237" font-family="Plus Jakarta Sans" font-size="10.5" fill="var(--pri)" text-anchor="middle" font-weight="600" text-decoration="underline">Plásmido</text>
+        </g>
+        <!-- Nucleoide -->
+        <g class="svg-btn" id="lbl-b-nucleoide" onclick="showDiagInfo('b','nucleoide')">
+          <line x1="192" y1="156" x2="192" y2="136" stroke="#00796b" stroke-width="1.5"/>
+          <rect x="148" y="116" width="88" height="22" rx="5" fill="#e0f5f2" stroke="#80cbc4" stroke-width="1.2"/>
+          <text x="192" y="131" font-family="Plus Jakarta Sans" font-size="10" fill="#00796b" text-anchor="middle" font-weight="600" text-decoration="underline">Nucleoide / crom.</text>
+        </g>
+        <!-- Fimbrias -->
+        <g class="svg-btn" id="lbl-b-fimbrias" onclick="showDiagInfo('b','fimbrias')">
+          <line x1="205" y1="304" x2="220" y2="320" stroke="#1a7a4a" stroke-width="1.5"/>
+          <rect x="194" y="320" width="68" height="22" rx="5" fill="var(--bac-bg)" stroke="var(--bac-bor)" stroke-width="1.2"/>
+          <text x="228" y="335" font-family="Plus Jakarta Sans" font-size="10.5" fill="var(--bac)" text-anchor="middle" font-weight="600" text-decoration="underline">Fimbrias</text>
+        </g>
+        <!-- Flagelo -->
+        <g class="svg-btn" id="lbl-b-flagelo" onclick="showDiagInfo('b','flagelo')">
+          <line x1="356" y1="28" x2="356" y2="10" stroke="#1a7a4a" stroke-width="1.5"/>
+          <rect x="322" y="0" width="68" height="22" rx="5" fill="var(--bac-bg)" stroke="var(--bac-bor)" stroke-width="1.2"/>
+          <text x="356" y="15" font-family="Plus Jakarta Sans" font-size="10.5" fill="var(--bac)" text-anchor="middle" font-weight="600" text-decoration="underline">Flagelo</text>
+        </g>
+        <!-- Pili (label extra) -->
+        <g class="svg-btn" id="lbl-b-pili" onclick="showDiagInfo('b','pili')">
+          <line x1="118" y1="100" x2="138" y2="112" stroke="#1a7a4a" stroke-width="1.5"/>
+          <rect x="64" y="90" width="54" height="22" rx="5" fill="var(--bac-bg)" stroke="var(--bac-bor)" stroke-width="1.2"/>
+          <text x="91" y="105" font-family="Plus Jakarta Sans" font-size="10.5" fill="var(--bac)" text-anchor="middle" font-weight="600" text-decoration="underline">Pili</text>
+        </g>
+      </svg>
+      <p style="font-size:.7rem;color:var(--mut);text-align:center;padding:.3rem 0 .5rem;">▲ Pulsa los nombres subrayados para ver la descripción</p>
+    </div>
+    <!-- Panel descripción bacteria -->
+    <div class="diag-desc" id="dd-b">
+      <h5>Selecciona una estructura</h5>
+      <p>Haz clic en cualquier nombre subrayado del diagrama para ver aquí su descripción detallada.</p>
+    </div>
+  </div>
+</div><!-- fin panel bacteria -->
+
+<!-- ════ VIRUS ════ -->
+<div class="panel" id="pan-v">
+  <div>
+    <div class="ag-t" style="color:var(--vir)">Virus</div>
+    <div class="ag-sub">Entidades infecciosas microscópicas — parásitos intracelulares estrictos</div>
+    <div class="ag-def" style="background:var(--vir-bg);border:1px solid var(--vir-bor);">Los <strong>virus</strong> son entidades infecciosas microscópicas que solo pueden multiplicarse dentro de células de otros organismos. Son unas cien veces más pequeños que las bacterias. El virus es un parásito intracelular estricto que requiere infestar una célula para sintetizar sus componentes.</div>
+    <ul class="flist">
+      <li><span><strong>Material genético.</strong> Puede ser ADN o ARN, de cadena doble o sencilla.</span></li>
+      <li><span><strong>Cápside.</strong> Cubierta proteica que protege el material genético. Material genético + cápside = <strong>nucleocápside</strong>.</span></li>
+      <li><span><strong>Envoltura externa.</strong> Algunos virus forman una bicapa lipídica por encima de la cápside cuando se encuentran fuera del hospedador.</span></li>
+    </ul>
+    <div class="subsec" style="background:var(--vir-bg);border:1px solid var(--vir-bor);">
+      <p class="subsec-t" style="color:var(--vir)">Efectos sobre la célula hospedadora</p>
+      <p style="font-size:.85rem;margin-bottom:.4rem;">La variedad de efectos estructurales y bioquímicos de los virus sobre las células que infectan es muy grande:</p>
+      <ul class="flist">
+        <li><span><strong>La mayoría</strong> provoca en poco tiempo la <strong>muerte de la célula hospedadora</strong> (lisis).</span></li>
+        <li><span>Algunos virus <strong>no causan cambios aparentes</strong>: la célula sigue funcionando con el virus <strong>latente e inactivo</strong> en su interior.</span></li>
+      </ul>
+    </div>
+    <div style="background:var(--sur2);border:1px solid var(--bor);border-radius:var(--r);padding:.85rem 1rem;margin-top:.85rem;">
+      <p style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--vir);margin-bottom:.4rem;">¿Por qué los antibióticos no funcionan?</p>
+      <p style="font-size:.83rem;color:var(--mut);">Los antibióticos actúan sobre estructuras bacterianas (pared de peptidoglucano, ribosomas 70S). Los virus <strong>no tienen estas estructuras</strong>. Necesitan <strong>antivirales</strong> que interfieran en su ciclo de replicación intracelular.</p>
+    </div>
+    <div class="cbox"><div class="cl" style="color:var(--vir)">💡 Relevancia bucodental</div><p><strong>VHS-1:</strong> herpes labial, permanece latente en ganglio trigémino, se reactiva con estrés. <strong>VPH:</strong> lesiones de mucosa oral, asociado a carcinoma orofaríngeo. <strong>Virus Epstein-Barr:</strong> leucoplasia vellosa oral en inmunodeprimidos.</p></div>
+    <div class="mact">
+      <span class="mbadge">Actividad rápida</span>
+      <h4>Herpes labial en consulta</h4>
+      <p class="mq">Paciente con herpes labial activo. ¿Cuál es la actitud correcta respecto al tratamiento?</p>
+      <div class="opts">
+        <button class="obt" onclick="chk(this,false,'vm')">Prescribir amoxicilina para evitar sobreinfección bacteriana como primera opción.</button>
+        <button class="obt" onclick="chk(this,true,'vm')">No corresponde antibiótico; el herpes es vírico y requiere antiviral (aciclovir). Los antibióticos no tienen efecto sobre virus.</button>
+        <button class="obt" onclick="chk(this,false,'vm')">Prescribir antifúngico porque el herpes está causado por un hongo.</button>
+        <button class="obt" onclick="chk(this,false,'vm')">Los antibióticos son efectivos en dosis altas contra el VHS-1.</button>
+      </div>
+      <div class="hbox" id="vm-h">💡 <strong>Pista:</strong> Los virus no tienen pared celular ni ribosomas 70S. Los antibióticos actúan sobre estas estructuras bacterianas. ¿Qué tipo de fármaco actúa sobre los virus?</div>
+      <button class="hbtn" onclick="th('vm-h')">Ver pista</button>
+    </div>
+  </div>
+  <!-- SVG virus -->
+  <div>
+    <div class="diag-lbl" style="padding-bottom:.35rem;">Fig. 9.2 · Componentes del virus</div>
+    <div class="diag-wrap" id="dw-v">
+      <svg viewBox="0 0 360 310" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" id="svg-v">
+        <!-- Envoltura externa bicapa -->
+        <circle cx="180" cy="158" r="118" fill="#fdedf0" stroke="#b03040" stroke-width="9" opacity=".45"/>
+        <!-- Espículas / proteínas de superficie -->
+        <g id="spk">
+          <line x1="180" y1="40" x2="180" y2="20" stroke="#b03040" stroke-width="3" stroke-linecap="round"/><circle cx="180" cy="17" r="5" fill="#b03040"/>
+          <line x1="214" y1="48" x2="227" y2="31" stroke="#b03040" stroke-width="3" stroke-linecap="round"/><circle cx="229" cy="28" r="5" fill="#b03040"/>
+          <line x1="244" y1="68" x2="259" y2="55" stroke="#b03040" stroke-width="3" stroke-linecap="round"/><circle cx="262" cy="52" r="5" fill="#b03040"/>
+          <line x1="146" y1="48" x2="133" y2="31" stroke="#b03040" stroke-width="3" stroke-linecap="round"/><circle cx="131" cy="28" r="5" fill="#b03040"/>
+          <line x1="116" y1="68" x2="101" y2="55" stroke="#b03040" stroke-width="3" stroke-linecap="round"/><circle cx="98" cy="52" r="5" fill="#b03040"/>
+          <line x1="296" y1="128" x2="313" y2="120" stroke="#b03040" stroke-width="3" stroke-linecap="round"/><circle cx="316" cy="118" r="5" fill="#b03040"/>
+          <line x1="298" y1="168" x2="316" y2="166" stroke="#b03040" stroke-width="3" stroke-linecap="round"/><circle cx="319" cy="166" r="5" fill="#b03040"/>
+          <line x1="288" y1="205" x2="303" y2="215" stroke="#b03040" stroke-width="3" stroke-linecap="round"/><circle cx="306" cy="218" r="5" fill="#b03040"/>
+          <line x1="64" y1="128" x2="47" y2="120" stroke="#b03040" stroke-width="3" stroke-linecap="round"/><circle cx="44" cy="118" r="5" fill="#b03040"/>
+          <line x1="62" y1="168" x2="44" y2="166" stroke="#b03040" stroke-width="3" stroke-linecap="round"/><circle cx="41" cy="166" r="5" fill="#b03040"/>
+          <line x1="72" y1="205" x2="57" y2="215" stroke="#b03040" stroke-width="3" stroke-linecap="round"/><circle cx="54" cy="218" r="5" fill="#b03040"/>
+          <line x1="180" y1="276" x2="180" y2="296" stroke="#b03040" stroke-width="3" stroke-linecap="round"/><circle cx="180" cy="299" r="5" fill="#b03040"/>
+          <line x1="214" y1="268" x2="227" y2="285" stroke="#b03040" stroke-width="3" stroke-linecap="round"/><circle cx="229" cy="288" r="5" fill="#b03040"/>
+          <line x1="146" y1="268" x2="133" y2="285" stroke="#b03040" stroke-width="3" stroke-linecap="round"/><circle cx="131" cy="288" r="5" fill="#b03040"/>
+        </g>
+        <!-- Cápside -->
+        <circle cx="180" cy="158" r="78" fill="#fdedf0" stroke="#b03040" stroke-width="2.5"/>
+        <!-- Triángulos cápside -->
+        <polygon points="180,82 208,118 152,118" fill="none" stroke="#b03040" stroke-width="1.5" opacity=".5"/>
+        <polygon points="208,118 236,154 180,154" fill="none" stroke="#b03040" stroke-width="1.5" opacity=".5"/>
+        <polygon points="180,154 236,154 208,190" fill="none" stroke="#b03040" stroke-width="1.5" opacity=".5"/>
+        <polygon points="180,154 152,190 124,154" fill="none" stroke="#b03040" stroke-width="1.5" opacity=".5"/>
+        <polygon points="152,118 180,154 124,154" fill="none" stroke="#b03040" stroke-width="1.5" opacity=".5"/>
+        <!-- Material genético -->
+        <circle cx="180" cy="158" r="42" fill="#fff0f2"/>
+        <path d="M163,142 Q173,132 183,142 Q193,152 203,142" fill="none" stroke="#b03040" stroke-width="2.5"/>
+        <path d="M163,154 Q173,144 183,154 Q193,164 203,154" fill="none" stroke="#b03040" stroke-width="2"/>
+        <path d="M163,166 Q173,156 183,166 Q193,176 203,166" fill="none" stroke="#b03040" stroke-width="1.5" opacity=".7"/>
+        <line x1="168" y1="142" x2="168" y2="154" stroke="#b03040" stroke-width="1" opacity=".5"/>
+        <line x1="178" y1="137" x2="178" y2="149" stroke="#b03040" stroke-width="1" opacity=".5"/>
+        <line x1="188" y1="142" x2="188" y2="154" stroke="#b03040" stroke-width="1" opacity=".5"/>
+        <line x1="198" y1="142" x2="198" y2="154" stroke="#b03040" stroke-width="1" opacity=".5"/>
+        <line x1="168" y1="154" x2="168" y2="166" stroke="#b03040" stroke-width="1" opacity=".4"/>
+        <line x1="178" y1="149" x2="178" y2="161" stroke="#b03040" stroke-width="1" opacity=".4"/>
+
+        <!-- ETIQUETAS CLICABLES VIRUS -->
+        <!-- ADN/ARN -->
+        <g class="svg-btn" id="lbl-v-adn" onclick="showDiagInfo('v','adn')">
+          <line x1="155" y1="130" x2="138" y2="110" stroke="#b03040" stroke-width="1.5"/>
+          <rect x="60" y="98" width="78" height="22" rx="5" fill="var(--vir-bg)" stroke="var(--vir-bor)" stroke-width="1.2"/>
+          <text x="99" y="113" font-family="Plus Jakarta Sans" font-size="10" fill="var(--vir)" text-anchor="middle" font-weight="600" text-decoration="underline">ADN o ARN</text>
+        </g>
+        <!-- Cápside -->
+        <g class="svg-btn" id="lbl-v-capside" onclick="showDiagInfo('v','capside')">
+          <line x1="255" y1="158" x2="268" y2="158" stroke="#b03040" stroke-width="1.5"/>
+          <rect x="268" y="147" width="70" height="22" rx="5" fill="var(--vir-bg)" stroke="var(--vir-bor)" stroke-width="1.2"/>
+          <text x="303" y="162" font-family="Plus Jakarta Sans" font-size="10.5" fill="var(--vir)" text-anchor="middle" font-weight="600" text-decoration="underline">Cápside</text>
+        </g>
+        <!-- Envoltura externa -->
+        <g class="svg-btn" id="lbl-v-envoltura" onclick="showDiagInfo('v','envoltura')">
+          <line x1="298" y1="95" x2="285" y2="112" stroke="#b03040" stroke-width="1.5"/>
+          <rect x="270" y="78" width="88" height="28" rx="5" fill="var(--vir-bg)" stroke="var(--vir-bor)" stroke-width="1.2"/>
+          <text x="314" y="90" font-family="Plus Jakarta Sans" font-size="10" fill="var(--vir)" text-anchor="middle" font-weight="600" text-decoration="underline">Envoltura</text>
+          <text x="314" y="101" font-family="Plus Jakarta Sans" font-size="10" fill="var(--vir)" text-anchor="middle" font-weight="600" text-decoration="underline">externa</text>
+        </g>
+        <!-- Proteínas superficie -->
+        <g class="svg-btn" id="lbl-v-proteinas" onclick="showDiagInfo('v','proteinas')">
+          <line x1="180" y1="17" x2="180" y2="0" stroke="#b03040" stroke-width="1.5"/>
+          <rect x="112" y="0" width="136" height="22" rx="5" fill="var(--vir-bg)" stroke="var(--vir-bor)" stroke-width="1.2"/>
+          <text x="180" y="15" font-family="Plus Jakarta Sans" font-size="10" fill="var(--vir)" text-anchor="middle" font-weight="600" text-decoration="underline">Proteínas de superficie</text>
+        </g>
+        <!-- Nucleocápside label -->
+        <g class="svg-btn" id="lbl-v-nucleocapside" onclick="showDiagInfo('v','nucleocapside')">
+          <line x1="105" y1="158" x2="92" y2="158" stroke="#b03040" stroke-width="1.5"/>
+          <rect x="4" y="147" width="88" height="22" rx="5" fill="var(--vir-bg)" stroke="var(--vir-bor)" stroke-width="1.2"/>
+          <text x="48" y="162" font-family="Plus Jakarta Sans" font-size="10" fill="var(--vir)" text-anchor="middle" font-weight="600" text-decoration="underline">Nucleocápside</text>
+        </g>
+      </svg>
+      <p style="font-size:.7rem;color:var(--mut);text-align:center;padding:.3rem 0 .5rem;">▲ Pulsa los nombres subrayados para ver la descripción</p>
+    </div>
+    <div class="diag-desc" id="dd-v">
+      <h5>Selecciona una estructura</h5>
+      <p>Haz clic en cualquier nombre subrayado del diagrama para ver aquí su descripción detallada.</p>
+    </div>
+  </div>
+</div><!-- fin panel virus -->
+
+<!-- ════ HONGOS ════ -->
+<div class="panel" id="pan-h">
+  <div>
+    <div class="ag-t" style="color:var(--hon)">Hongos</div>
+    <div class="ag-sub">Microorganismos eucariotas — pared de quitina</div>
+    <div class="ag-def" style="background:var(--hon-bg);border:1px solid var(--hon-bor);">Los <strong>hongos</strong> son microorganismos eucariotas cuyas células presentan pared celular de quitina. Pueden formar entidades pluricelulares, en cuyo caso no forman tejidos diferenciados.</div>
+    <p style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--hon);margin-bottom:.45rem;">Características más distintivas</p>
+    <ul class="flist">
+      <li><span><strong>Pared celular de quitina.</strong> La de los vegetales es celulosa, la de las bacterias es peptidoglucano, la de los hongos es quitina (exoesqueleto de crustáceos).</span></li>
+      <li><span><strong>Son heterótrofos:</strong> no pueden hacer fotosíntesis.</span></li>
+      <li><span><strong>Reproducción sexual y asexual</strong> (por esporas).</span></li>
+      <li><span>Pueden agruparse formando <strong>entidades pluricelulares</strong>, incluso visibles macroscópicamente, pero sin tejidos diferenciados.</span></li>
+    </ul>
+    <div class="subsec" style="background:var(--hon-bg);border:1px solid var(--hon-bor);">
+      <p class="subsec-t" style="color:var(--hon)">Micosis y micotoxicosis</p>
+      <p style="font-size:.84rem;">Los hongos patógenos causan procesos denominados <strong>micosis</strong>. En ocasiones el agente patógeno no es el hongo sino una toxina secretada (micotoxina): <strong>micotoxicosis</strong>. La toxina puede causar daño aunque el hongo ya no esté presente.</p>
+    </div>
+    <div style="background:var(--sur2);border:1px solid var(--bor);border-radius:var(--r);padding:.7rem .95rem;margin-top:.8rem;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--hon);">💡 La ciencia que estudia los hongos: micología</div>
+    <div class="cbox"><div class="cl" style="color:var(--hon)">💡 Relevancia bucodental</div><p><strong>Candidiasis oral:</strong> <em>Candida albicans</em>, hongo comensal que se vuelve patógeno en inmunodeprimidos, bajo antibioterapia o con prótesis dentales. Produce placas blancas en mucosa (<em>muguet</em>). Tto: antifúngicos (nistatina, fluconazol).</p></div>
+    <div class="mact">
+      <span class="mbadge">Actividad rápida</span>
+      <h4>Candidiasis y prótesis dental</h4>
+      <p class="mq">Paciente portadora de prótesis completa con placas blancas en paladar. Cultivo: <em>Candida albicans</em>. Se prescribe nistatina. ¿Por qué NO amoxicilina?</p>
+      <div class="opts">
+        <button class="obt" onclick="chk(this,true,'hm')">Porque <em>Candida</em> es un hongo eucariota con pared de quitina. Los antibióticos actúan sobre el peptidoglucano bacteriano, sin efecto sobre hongos.</button>
+        <button class="obt" onclick="chk(this,false,'hm')">Porque la amoxicilina no llega al paladar.</button>
+        <button class="obt" onclick="chk(this,false,'hm')">Porque la candidiasis es vírica.</button>
+        <button class="obt" onclick="chk(this,false,'hm')">Porque la amoxicilina solo actúa sobre gramnegativas.</button>
+      </div>
+      <div class="hbox" id="hm-h">💡 <strong>Pista:</strong> Compara pared bacteriana (peptidoglucano) con pared fúngica (quitina). Los β-lactámicos atacan el peptidoglucano. ¿Qué efecto tendrán sobre la quitina?</div>
+      <button class="hbtn" onclick="th('hm-h')">Ver pista</button>
+    </div>
+  </div>
+  <!-- SVG hongo -->
+  <div>
+    <div class="diag-lbl" style="padding-bottom:.35rem;">Fig. 9.3 · Hongo filamentoso</div>
+    <div class="diag-wrap" id="dw-h">
+      <svg viewBox="0 0 380 330" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" id="svg-h">
+        <!-- Hifa principal -->
+        <path d="M22,268 Q68,246 108,228 Q148,210 188,198 Q228,186 266,173 Q303,161 338,146" fill="none" stroke="#6040a0" stroke-width="21" stroke-linecap="round" opacity=".18"/>
+        <path d="M22,268 Q68,246 108,228 Q148,210 188,198 Q228,186 266,173 Q303,161 338,146" fill="none" stroke="#6040a0" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Septos -->
+        <line x1="88" y1="220" x2="104" y2="238" stroke="#6040a0" stroke-width="2.5"/>
+        <line x1="150" y1="203" x2="166" y2="220" stroke="#6040a0" stroke-width="2.5"/>
+        <line x1="212" y1="189" x2="228" y2="206" stroke="#6040a0" stroke-width="2.5"/>
+        <line x1="274" y1="172" x2="290" y2="189" stroke="#6040a0" stroke-width="2.5"/>
+        <!-- Núcleos -->
+        <ellipse cx="123" cy="226" rx="11" ry="8" fill="#d4b8ff" stroke="#6040a0" stroke-width="1.5"/>
+        <ellipse cx="183" cy="212" rx="11" ry="8" fill="#d4b8ff" stroke="#6040a0" stroke-width="1.5"/>
+        <ellipse cx="244" cy="194" rx="11" ry="8" fill="#d4b8ff" stroke="#6040a0" stroke-width="1.5"/>
+        <!-- Detalle zoom -->
+        <circle cx="302" cy="70" r="58" fill="#f5f0ff" stroke="#6040a0" stroke-width="2"/>
+        <line x1="266" y1="173" x2="268" y2="128" stroke="#6040a0" stroke-width="1" stroke-dasharray="4,3"/>
+        <!-- Aparato de Golgi zoom -->
+        <path d="M277,57 Q284,52 292,57 Q284,62 277,57" fill="none" stroke="#a05010" stroke-width="2"/>
+        <path d="M277,64 Q285,59 294,64 Q285,69 277,64" fill="none" stroke="#a05010" stroke-width="1.8" opacity=".8"/>
+        <path d="M279,71 Q286,66 295,71 Q286,76 279,71" fill="none" stroke="#a05010" stroke-width="1.5" opacity=".6"/>
+        <!-- Núcleo zoom -->
+        <ellipse cx="306" cy="70" rx="19" ry="14" fill="#d4b8ff" stroke="#6040a0" stroke-width="1.5"/>
+        <ellipse cx="306" cy="70" rx="8" ry="6" fill="#b090e8" stroke="#6040a0" stroke-width="1"/>
+        <!-- Mitocondria zoom -->
+        <ellipse cx="330" cy="82" rx="13" ry="8" fill="#ffe0cc" stroke="#c0601a" stroke-width="1.5"/>
+        <path d="M319,82 Q323,78 327,82 Q323,86 319,82" fill="none" stroke="#c0601a" stroke-width="1" opacity=".7"/>
+        <!-- Ramificaciones -->
+        <path d="M150,210 Q143,176 156,146 Q166,120 153,93" fill="none" stroke="#6040a0" stroke-width="15" stroke-linecap="round" opacity=".18"/>
+        <path d="M150,210 Q143,176 156,146 Q166,120 153,93" fill="none" stroke="#6040a0" stroke-width="2" stroke-linecap="round"/>
+        <path d="M212,196 Q220,163 210,133 Q203,108 216,83" fill="none" stroke="#6040a0" stroke-width="15" stroke-linecap="round" opacity=".18"/>
+        <path d="M212,196 Q220,163 210,133 Q203,108 216,83" fill="none" stroke="#6040a0" stroke-width="2" stroke-linecap="round"/>
+        <!-- Conidios rama 1 -->
+        <circle cx="153" cy="93" r="8" fill="#c5a8f0" stroke="#6040a0" stroke-width="2"/>
+        <circle cx="139" cy="81" r="7" fill="#c5a8f0" stroke="#6040a0" stroke-width="1.8"/>
+        <circle cx="153" cy="73" r="7" fill="#c5a8f0" stroke="#6040a0" stroke-width="1.8"/>
+        <circle cx="167" cy="81" r="7" fill="#c5a8f0" stroke="#6040a0" stroke-width="1.8"/>
+        <circle cx="128" cy="68" r="5.5" fill="#e0d0ff" stroke="#6040a0" stroke-width="1.5" stroke-dasharray="2,1"/>
+        <circle cx="173" cy="63" r="5" fill="#e0d0ff" stroke="#6040a0" stroke-width="1.5" stroke-dasharray="2,1"/>
+        <!-- Conidios rama 2 -->
+        <circle cx="216" cy="83" r="8" fill="#c5a8f0" stroke="#6040a0" stroke-width="2"/>
+        <circle cx="202" cy="71" r="7" fill="#c5a8f0" stroke="#6040a0" stroke-width="1.8"/>
+        <circle cx="216" cy="63" r="7" fill="#c5a8f0" stroke="#6040a0" stroke-width="1.8"/>
+        <circle cx="230" cy="71" r="7" fill="#c5a8f0" stroke="#6040a0" stroke-width="1.8"/>
+        <circle cx="238" cy="56" r="5.5" fill="#e0d0ff" stroke="#6040a0" stroke-width="1.5" stroke-dasharray="2,1"/>
+        <circle cx="196" cy="55" r="5" fill="#e0d0ff" stroke="#6040a0" stroke-width="1.5" stroke-dasharray="2,1"/>
+
+        <!-- ETIQUETAS HONGOS -->
+        <g class="svg-btn" id="lbl-h-septo" onclick="showDiagInfo('h','septo')">
+          <line x1="88" y1="229" x2="64" y2="246" stroke="#6040a0" stroke-width="1.5"/>
+          <rect x="4" y="240" width="60" height="22" rx="5" fill="var(--hon-bg)" stroke="var(--hon-bor)" stroke-width="1.2"/>
+          <text x="34" y="255" font-family="Plus Jakarta Sans" font-size="10.5" fill="var(--hon)" text-anchor="middle" font-weight="600" text-decoration="underline">Septo</text>
+        </g>
+        <g class="svg-btn" id="lbl-h-nucleo" onclick="showDiagInfo('h','nucleo')">
+          <line x1="123" y1="218" x2="100" y2="205" stroke="#6040a0" stroke-width="1.5"/>
+          <rect x="26" y="195" width="74" height="22" rx="5" fill="var(--hon-bg)" stroke="var(--hon-bor)" stroke-width="1.2"/>
+          <text x="63" y="210" font-family="Plus Jakarta Sans" font-size="10.5" fill="var(--hon)" text-anchor="middle" font-weight="600" text-decoration="underline">Núcleo</text>
+        </g>
+        <g class="svg-btn" id="lbl-h-conidio" onclick="showDiagInfo('h','conidio')">
+          <line x1="153" y1="84" x2="120" y2="100" stroke="#6040a0" stroke-width="1.5"/>
+          <rect x="30" y="93" width="90" height="22" rx="5" fill="var(--hon-bg)" stroke="var(--hon-bor)" stroke-width="1.2"/>
+          <text x="75" y="108" font-family="Plus Jakarta Sans" font-size="10.5" fill="var(--hon)" text-anchor="middle" font-weight="600" text-decoration="underline">Conidióforo</text>
+        </g>
+        <g class="svg-btn" id="lbl-h-espora" onclick="showDiagInfo('h','espora')">
+          <line x1="128" y1="63" x2="110" y2="50" stroke="#6040a0" stroke-width="1.5"/>
+          <rect x="32" y="39" width="78" height="22" rx="5" fill="var(--hon-bg)" stroke="var(--hon-bor)" stroke-width="1.2"/>
+          <text x="71" y="54" font-family="Plus Jakarta Sans" font-size="10.5" fill="var(--hon)" text-anchor="middle" font-weight="600" text-decoration="underline">Esporas</text>
+        </g>
+        <g class="svg-btn" id="lbl-h-golgi" onclick="showDiagInfo('h','golgi')">
+          <line x1="284" y1="62" x2="268" y2="52" stroke="#a05010" stroke-width="1.5"/>
+          <rect x="190" y="40" width="78" height="22" rx="5" fill="var(--pri-bg)" stroke="var(--pri-bor)" stroke-width="1.2"/>
+          <text x="229" y="55" font-family="Plus Jakarta Sans" font-size="10" fill="var(--pri)" text-anchor="middle" font-weight="600" text-decoration="underline">Ap. de Golgi</text>
+        </g>
+        <g class="svg-btn" id="lbl-h-nucleoz" onclick="showDiagInfo('h','nucleoz')">
+          <line x1="306" y1="56" x2="306" y2="34" stroke="#6040a0" stroke-width="1.5"/>
+          <rect x="268" y="22" width="76" height="22" rx="5" fill="var(--hon-bg)" stroke="var(--hon-bor)" stroke-width="1.2"/>
+          <text x="306" y="37" font-family="Plus Jakarta Sans" font-size="10.5" fill="var(--hon)" text-anchor="middle" font-weight="600" text-decoration="underline">Núcleo (zoom)</text>
+        </g>
+        <g class="svg-btn" id="lbl-h-mito" onclick="showDiagInfo('h','mito')">
+          <line x1="340" y1="80" x2="354" y2="70" stroke="#c0601a" stroke-width="1.5"/>
+          <rect x="350" y="58" width="88" height="22" rx="5" fill="var(--pri-bg)" stroke="var(--pri-bor)" stroke-width="1.2"/>
+          <text x="394" y="73" font-family="Plus Jakarta Sans" font-size="10.5" fill="var(--pri)" text-anchor="middle" font-weight="600" text-decoration="underline">Mitocondria</text>
+        </g>
+        <text x="14" y="318" font-family="Plus Jakarta Sans" font-size="10" fill="#555" font-weight="600">Hongo filamentoso</text>
+      </svg>
+      <p style="font-size:.7rem;color:var(--mut);text-align:center;padding:.3rem 0 .5rem;">▲ Pulsa los nombres subrayados para ver la descripción</p>
+    </div>
+    <div class="diag-desc" id="dd-h">
+      <h5>Selecciona una estructura</h5>
+      <p>Haz clic en cualquier nombre subrayado del diagrama para ver aquí su descripción detallada.</p>
+    </div>
+  </div>
+</div><!-- fin panel hongo -->
+
+<!-- ════ PRIONES ════ -->
+<div class="panel" id="pan-p">
+  <div>
+    <div class="ag-t" style="color:var(--pri)">Priones</div>
+    <div class="ag-sub">Proteínas mal plegadas — sin material genético</div>
+    <div class="ag-def" style="background:var(--pri-bg);border:1px solid var(--pri-bor);">Los <strong>priones</strong> son proteínas que parecen estar codificadas por genes celulares y actúan como señales reguladoras en las células que invaden.</div>
+    <p style="font-size:.87rem;margin-bottom:.75rem;">Al igual que los virus, los priones pueden perpetuarse y multiplicarse causando enfermedad. Pero al contrario que aquellos, los priones <strong>no son inmunogénicos</strong>: no activan una respuesta del sistema inmunitario del hospedador.</p>
+    <ul class="flist">
+      <li><span><strong>Propagación:</strong> mediante transmisión de proteínas anómalas con mal plegamiento.</span></li>
+      <li><span><strong>Mecanismo:</strong> cuando un prion entra en un organismo sano, actúa sobre la forma normal del mismo tipo de proteína, modificándola y convirtiéndola en prion.</span></li>
+      <li><span><strong>Reacción en cadena:</strong> los priones recién formados convierten más proteínas en anómalas → muchos priones en poco tiempo.</span></li>
+      <li><span><strong>Afinidad por el SNC,</strong> seguido del bazo y nódulos linfáticos. En el cerebro inducen <strong>degeneración neuronal</strong>.</span></li>
+    </ul>
+    <div class="cbox"><div class="cl" style="color:var(--pri)">💡 Ejemplo clínico</div><p><strong>EEB ("vacas locas"):</strong> variante humana (vECJ) → demencia progresiva irreversible. Sin tratamiento. Resistentes a autoclave estándar, UV y desinfectantes habituales → protocolos especiales en odontología para instrumental que contacta con tejido nervioso.</p></div>
+    <div class="mact">
+      <span class="mbadge">Actividad rápida</span>
+      <h4>Priones en la clínica dental</h4>
+      <p class="mq">Instrumental con sospecha de contaminación priónica. ¿Es suficiente autoclave a 121°C / 20 min?</p>
+      <div class="opts">
+        <button class="obt" onclick="chk(this,false,'pm')">Sí, el autoclave elimina cualquier agente infeccioso.</button>
+        <button class="obt" onclick="chk(this,false,'pm')">Sí, pero solo si se añade UV previa.</button>
+        <button class="obt" onclick="chk(this,true,'pm')">No. Los priones son extremadamente resistentes al calor, UV y desinfectantes habituales. Se requieren protocolos específicos.</button>
+        <button class="obt" onclick="chk(this,false,'pm')">No, pero basta con alcohol 70% durante 24h.</button>
+      </div>
+      <div class="hbox" id="pm-h">💡 <strong>Pista:</strong> Los priones no tienen ácidos nucleicos que destruir. Son proteínas muy estables. Investiga qué temperatura (134°C) y concentración de hipoclorito se usa en protocolos anti-prión.</div>
+      <button class="hbtn" onclick="th('pm-h')">Ver pista</button>
+    </div>
+  </div>
+  <!-- SVG prion -->
+  <div>
+    <div class="diag-lbl" style="padding-bottom:.35rem;">Fig. 9.4 · Alteración proteica por prion</div>
+    <div class="diag-wrap" id="dw-p">
+      <svg viewBox="0 0 380 330" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" id="svg-p">
+        <!-- PROTEÍNA NORMAL -->
+        <text x="28" y="26" font-family="Plus Jakarta Sans" font-size="9.5" fill="var(--bac)" font-weight="700">PROTEÍNA NORMAL (PrPᶜ)</text>
+        <path d="M48,50 Q60,38 74,50 Q88,62 102,50 Q116,38 130,50 Q144,62 158,50 Q172,38 186,50" fill="none" stroke="var(--bac)" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M48,65 Q60,53 74,65 Q88,77 102,65 Q116,53 130,65 Q144,77 158,65 Q172,53 186,65" fill="none" stroke="var(--bac)" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+        <path d="M48,80 Q60,68 74,80 Q88,92 102,80 Q116,68 130,80 Q144,92 158,80 Q172,68 186,80" fill="none" stroke="var(--bac)" stroke-width="2.5" stroke-linecap="round" opacity=".5"/>
+        <text x="117" y="106" font-family="Plus Jakarta Sans" font-size="9" fill="var(--bac)" text-anchor="middle" font-weight="600">α-hélice (plegamiento normal)</text>
+        <!-- FLECHA -->
+        <text x="196" y="72" font-family="Plus Jakarta Sans" font-size="24" fill="var(--pri)" font-weight="900">→</text>
+        <text x="194" y="90" font-family="Plus Jakarta Sans" font-size="7.5" fill="var(--pri)" text-anchor="middle">Prion</text>
+        <text x="194" y="99" font-family="Plus Jakarta Sans" font-size="7.5" fill="var(--pri)" text-anchor="middle">actúa</text>
+        <!-- PRION MAL PLEGADO -->
+        <text x="212" y="26" font-family="Plus Jakarta Sans" font-size="9.5" fill="var(--pri)" font-weight="700">CON PRION (PrPˢᶜ)</text>
+        <path d="M218,50 L237,38 L256,62 L275,38 L294,62 L313,38 L332,62 L351,38" fill="none" stroke="var(--pri)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M218,68 L237,56 L256,80 L275,56 L294,80 L313,56 L332,80 L351,56" fill="none" stroke="var(--pri)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>
+        <path d="M218,86 L237,74 L256,98 L275,74 L294,98 L313,74 L332,98 L351,74" fill="none" stroke="var(--pri)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/>
+        <text x="284" y="116" font-family="Plus Jakarta Sans" font-size="9" fill="var(--pri)" text-anchor="middle" font-weight="600">β-lámina (mal plegamiento)</text>
+        <!-- DIVISORIA -->
+        <line x1="18" y1="134" x2="362" y2="134" stroke="var(--bor)" stroke-width="1.5"/>
+        <!-- CADENA -->
+        <text x="18" y="153" font-family="Plus Jakarta Sans" font-size="9.5" fill="var(--pri)" font-weight="700">PROPAGACIÓN EN CADENA</text>
+        <rect x="18" y="162" width="50" height="34" rx="7" fill="var(--pri-bg)" stroke="var(--pri)" stroke-width="2"/>
+        <text x="43" y="182" font-family="Plus Jakarta Sans" font-size="8.5" fill="var(--pri)" text-anchor="middle" font-weight="700">PrPˢᶜ</text>
+        <text x="76" y="186" font-family="Plus Jakarta Sans" font-size="17" fill="#777">+</text>
+        <rect x="90" y="162" width="50" height="34" rx="7" fill="var(--bac-bg)" stroke="var(--bac)" stroke-width="2"/>
+        <text x="115" y="182" font-family="Plus Jakarta Sans" font-size="8.5" fill="var(--bac)" text-anchor="middle" font-weight="700">PrPᶜ</text>
+        <text x="148" y="186" font-family="Plus Jakarta Sans" font-size="17" fill="#777">→</text>
+        <rect x="168" y="162" width="46" height="34" rx="7" fill="var(--pri-bg)" stroke="var(--pri)" stroke-width="2"/>
+        <text x="191" y="182" font-family="Plus Jakarta Sans" font-size="8.5" fill="var(--pri)" text-anchor="middle" font-weight="700">PrPˢᶜ</text>
+        <text x="220" y="186" font-family="Plus Jakarta Sans" font-size="14" fill="var(--pri)">+</text>
+        <rect x="234" y="162" width="46" height="34" rx="7" fill="var(--pri-bg)" stroke="var(--pri)" stroke-width="2"/>
+        <text x="257" y="182" font-family="Plus Jakarta Sans" font-size="8.5" fill="var(--pri)" text-anchor="middle" font-weight="700">PrPˢᶜ</text>
+        <text x="286" y="186" font-family="Plus Jakarta Sans" font-size="17" fill="#777">→</text>
+        <text x="308" y="183" font-family="Plus Jakarta Sans" font-size="25" fill="var(--pri)">∞</text>
+        <!-- Consecuencia -->
+        <rect x="18" y="214" width="340" height="48" rx="9" fill="var(--pri-bg)" stroke="var(--pri-bor)" stroke-width="1.5"/>
+        <text x="188" y="232" font-family="Plus Jakarta Sans" font-size="9" fill="var(--pri)" text-anchor="middle" font-weight="700">SIN RESPUESTA INMUNE · SIN TRATAMIENTO EFICAZ</text>
+        <text x="188" y="246" font-family="Plus Jakarta Sans" font-size="8.5" fill="#805030" text-anchor="middle">Preferencia por SNC → degeneración neuronal irreversible</text>
+        <text x="188" y="257" font-family="Plus Jakarta Sans" font-size="8.5" fill="#805030" text-anchor="middle">Resistente a calor, UV y desinfectantes habituales</text>
+
+        <!-- ETIQUETAS PRION -->
+        <g class="svg-btn" id="lbl-p-normal" onclick="showDiagInfo('p','normal')">
+          <line x1="117" y1="108" x2="117" y2="120" stroke="var(--bac)" stroke-width="1.5"/>
+          <rect x="50" y="120" width="134" height="22" rx="5" fill="var(--bac-bg)" stroke="var(--bac-bor)" stroke-width="1.2"/>
+          <text x="117" y="135" font-family="Plus Jakarta Sans" font-size="10" fill="var(--bac)" text-anchor="middle" font-weight="600" text-decoration="underline">PrPᶜ — Proteína normal</text>
+        </g>
+        <g class="svg-btn" id="lbl-p-prion" onclick="showDiagInfo('p','prion')">
+          <line x1="284" y1="118" x2="284" y2="120" stroke="var(--pri)" stroke-width="1.5"/>
+          <rect x="214" y="120" width="140" height="22" rx="5" fill="var(--pri-bg)" stroke="var(--pri-bor)" stroke-width="1.2"/>
+          <text x="284" y="135" font-family="Plus Jakarta Sans" font-size="10" fill="var(--pri)" text-anchor="middle" font-weight="600" text-decoration="underline">PrPˢᶜ — Prion patológico</text>
+        </g>
+        <g class="svg-btn" id="lbl-p-cadena" onclick="showDiagInfo('p','cadena')">
+          <line x1="188" y1="214" x2="188" y2="204" stroke="var(--pri)" stroke-width="1.5"/>
+          <rect x="126" y="193" width="124" height="22" rx="5" fill="var(--pri-bg)" stroke="var(--pri-bor)" stroke-width="1.2"/>
+          <text x="188" y="208" font-family="Plus Jakarta Sans" font-size="10" fill="var(--pri)" text-anchor="middle" font-weight="600" text-decoration="underline">Propagación en cadena</text>
+        </g>
+        <g class="svg-btn" id="lbl-p-consecuencia" onclick="showDiagInfo('p','consecuencia')">
+          <line x1="188" y1="262" x2="188" y2="280" stroke="var(--pri)" stroke-width="1.5"/>
+          <rect x="118" y="280" width="140" height="22" rx="5" fill="var(--pri-bg)" stroke="var(--pri-bor)" stroke-width="1.2"/>
+          <text x="188" y="295" font-family="Plus Jakarta Sans" font-size="10" fill="var(--pri)" text-anchor="middle" font-weight="600" text-decoration="underline">Consecuencias en SNC</text>
+        </g>
+      </svg>
+      <p style="font-size:.7rem;color:var(--mut);text-align:center;padding:.3rem 0 .5rem;">▲ Pulsa los nombres subrayados para ver la descripción</p>
+    </div>
+    <div class="diag-desc" id="dd-p">
+      <h5>Selecciona una estructura</h5>
+      <p>Haz clic en cualquier nombre subrayado del diagrama para ver aquí su descripción detallada.</p>
+    </div>
+  </div>
+</div><!-- fin panel prion -->
+
+  </div><!-- fin reveal tabs -->
+</div>
+</section>
+
+
+<!-- ═══════════════ PATOGENOS ═══════════════ -->
+<section id="patogenos">
+<div class="wrap">
+  <div class="reveal">
+    <p class="sec-lbl">9.1.1 · Apartado 3</p>
+    <h2 class="sec-h">Patógenos y oportunistas</h2>
+    <p class="sec-sub">No todos los microorganismos son igualmente peligrosos. La distinción entre patógeno y oportunista es clave para entender cuándo y por qué aparece una infección.</p>
+  </div>
+  <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+    <div style="background:var(--sur);border:1px solid var(--bac-bor);border-left:4px solid var(--bac);border-radius:var(--r);padding:1.3rem;box-shadow:var(--sh);">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--bac);margin-bottom:.5rem;">Microorganismo patógeno</div>
+      <div class="def-box" style="margin-bottom:.75rem;font-size:.85rem;">Los microorganismos que pueden infectar al ser humano y causarle una determinada enfermedad infecciosa se denominan <strong>microorganismos patógenos</strong>.</div>
+      <p style="font-size:.85rem;color:var(--mut);line-height:1.65;">Cuando un microorganismo patógeno penetra en un organismo humano, la enfermedad que provoca va a manifestarse en mayor o menor grado <strong>(excepto si está inmunizado contra él)</strong>.</p>
+    </div>
+    <div style="background:var(--sur);border:1px solid var(--acc-bor);border-left:4px solid var(--acc);border-radius:var(--r);padding:1.3rem;box-shadow:var(--sh);">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--acc);margin-bottom:.5rem;">Microorganismo oportunista</div>
+      <div class="def-box" style="margin-bottom:.75rem;font-size:.85rem;">Los <strong>microorganismos oportunistas</strong> son microorganismos no patógenos pero que pueden provocar procesos patológicos en determinadas circunstancias.</div>
+      <p style="font-size:.85rem;color:var(--mut);line-height:1.65;">Lo más frecuente es que se trate de bacterias u hongos que actúan como patógenos cuando el sistema inmunitario de la persona infectada no funciona correctamente. Suelen estar ampliamente distribuidos o pueden formar parte de la microbiota natural.</p>
+    </div>
+  </div>
+  <div class="reveal" style="background:var(--acc-bg);border:1px solid var(--acc-bor);border-left:4px solid var(--acc);border-radius:var(--r);padding:1.1rem;margin-top:1rem;">
+    <p style="font-size:.82rem;font-weight:700;color:var(--acc);margin-bottom:.4rem;">💡 Mayor riesgo: personas inmunodeprimidas</p>
+    <p style="font-size:.84rem;color:var(--mut);">Las personas inmunodeprimidas, hospitalizadas o tratadas con procedimientos invasivos (catéteres, sondas urinarias, respiradores mecánicos…) tienen mayores probabilidades de contraer una infección por un microorganismo oportunista. Ejemplo: las personas con SIDA son más susceptibles a <em>Candida albicans</em>, neumonía, salmonelosis, toxoplasmosis y tuberculosis.</p>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════ FASES ═══════════════ -->
+<section id="fases">
+<div class="wrap">
+  <div class="reveal">
+    <p class="sec-lbl">9.1.2 · Apartado 3</p>
+    <h2 class="sec-h">Fases de las enfermedades infecciosas</h2>
+    <p class="sec-sub">Dentro de la gran variedad de cuadros clínicos, todas las enfermedades infecciosas siguen las mismas etapas.</p>
+  </div>
+  <div class="reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;">
+    <div style="background:var(--sur);border:1px solid var(--bor);border-radius:var(--rl);padding:1.4rem;box-shadow:var(--sh);position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:4px;background:var(--bac);border-radius:var(--rl) var(--rl) 0 0;"></div>
+      <div style="display:flex;align-items:center;gap:.65rem;margin-bottom:.75rem;">
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--bac-bg);color:var(--bac);display:flex;align-items:center;justify-content:center;font-weight:900;font-family:'Fraunces',serif;font-size:1rem;flex-shrink:0;">1</div>
+        <h3 style="font-family:'Fraunces',serif;font-size:1rem;font-weight:700;color:var(--bac);">Fase prepatogénica</h3>
+      </div>
+      <p style="font-size:.86rem;color:var(--mut);line-height:1.65;">Se produce el <strong>contagio</strong>: el agente infeccioso entra en contacto con el organismo hospedador. Aún no hay daño ni síntomas.</p>
+    </div>
+    <div style="background:var(--sur);border:1px solid var(--bor);border-radius:var(--rl);padding:1.4rem;box-shadow:var(--sh);position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:4px;background:var(--acc);border-radius:var(--rl) var(--rl) 0 0;"></div>
+      <div style="display:flex;align-items:center;gap:.65rem;margin-bottom:.75rem;">
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--acc-bg);color:var(--acc);display:flex;align-items:center;justify-content:center;font-weight:900;font-family:'Fraunces',serif;font-size:1rem;flex-shrink:0;">2</div>
+        <h3 style="font-family:'Fraunces',serif;font-size:1rem;font-weight:700;color:var(--acc);">Fase patogénica: período de incubación</h3>
+      </div>
+      <p style="font-size:.86rem;color:var(--mut);line-height:1.65;">Tiempo entre la <strong>entrada del microorganismo</strong> y la <strong>aparición de los primeros síntomas</strong>. El patógeno se multiplica y se desplaza a sus zonas de ataque. El periodo de incubación varía mucho según el patógeno.</p>
+    </div>
+    <div style="background:var(--sur);border:1px solid var(--bor);border-radius:var(--rl);padding:1.4rem;box-shadow:var(--sh);position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:4px;background:var(--vir);border-radius:var(--rl) var(--rl) 0 0;"></div>
+      <div style="display:flex;align-items:center;gap:.65rem;margin-bottom:.75rem;">
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--vir-bg);color:var(--vir);display:flex;align-items:center;justify-content:center;font-weight:900;font-family:'Fraunces',serif;font-size:1rem;flex-shrink:0;">3</div>
+        <h3 style="font-family:'Fraunces',serif;font-size:1rem;font-weight:700;color:var(--vir);">Fase clínica</h3>
+      </div>
+      <p style="font-size:.86rem;color:var(--mut);line-height:1.65;">Aparecen las primeras manifestaciones (<strong>pródromos</strong>), luego el cuadro clínico completo y finalmente la <strong>resolución</strong>: la enfermedad desaparece, se vuelve crónica o la persona fallece.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════ COMPARATIVA ═══════════════ -->
+<section id="comparativa">
+<div class="wrap">
+  <div class="reveal">
+    <p class="sec-lbl">Apartado 5</p>
+    <h2 class="sec-h">Tabla comparativa</h2>
+    <p class="sec-sub">Selecciona la opción correcta en cada celda. Funciona en ordenador, tablet y móvil.</p>
+  </div>
+  <div class="reveal" style="background:var(--sur);border:1px solid var(--bor);border-radius:var(--rl);padding:1.5rem;box-shadow:var(--sh);">
+    <div style="overflow-x:auto;">
+      <table class="sel-table" id="selTable">
+        <thead>
+          <tr>
+            <th style="background:var(--sur2);color:var(--mut);text-align:left;">Propiedad</th>
+            <th style="background:var(--bac-bg);color:var(--bac);text-align:center;">🦠 Bacteria</th>
+            <th style="background:var(--vir-bg);color:var(--vir);text-align:center;">🔴 Virus</th>
+            <th style="background:var(--hon-bg);color:var(--hon);text-align:center;">🍄 Hongo</th>
+            <th style="background:var(--pri-bg);color:var(--pri);text-align:center;">🧬 Prion</th>
+          </tr>
+        </thead>
+        <tbody id="selBody"></tbody>
+      </table>
+    </div>
+    <div style="margin-top:1rem;display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;">
+      <button class="btn btn-p" onclick="checkSelTable()">Comprobar</button>
+      <button class="btn btn-g" onclick="resetSelTable()">Reiniciar</button>
+      <button class="hbtn" onclick="var h=document.getElementById('sel-hint');h.classList.toggle('on')">💡 Ver pistas</button>
+    </div>
+    <div id="sel-hint" class="hbox" style="margin-top:.5rem;">Solo un agente carece de material genético. · Solo uno NO activa respuesta inmune. · La pared de quitina es exclusiva de uno. · Solo uno necesita células vivas para multiplicarse. · Solo uno sin tratamiento eficaz.</div>
+    <div class="score" id="selScore"></div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════ CADENA ═══════════════ -->
+<section id="cadena">
+<div class="wrap">
+  <div class="reveal">
+    <p class="sec-lbl">9.1.3 · Apartado 6</p>
+    <h2 class="sec-h">La cadena epidemiológica</h2>
+    <p class="sec-sub">Conjunto de medios y sistemas que facilitan el contacto del microorganismo patógeno con un sujeto receptor. Pulsa cada eslabón para explorar su contenido.</p>
+  </div>
+
+  <!-- Diagrama interactivo de la cadena -->
+  <div class="reveal" style="background:var(--sur);border:1px solid var(--bor);border-radius:var(--rl);padding:2rem;box-shadow:var(--sh);">
+    <div class="cflow" style="margin-bottom:1.25rem;">
+      <div class="cn on" id="cn-a" onclick="showCad('a')"><div class="ccirc">🦠</div><span>Agente infeccioso</span></div>
+      <div class="carrow">→</div>
+      <div class="cn" id="cn-e2" onclick="showCad('e2')"><div class="ccirc">🔓</div><span>Puerta de entrada</span></div>
+      <div class="carrow">→</div>
+      <div class="cn" id="cn-hh" onclick="showCad('hh')"><div class="ccirc">🧍</div><span>Hospedador</span></div>
+      <div class="carrow">→</div>
+      <div class="cn" id="cn-s" onclick="showCad('s')"><div class="ccirc">🚪</div><span>Puerta de salida</span></div>
+      <div class="carrow">→</div>
+      <div class="cn" id="cn-r" onclick="showCad('r')"><div class="ccirc">🏠</div><span>Reservorio</span></div>
+      <div class="carrow">→</div>
+      <div class="cn" id="cn-t" onclick="showCad('t')"><div class="ccirc">💨</div><span>Vía de transmisión</span></div>
+    </div>
+    <div class="cdet" id="cadDetail"></div>
+  </div>
+
+  <!-- Puerta de entrada -->
+  <div class="reveal" style="margin-top:2rem;">
+    <h3 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;margin-bottom:.3rem;">La puerta de entrada</h3>
+    <div class="def-box" style="margin-bottom:1rem;font-size:.88rem;">El agente infeccioso penetra en el organismo hospedador por una <strong>puerta de entrada</strong>. Las más habituales son: respiratoria, digestiva, dérmica o a través de las mucosas.</div>
+    <div class="tgrid">
+      <div class="tcard" onclick="exTrans(this)">
+        <div class="tico">🫁</div><h4>Vía respiratoria</h4>
+        <p>Inhalación de partículas de origen biológico suspendidas en el aire: <strong>bioaerosoles</strong>.</p>
+        <div class="tdet"><p>Los bioaerosoles se generan a partir de personas o animales infectados, aunque también por operaciones de laboratorio, atención sanitaria, accidentes o ataques bioterroristas. En odontología: turbinas y ultrasonidos generan aerosoles con saliva y sangre.</p></div>
+      </div>
+      <div class="tcard" onclick="exTrans(this)">
+        <div class="tico">🍽️</div><h4>Vía digestiva</h4>
+        <p>Entrada por <strong>ingestión</strong> de una sustancia que contiene el agente infeccioso.</p>
+        <div class="tdet"><p>Es la vía por la que se producen las toxiinfecciones alimentarias. El agua de los equipos dentales puede contaminarse con <em>Legionella</em> si no se desinfecta regularmente.</p></div>
+      </div>
+      <div class="tcard" onclick="exTrans(this)">
+        <div class="tico">🩹</div><h4>Vía dérmica</h4>
+        <p>La penetración por piel sana es esporádica; lo habitual es a través de <strong>heridas o lesiones</strong>.</p>
+        <div class="tdet"><p>En el ámbito laboral, la <strong>vía percutánea</strong> (cortes o pinchazos con materiales contaminados) permite el acceso directo al torrente sanguíneo → riesgo de VHB, VHC, VIH en la clínica dental.</p></div>
+      </div>
+      <div class="tcard" onclick="exTrans(this)">
+        <div class="tico">👄</div><h4>Vía mucosa</h4>
+        <p>Penetración por contacto con mucosas: bucal, nasal, <strong>conjuntival</strong> y genital femenina.</p>
+        <div class="tdet"><p>Las mucosas no tienen la capa protectora de la piel → más fácil para los agentes biológicos atravesarlas. Al estar húmedas, pueden actuar como reservorio. La conjuntiva es especialmente relevante: <strong>gafas de protección obligatorias</strong> en odontología.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Organismo hospedador -->
+  <div class="reveal" style="margin-top:2rem;">
+    <h3 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;margin-bottom:.3rem;">El organismo hospedador</h3>
+    <p style="color:var(--mut);font-size:.87rem;margin-bottom:1rem;">Cuando el agente infeccioso penetra en él, se multiplica y se desplaza. Puede ocurrir que la persona manifieste síntomas (<strong>enferma</strong>) o no (<strong>portadora</strong>), pudiendo transmitir en ambos casos.</p>
+    <!-- Acordeón factores -->
+    <div style="display:flex;flex-direction:column;gap:.4rem;" id="factoresAccordion">
+      <div class="tcard" onclick="exTrans(this)" style="border-left:3px solid var(--bac);">
+        <div style="font-size:.8rem;font-weight:700;color:var(--bac);">Factor 1 · Cantidad de microorganismos recibidos</div>
+        <div class="tdet"><p style="font-size:.85rem;color:var(--mut);">Cuanto mayor sea la cantidad de agente que reciba la persona, mayores serán las posibilidades de que enferme y mayor la gravedad que podrá tener la enfermedad.</p></div>
+      </div>
+      <div class="tcard" onclick="exTrans(this)" style="border-left:3px solid var(--vir);">
+        <div style="font-size:.8rem;font-weight:700;color:var(--vir);">Factor 2 · Virulencia del microorganismo</div>
+        <div class="tdet"><p style="font-size:.85rem;color:var(--mut);">Existen muchos tipos de microorganismos y no todos tienen la misma virulencia. Incluso para un mismo microorganismo puede haber diversidad: por ejemplo, entre variantes del virus de la COVID-19 o de la gripe.</p></div>
+      </div>
+      <div class="tcard" onclick="exTrans(this)" style="border-left:3px solid var(--hon);">
+        <div style="font-size:.8rem;font-weight:700;color:var(--hon);">Factor 3 · Resistencia de la persona y estado de salud previo</div>
+        <div class="tdet"><p style="font-size:.85rem;color:var(--mut);">Las circunstancias personales condicionan la capacidad del organismo de controlar la infección o de que esta se exprese con mayor o menor fuerza.</p></div>
+      </div>
+      <div class="tcard" onclick="exTrans(this)" style="border-left:3px solid var(--pri);">
+        <div style="font-size:.8rem;font-weight:700;color:var(--pri);">Factor 4 · La puerta de entrada</div>
+        <div class="tdet"><p style="font-size:.85rem;color:var(--mut);">Un microorganismo que no ocasiona problemas de salud cuando entra por una vía puede causarlos cuando lo hace por otra, o puede tener distintos efectos según la vía. No es lo mismo ingerir un microorganismo que recibirlo directamente en el torrente sanguíneo o aspirarlo.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Puerta de salida -->
+  <div class="reveal" style="margin-top:2rem;">
+    <h3 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;margin-bottom:.3rem;">La puerta de salida</h3>
+    <p style="color:var(--mut);font-size:.87rem;margin-bottom:1rem;">Transcurrido un tiempo, el organismo hospedador libera microorganismos. <strong>La puerta de salida puede ser cualquiera de las que hemos explicado como puertas de entrada.</strong></p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.75rem;">
+      <div style="text-align:center;padding:.85rem;background:var(--sur);border:1px solid var(--bor);border-radius:var(--r);box-shadow:var(--sh);font-size:.83rem;color:var(--mut);">🫁 <strong style="display:block;color:var(--txt);margin-bottom:.25rem;">Respiratoria</strong>Tos, estornudos, gotas de Flügge</div>
+      <div style="text-align:center;padding:.85rem;background:var(--sur);border:1px solid var(--bor);border-radius:var(--r);box-shadow:var(--sh);font-size:.83rem;color:var(--mut);">🍽️ <strong style="display:block;color:var(--txt);margin-bottom:.25rem;">Digestiva</strong>Heces, vómitos</div>
+      <div style="text-align:center;padding:.85rem;background:var(--sur);border:1px solid var(--bor);border-radius:var(--r);box-shadow:var(--sh);font-size:.83rem;color:var(--mut);">🩹 <strong style="display:block;color:var(--txt);margin-bottom:.25rem;">Cutánea</strong>Heridas, exudados, sangre</div>
+      <div style="text-align:center;padding:.85rem;background:var(--sur);border:1px solid var(--bor);border-radius:var(--r);box-shadow:var(--sh);font-size:.83rem;color:var(--mut);">👄 <strong style="display:block;color:var(--txt);margin-bottom:.25rem;">Mucosas</strong>Saliva, secreciones</div>
+    </div>
+  </div>
+
+  <!-- Reservorio -->
+  <div class="reveal" style="margin-top:2rem;">
+    <h3 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;margin-bottom:.3rem;">El reservorio</h3>
+    <div class="def-box" style="margin-bottom:1rem;font-size:.88rem;">Un <strong>reservorio</strong> es un medio que permite a un microorganismo patógeno mantenerse activo en espera de un nuevo hospedador.</div>
+    <p style="color:var(--mut);font-size:.87rem;margin-bottom:1rem;">Los microorganismos expulsados del hospedador pueden pasar directamente a un nuevo hospedador o mantenerse en un reservorio. La identificación del agente causante de una enfermedad permite saber si puede subsistir en algún reservorio — clave para adoptar medidas de profilaxis.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.85rem;">
+      <div style="background:var(--sur);border:1px solid var(--bac-bor);border-left:4px solid var(--bac);border-radius:var(--r);padding:1rem;box-shadow:var(--sh);">
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--bac);margin-bottom:.4rem;">🐀 Seres vivos</div>
+        <p style="font-size:.84rem;color:var(--mut);">Perros, ratas, mosquitos… Los reservorios vivos que transmiten la enfermedad se denominan <strong>vectores</strong> y la transmisión se produce por picadura o mordedura.</p>
+      </div>
+      <div style="background:var(--sur);border:1px solid var(--acc-bor);border-left:4px solid var(--acc);border-radius:var(--r);padding:1rem;box-shadow:var(--sh);">
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--acc);margin-bottom:.4rem;">💧 Material o sustancia</div>
+        <p style="font-size:.84rem;color:var(--mut);">Suelo, agua, alimentos, superficies, instrumental. Cuando cualquiera de ellos actúa como reservorio, decimos que está <strong>contaminado</strong>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vías de transmisión -->
+  <div class="reveal" style="margin-top:2rem;">
+    <h3 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;margin-bottom:.3rem;">La vía de transmisión</h3>
+    <div class="def-box" style="margin-bottom:1rem;font-size:.88rem;">La <strong>vía de transmisión</strong> es el medio por el cual un microorganismo patógeno se transmite de un organismo hospedador a otro. La transmisión puede ser <strong>directa</strong> o <strong>indirecta</strong>.</div>
+    <!-- Comparador interactivo directo vs indirecto -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+      <div style="background:var(--sur);border:2px solid var(--bac-bor);border-radius:var(--rl);padding:1.25rem;box-shadow:var(--sh);cursor:pointer;transition:all .2s;" onclick="this.querySelector('.td-detail').style.display=this.querySelector('.td-detail').style.display==='none'?'block':'none'">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.6rem;">
+          <div style="width:40px;height:40px;border-radius:50%;background:var(--bac-bg);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;">🤝</div>
+          <div><div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--bac);">Transmisión directa</div><div style="font-size:.82rem;font-weight:600;color:var(--txt);">La enfermedad es <em>contagiosa</em></div></div>
+        </div>
+        <p style="font-size:.84rem;color:var(--mut);">Contacto directo entre personas. El microorganismo pasa de una persona a otra sin intermediario.</p>
+        <div class="td-detail" style="display:none;margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--bor);">
+          <p style="font-size:.83rem;color:var(--mut);">Medios de transmisión directa: <strong>gotas de Flügge</strong> (pequeñas gotitas de saliva al hablar, toser o estornudar) y las distintas secreciones y exudados.</p>
+          <p style="font-size:.83rem;color:var(--mut);margin-top:.4rem;">💡 <em>Ejemplo:</em> la gripe o el herpes labial se transmiten directamente de persona a persona.</p>
+        </div>
+        <div style="font-size:.72rem;color:var(--mut);margin-top:.5rem;">Pulsa para ver más ›</div>
+      </div>
+      <div style="background:var(--sur);border:2px solid var(--acc-bor);border-radius:var(--rl);padding:1.25rem;box-shadow:var(--sh);cursor:pointer;transition:all .2s;" onclick="this.querySelector('.ti-detail').style.display=this.querySelector('.ti-detail').style.display==='none'?'block':'none'">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.6rem;">
+          <div style="width:40px;height:40px;border-radius:50%;background:var(--acc-bg);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;">🔗</div>
+          <div><div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--acc);">Transmisión indirecta</div><div style="font-size:.82rem;font-weight:600;color:var(--txt);">No contagiosa pero <em>transmisible</em></div></div>
+        </div>
+        <p style="font-size:.84rem;color:var(--mut);">El agente se mantiene en un reservorio y penetra en el nuevo hospedador cuando este contacta con él.</p>
+        <div class="ti-detail" style="display:none;margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--bor);">
+          <p style="font-size:.83rem;color:var(--mut);">El reservorio puede ser un objeto, superficie, material, agua o alimento <strong>contaminado</strong>. También seres vivos (<strong>vectores</strong>): mosquitos, pulgas, garrapatas que transmiten por picadura.</p>
+          <p style="font-size:.83rem;color:var(--mut);margin-top:.4rem;">💡 <em>Ejemplo dental:</em> el instrumental no esterilizado entre paciente y paciente actúa como reservorio y transmite VHB o VHC indirectamente.</p>
+        </div>
+        <div style="font-size:.72rem;color:var(--mut);margin-top:.5rem;">Pulsa para ver más ›</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mini-act cadena -->
+  <div class="reveal mact" style="margin-top:1.75rem;">
+    <span class="mbadge">Actividad rápida</span>
+    <h4>Cadena epidemiológica en la clínica dental</h4>
+    <p class="mq">Una higienista trabaja sin mascarilla ni gafas con un paciente con herpes labial activo durante una profilaxis con ultrasonidos. ¿Qué eslabón NO se interrumpe?</p>
+    <div class="opts">
+      <button class="obt" onclick="chk(this,false,'cm')">Se eliminó el reservorio al tratar al paciente infectado.</button>
+      <button class="obt" onclick="chk(this,true,'cm')">No se interrumpió la vía de transmisión: los aerosoles pueden llevar el VHS-1 a mucosa nasal u ocular de la higienista.</button>
+      <button class="obt" onclick="chk(this,false,'cm')">No hay riesgo porque el herpes solo se transmite por contacto directo con la lesión.</button>
+      <button class="obt" onclick="chk(this,false,'cm')">Se protegió correctamente la puerta de entrada al llevar guantes.</button>
+    </div>
+    <div class="hbox" id="cm-h">💡 <strong>Pista:</strong> El VHS-1 está en saliva y vesículas. Los ultrasonidos generan aerosoles. Sin mascarilla ni gafas, ¿qué puertas de entrada quedan expuestas?</div>
+    <button class="hbtn" onclick="th('cm-h')">Ver pista</button>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════ ACTIVIDADES ═══════════════ -->
+<section id="actividades">
+<div class="wrap">
+  <div class="reveal">
+    <p class="sec-lbl">Actividades</p>
+    <h2 class="sec-h">Actividades del libro</h2>
+    <p class="sec-sub">Preguntas 1–11 del libro. Responde en los campos correspondientes. Las preguntas de identificar tienen opciones; las de explicar tienen campo de texto libre.</p>
+  </div>
+
+  <div class="book-acts reveal">
+
+    <!-- Preg 1: test -->
+    <div class="bact"><div class="bact-h" onclick="togBact(this.parentElement)"><div class="bact-n">1</div><p>Cita los elementos imprescindibles de la célula bacteriana, presentes en todas las bacterias e indispensables para su vida.</p><span class="bact-chev">›</span></div>
+    <div class="bact-b">
+      <p class="bq">¿Cuáles son los tres componentes presentes en TODAS las bacterias?</p>
+      <div class="opts">
+        <button class="obt" onclick="chk(this,false,'b1')">Cápsula, flagelos y pili.</button>
+        <button class="obt" onclick="chk(this,true,'b1')">Pared celular, membrana plasmática y citoplasma (con nucleoide y ribosomas).</button>
+        <button class="obt" onclick="chk(this,false,'b1')">Membrana plasmática, mitocondrias y núcleo.</button>
+        <button class="obt" onclick="chk(this,false,'b1')">Pared celular, flagelos y endosporas.</button>
+      </div>
+      <div class="hbox" id="b1-h">💡 Recuerda: los elementos opcionales (cápsula, flagelos, pili…) no están en todas las bacterias. Los imprescindibles son los que forman la estructura mínima de cualquier procariota.</div>
+      <button class="hbtn" onclick="var h=document.getElementById('b1-h');h.classList.toggle('on')">Ver pista</button>
+    </div></div>
+
+    <!-- Preg 2: test -->
+    <div class="bact"><div class="bact-h" onclick="togBact(this.parentElement)"><div class="bact-n">2</div><p>¿Por qué decimos que los virus son parásitos intracelulares estrictos?</p><span class="bact-chev">›</span></div>
+    <div class="bact-b">
+      <div class="opts">
+        <button class="obt" onclick="chk(this,false,'b2')">Porque solo afectan a células animales, no a bacterias ni plantas.</button>
+        <button class="obt" onclick="chk(this,false,'b2')">Porque producen toxinas que dañan el interior de la célula.</button>
+        <button class="obt" onclick="chk(this,true,'b2')">Porque requieren infestar una célula hospedadora para sintetizar sus componentes y multiplicarse; fuera de ella no pueden reproducirse.</button>
+        <button class="obt" onclick="chk(this,false,'b2')">Porque solo pueden vivir dentro del núcleo celular.</button>
+      </div>
+      <div class="hbox" id="b2-h">💡 Clave: los virus no tienen ribosomas propios ni metabolismo independiente. Necesitan la maquinaria celular del hospedador para fabricar sus copias.</div>
+      <button class="hbtn" onclick="var h=document.getElementById('b2-h');h.classList.toggle('on')">Ver pista</button>
+    </div></div>
+
+    <!-- Preg 3: texto libre -->
+    <div class="bact"><div class="bact-h" onclick="togBact(this.parentElement)"><div class="bact-n">3</div><p>Explica qué diferencia hay entre la pared celular de células vegetales, bacterias y hongos.</p><span class="bact-chev">›</span></div>
+    <div class="bact-b">
+      <p class="bq">Desarrolla las diferencias de composición química de la pared celular en cada tipo:</p>
+      <textarea id="ta3" placeholder="Escribe tu respuesta aquí..."></textarea>
+      <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
+        <button class="btn btn-p" onclick="checkTA('ta3','fb3')">Comprobar</button>
+        <button class="btn btn-g" onclick="document.getElementById('ta3').value='';document.getElementById('fb3').className='feedback-msg'">Borrar</button>
+        <button class="hbtn" onclick="var h=document.getElementById('b3-h');h.classList.toggle('on')">Ver pista</button>
+      </div>
+      <div class="hbox" id="b3-h">💡 Tres materiales distintos: vegetales → celulosa · bacterias → peptidoglucano · hongos → quitina. Recuerda que los micoplasmas son la excepción bacteriana (sin pared).</div>
+      <div class="feedback-msg hint" id="fb3">✔ Respuesta enviada. Comprueba que hayas incluido: celulosa (vegetales), peptidoglucano (bacterias) y quitina (hongos), y la importancia de estas diferencias para el tratamiento.</div>
+    </div></div>
+
+    <!-- Preg 4: texto libre -->
+    <div class="bact"><div class="bact-h" onclick="togBact(this.parentElement)"><div class="bact-n">4</div><p>Explica qué es un prion y describe sus características más destacadas en lo que concierne a su resistencia en el organismo.</p><span class="bact-chev">›</span></div>
+    <div class="bact-b">
+      <textarea id="ta4" placeholder="Escribe tu respuesta aquí..."></textarea>
+      <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
+        <button class="btn btn-p" onclick="checkTA('ta4','fb4')">Comprobar</button>
+        <button class="btn btn-g" onclick="document.getElementById('ta4').value='';document.getElementById('fb4').className='feedback-msg'">Borrar</button>
+        <button class="hbtn" onclick="var h=document.getElementById('b4-h');h.classList.toggle('on')">Ver pista</button>
+      </div>
+      <div class="hbox" id="b4-h">💡 Los priones son proteínas (no tienen ácidos nucleicos), no son inmunogénicos (el sistema inmune no los detecta), y son resistentes al calor, radiación UV y desinfectantes habituales. Se propagan por reacción en cadena modificando proteínas normales.</div>
+      <div class="feedback-msg hint" id="fb4">✔ Respuesta enviada. Revisa: definición de prion, mecanismo de propagación (PrPc → PrPsc), no inmunogenicidad, resistencia a métodos físico-químicos habituales y afectación del SNC.</div>
+    </div></div>
+
+    <!-- Preg 5: test -->
+    <div class="bact"><div class="bact-h" onclick="togBact(this.parentElement)"><div class="bact-n">5</div><p>¿En qué situaciones un microorganismo no patógeno puede provocar un proceso patológico? ¿Cómo denominamos al microorganismo en estos casos?</p><span class="bact-chev">›</span></div>
+    <div class="bact-b">
+      <div class="opts">
+        <button class="obt" onclick="chk(this,false,'b5')">Cuando muta y adquiere mayor virulencia. Se denomina microorganismo mutante.</button>
+        <button class="obt" onclick="chk(this,true,'b5')">Cuando el sistema inmunitario del hospedador no funciona correctamente (inmunodepresión, hospitalización, procedimientos invasivos). Se denomina microorganismo oportunista.</button>
+        <button class="obt" onclick="chk(this,false,'b5')">Solo cuando la persona no ha recibido vacunación. Se denomina microorganismo resistente.</button>
+        <button class="obt" onclick="chk(this,false,'b5')">Cuando la dosis de microorganismos supera un umbral. Se denomina microorganismo patógeno.</button>
+      </div>
+      <div class="hbox" id="b5-h">💡 La clave está en las condiciones del hospedador, no en el microorganismo. Un comensal habitual puede convertirse en patógeno si las defensas fallan.</div>
+      <button class="hbtn" onclick="var h=document.getElementById('b5-h');h.classList.toggle('on')">Ver pista</button>
+    </div></div>
+
+    <!-- Preg 6: texto libre -->
+    <div class="bact"><div class="bact-h" onclick="togBact(this.parentElement)"><div class="bact-n">6</div><p>Define: <em>período de incubación</em> y <em>fase clínica</em>.</p><span class="bact-chev">›</span></div>
+    <div class="bact-b">
+      <textarea id="ta6" placeholder="Escribe tu respuesta aquí..."></textarea>
+      <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
+        <button class="btn btn-p" onclick="checkTA('ta6','fb6')">Comprobar</button>
+        <button class="btn btn-g" onclick="document.getElementById('ta6').value='';document.getElementById('fb6').className='feedback-msg'">Borrar</button>
+        <button class="hbtn" onclick="var h=document.getElementById('b6-h');h.classList.toggle('on')">Ver pista</button>
+      </div>
+      <div class="hbox" id="b6-h">💡 Período de incubación: desde la entrada del microorganismo hasta los primeros síntomas (el patógeno se multiplica y se desplaza). Fase clínica: aparecen pródromos → cuadro clínico → resolución (curación, cronicidad o fallecimiento).</div>
+      <div class="feedback-msg hint" id="fb6">✔ Respuesta enviada. Comprueba que hayas definido ambos conceptos con sus características temporales y los fenómenos que ocurren en cada fase.</div>
+    </div></div>
+
+    <!-- Preg 7: texto libre -->
+    <div class="bact"><div class="bact-h" onclick="togBact(this.parentElement)"><div class="bact-n">7</div><p>Explica qué significa que una persona es portadora de una enfermedad infecciosa.</p><span class="bact-chev">›</span></div>
+    <div class="bact-b">
+      <textarea id="ta7" placeholder="Escribe tu respuesta aquí..."></textarea>
+      <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
+        <button class="btn btn-p" onclick="checkTA('ta7','fb7')">Comprobar</button>
+        <button class="btn btn-g" onclick="document.getElementById('ta7').value='';document.getElementById('fb7').className='feedback-msg'">Borrar</button>
+        <button class="hbtn" onclick="var h=document.getElementById('b7-h');h.classList.toggle('on')">Ver pista</button>
+      </div>
+      <div class="hbox" id="b7-h">💡 Una persona portadora tiene el agente infeccioso en su organismo pero no manifiesta síntomas. Sin embargo, en algunos casos puede transmitir la enfermedad a otras personas.</div>
+      <div class="feedback-msg hint" id="fb7">✔ Respuesta enviada. Incluye: ausencia de síntomas, presencia del agente, capacidad de transmisión y relevancia en salud pública (identificación de portadores).</div>
+    </div></div>
+
+    <!-- Preg 8: texto libre -->
+    <div class="bact"><div class="bact-h" onclick="togBact(this.parentElement)"><div class="bact-n">8</div><p>Explica la diferencia entre una transmisión directa e indirecta de una enfermedad infecciosa y pon tres ejemplos de cada tipo.</p><span class="bact-chev">›</span></div>
+    <div class="bact-b">
+      <textarea id="ta8" placeholder="Escribe tu respuesta aquí..."></textarea>
+      <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
+        <button class="btn btn-p" onclick="checkTA('ta8','fb8')">Comprobar</button>
+        <button class="btn btn-g" onclick="document.getElementById('ta8').value='';document.getElementById('fb8').className='feedback-msg'">Borrar</button>
+        <button class="hbtn" onclick="var h=document.getElementById('b8-h');h.classList.toggle('on')">Ver pista</button>
+      </div>
+      <div class="hbox" id="b8-h">💡 Directa: contacto entre personas, la enfermedad es contagiosa (gotas de Flügge, secreciones). Indirecta: a través de un reservorio (agua, alimentos, instrumental), la enfermedad es transmisible pero no contagiosa. Recuerda incluir vectores en la indirecta.</div>
+      <div class="feedback-msg hint" id="fb8">✔ Respuesta enviada. Comprueba que hayas diferenciado ambos tipos, mencionado el papel del reservorio en la indirecta, y aportado 3 ejemplos de cada una.</div>
+    </div></div>
+
+    <!-- Preg 9: test -->
+    <div class="bact"><div class="bact-h" onclick="togBact(this.parentElement)"><div class="bact-n">9</div><p>Cita las puertas de entrada más habituales de las infecciones.</p><span class="bact-chev">›</span></div>
+    <div class="bact-b">
+      <div class="opts">
+        <button class="obt" onclick="chk(this,false,'b9')">Respiratoria, digestiva y percutánea únicamente.</button>
+        <button class="obt" onclick="chk(this,false,'b9')">Oral, nasal y cutánea.</button>
+        <button class="obt" onclick="chk(this,true,'b9')">Respiratoria, digestiva, dérmica y a través de las mucosas. En el ámbito laboral también la vía percutánea.</button>
+        <button class="obt" onclick="chk(this,false,'b9')">Solo a través de heridas o cortes en la piel.</button>
+      </div>
+      <div class="hbox" id="b9-h">💡 El libro cita cuatro vías principales: respiratoria, digestiva, dérmica y mucosa. En contexto laboral sanitario añade la percutánea (pinchazos, cortes con material contaminado).</div>
+      <button class="hbtn" onclick="var h=document.getElementById('b9-h');h.classList.toggle('on')">Ver pista</button>
+    </div></div>
+
+    <!-- Preg 10: texto libre -->
+    <div class="bact"><div class="bact-h" onclick="togBact(this.parentElement)"><div class="bact-n">10</div><p>Explica de qué factores depende que una persona que ha estado en contacto con un agente infeccioso desarrolle o no la enfermedad y la gravedad que esta pueda tener.</p><span class="bact-chev">›</span></div>
+    <div class="bact-b">
+      <textarea id="ta10" placeholder="Escribe tu respuesta aquí..."></textarea>
+      <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
+        <button class="btn btn-p" onclick="checkTA('ta10','fb10')">Comprobar</button>
+        <button class="btn btn-g" onclick="document.getElementById('ta10').value='';document.getElementById('fb10').className='feedback-msg'">Borrar</button>
+        <button class="hbtn" onclick="var h=document.getElementById('b10-h');h.classList.toggle('on')">Ver pista</button>
+      </div>
+      <div class="hbox" id="b10-h">💡 El libro cita cuatro factores: (1) cantidad de microorganismos recibidos, (2) virulencia del microorganismo, (3) resistencia de la persona y estado de salud previo, (4) puerta de entrada utilizada.</div>
+      <div class="feedback-msg hint" id="fb10">✔ Respuesta enviada. Comprueba que hayas desarrollado los 4 factores del libro con ejemplos de cada uno.</div>
+    </div></div>
+
+    <!-- Preg 11: texto libre -->
+    <div class="bact"><div class="bact-h" onclick="togBact(this.parentElement)"><div class="bact-n">11</div><p>Di qué es un reservorio. Explica qué importancia tiene conocer que existen reservorios de un microorganismo para el control de un brote y pon tres ejemplos de posibles intervenciones para la eliminación de reservorios.</p><span class="bact-chev">›</span></div>
+    <div class="bact-b">
+      <textarea id="ta11" placeholder="Escribe tu respuesta aquí..."></textarea>
+      <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
+        <button class="btn btn-p" onclick="checkTA('ta11','fb11')">Comprobar</button>
+        <button class="btn btn-g" onclick="document.getElementById('ta11').value='';document.getElementById('fb11').className='feedback-msg'">Borrar</button>
+        <button class="hbtn" onclick="var h=document.getElementById('b11-h');h.classList.toggle('on')">Ver pista</button>
+      </div>
+      <div class="hbox" id="b11-h">💡 Reservorio: medio que permite al patógeno mantenerse activo esperando un nuevo hospedador. Conocerlo permite cortar la cadena de transmisión. Ejemplos de eliminación: desinfección del agua, esterilización de instrumental, control de vectores (mosquitos), pasteurización de alimentos, aislamiento de portadores.</div>
+      <div class="feedback-msg hint" id="fb11">✔ Respuesta enviada. Comprueba: definición de reservorio, importancia epidemiológica y 3 ejemplos concretos de eliminación con su justificación.</div>
+    </div></div>
+
+  </div><!-- fin book-acts -->
+
+  <div style="border-top:2px dashed var(--bor);margin-top:2.5rem;padding-top:2rem;">
+  <div class="reveal">
+    <p class="sec-lbl">Actividades interactivas</p>
+    <h2 class="sec-h" style="font-size:1.6rem;">Actividades de consolidación</h2>
+    <p class="sec-sub">Ejercicios interactivos adicionales para repasar y afianzar los contenidos.</p>
+  </div>
+
+  <div class="acts reveal">
+
+    <!-- ACT 1: SELECTS EN HUECOS -->
+    <div class="ac">
+      <div class="ac-h" onclick="togAc(this.parentElement)">
+        <div class="ac-n" style="background:var(--bac-bg);color:var(--bac);">1</div>
+        <h4>Elige la palabra correcta para cada hueco</h4>
+        <span class="ac-chev">›</span>
+      </div>
+      <div class="ac-b">
+        <p class="aq">Selecciona la opción correcta en cada menú desplegable para completar los enunciados.</p>
+        <div id="fb-sentences" style="font-size:.9rem;line-height:2.8;margin-bottom:1rem;"></div>
+        <div style="display:flex;gap:.65rem;margin-top:.5rem;flex-wrap:wrap;">
+          <button class="btn btn-p" onclick="checkFill()">Comprobar</button>
+          <button class="btn btn-g" onclick="resetFill()">Reiniciar</button>
+        </div>
+        <div class="score" id="fb-score"></div>
+      </div>
+    </div>
+
+    <!-- ACT 2: ORDENAR ESLABONES con selects -->
+    <div class="ac">
+      <div class="ac-h" onclick="togAc(this.parentElement)">
+        <div class="ac-n" style="background:var(--cad-bg);color:var(--cad);">2</div>
+        <h4>Ordena los eslabones de la cadena epidemiológica</h4>
+        <span class="ac-chev">›</span>
+      </div>
+      <div class="ac-b">
+        <p class="aq">Asigna a cada posición (1 al 6) el eslabón correcto usando los menús desplegables.</p>
+        <div id="orderSelects" style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:.75rem;"></div>
+        <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
+          <button class="btn btn-p" onclick="checkOrder()">Comprobar</button>
+          <button class="btn btn-g" onclick="resetOrder()">Reiniciar</button>
+        </div>
+        <div class="score" id="order-score"></div>
+      </div>
+    </div>
+
+    <!-- ACT 3: MATCHING 2 PASOS + TABLA REFERENCIA -->
+    <div class="ac">
+      <div class="ac-h" onclick="togAc(this.parentElement)">
+        <div class="ac-n" style="background:var(--hon-bg);color:var(--hon);">3</div>
+        <h4>Relaciona — agente, enfermedad y tratamiento bucodental</h4>
+        <span class="ac-chev">›</span>
+      </div>
+      <div class="ac-b">
+        <!-- Pistas orientadoras (sin respuesta directa) -->
+        <div style="margin-top:.9rem;margin-bottom:1rem;">
+          <button class="hbtn" onclick="var h=document.getElementById('refHints');h.classList.toggle('on');" style="margin-bottom:.5rem;">💡 Ver pistas orientadoras</button>
+          <div id="refHints" class="hbox" style="flex-direction:column;gap:.4rem;line-height:1.75;">
+            <p style="font-size:.82rem;font-weight:700;color:var(--cad);margin-bottom:.1rem;">Pista por agente:</p>
+            <p style="font-size:.82rem;color:var(--mut);">🦠 <em>S. mutans</em> vive en la placa bacteriana y produce ácidos que atacan el esmalte del diente. Piensa: ¿qué enfermedad muy común empieza exactamente así?</p>
+            <p style="font-size:.82rem;color:var(--mut);">🦠 <em>P. gingivalis</em> es una bacteria que vive en las bolsas entre el diente y la encía y destruye el hueso que sujeta el diente. ¿Cómo se llama la enfermedad de las encías más grave?</p>
+            <p style="font-size:.82rem;color:var(--mut);">🔴 VHS-1 es el virus del herpes. Cuando se reactiva aparece una pequeña ampolla dolorosa en el labio. ¿Cómo se llama esa lesión tan conocida?</p>
+            <p style="font-size:.82rem;color:var(--mut);">🔴 VPH (virus del papiloma) provoca pequeñas verrugas o bultos en la mucosa de la boca. ¿Cómo se llaman esas lesiones?</p>
+            <p style="font-size:.82rem;color:var(--mut);">🍄 <em>Candida albicans</em> es un hongo que forma manchas blancas en la lengua y mejillas que al rasparlas dejan una zona roja. ¿Cómo se llama esa infección por hongos en la boca?</p>
+            <p style="font-size:.82rem;font-weight:700;color:var(--cad);margin-top:.3rem;margin-bottom:.1rem;">Pista sobre los tratamientos:</p>
+            <p style="font-size:.82rem;color:var(--mut);">💊 Regla fácil: <strong>antibióticos</strong> → bacterias · <strong>antivirales</strong> → virus · <strong>antifúngicos</strong> → hongos. Nunca se mezclan entre tipos.</p>
+            <p style="font-size:.82rem;color:var(--mut);">🦷 La caries se trata sobre todo con flúor y limpieza, no con antibióticos. La periodontitis necesita raspado de la raíz y a veces un antibiótico. El herpes se trata con aciclovir (antiviral). La candidiasis con nistatina o fluconazol (antifúngicos). El VPH no tiene pastilla: se eliminan las lesiones pero no el virus.</p>
+          </div>
+        </div>
+
+        <!-- PASO 1 -->
+        <div id="match-step1">
+          <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.75rem;">
+            <div style="background:var(--cad-bg);color:var(--cad);border-radius:100px;padding:.2rem .8rem;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;">Paso 1 de 2</div>
+            <span style="font-size:.87rem;font-weight:600;">Relaciona cada agente con su enfermedad</span>
+          </div>
+          <p style="font-size:.84rem;color:var(--mut);margin-bottom:.75rem;">Pulsa un agente (izquierda) y luego su enfermedad (derecha).</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.75rem;" id="match1Grid"></div>
+          <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
+            <button class="btn btn-p" onclick="checkMatch1()">Comprobar paso 1</button>
+            <button class="btn btn-g" onclick="resetMatch1()">Reiniciar</button>
+          </div>
+          <div class="score" id="match1-score"></div>
+        </div>
+
+        <!-- PASO 2 (oculto hasta completar paso 1) -->
+        <div id="match-step2" style="display:none;margin-top:1.5rem;padding-top:1.25rem;border-top:2px dashed var(--bor);">
+          <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.75rem;">
+            <div style="background:var(--ok);color:#fff;border-radius:100px;padding:.2rem .8rem;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;">Paso 2 de 2 ✓ Desbloqueado</div>
+            <span style="font-size:.87rem;font-weight:600;">Ahora añade el tratamiento a cada pareja</span>
+          </div>
+          <p style="font-size:.84rem;color:var(--mut);margin-bottom:.75rem;">Pulsa una pareja agente→enfermedad (izquierda) y luego su tratamiento (derecha).</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.75rem;" id="match2Grid"></div>
+          <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
+            <button class="btn btn-p" onclick="checkMatch2()">Comprobar paso 2</button>
+            <button class="btn btn-g" onclick="resetMatch2()">Reiniciar paso 2</button>
+          </div>
+          <div class="score" id="match2-score"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACT 4: TEST MÚLTIPLE (casos clínicos) -->
+    <div class="ac">
+      <div class="ac-h" onclick="togAc(this.parentElement)">
+        <div class="ac-n" style="background:var(--vir-bg);color:var(--vir);">4</div>
+        <h4>Test — casos clínicos bucodentales</h4>
+        <span class="ac-chev">›</span>
+      </div>
+      <div class="ac-b">
+        <p class="aq">Responde cada caso. Recibirás retroalimentación inmediata.</p>
+        <div id="testQuestions"></div>
+      </div>
+    </div>
+
+        <!-- ACT 5: CASO BROTE con selects -->
+    <div class="ac">
+      <div class="ac-h" onclick="togAc(this.parentElement)">
+        <div class="ac-n" style="background:var(--pri-bg);color:var(--pri);">5</div>
+        <h4>Analiza el brote — asigna cada elemento al eslabón correcto</h4>
+        <span class="ac-chev">›</span>
+      </div>
+      <div class="ac-b">
+        <p class="aq"><strong>Caso:</strong> En una clínica dental, tres pacientes desarrollan hepatitis B tras ser atendidos el mismo día. El primero era portador asintomático de VHB. El instrumental no fue esterilizado entre paciente y paciente.</p>
+        <p style="font-size:.84rem;color:var(--mut);margin-bottom:.85rem;">Para cada eslabón de la cadena, selecciona el elemento del caso que le corresponde.</p>
+        <div id="caseSlotsSelect" style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:.75rem;"></div>
+        <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
+          <button class="btn btn-p" onclick="checkCaseSelect()">Comprobar</button>
+          <button class="btn btn-g" onclick="resetCaseSelect()">Reiniciar</button>
+          <button class="hbtn" onclick="var h=document.getElementById('case-hint');h.classList.toggle('on')">Ver pistas</button>
+        </div>
+        <div class="hbox" id="case-hint">💡 El agente es el virus identificado. El reservorio es el organismo infectado. La puerta de salida es la sangre del paciente durante el procedimiento. La vía de transmisión es el instrumental contaminado. La puerta de entrada en los otros pacientes es la mucosa/sangre durante la intervención dental.</div>
+        <div class="score" id="case-score"></div>
+      </div>
+    </div>    </div>
+
+  </div><!-- fin acts -->
+  </div><!-- fin actividades interactivas -->
+
+  <!-- SECCIÓN IMPRIMIR / DESCARGAR -->
+  <div class="print-sec reveal" style="margin-top:2rem;">
+    <h3>🖨️ Entregar / Descargar actividades</h3>
+    <p>Introduce tu nombre y elige cómo guardar tus respuestas.</p>
+    <input class="name-input" type="text" id="studentName" placeholder="Nombre y apellidos de la alumna/o" oninput="document.getElementById('printName').textContent=this.value||'___________________'">
+    <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+      <button class="btn btn-p" onclick="doPrint()">🖨️ Imprimir / Guardar PDF</button>
+    </div>
+    <p style="font-size:.78rem;color:var(--mut);margin-top:.6rem;">El diálogo de impresión se abrirá con solo la sección de actividades. Desde ahí puedes guardar como PDF.</p>
+  </div>
+</div>
+</section>
+
+<footer>
+  <p>UD 9 · Las enfermedades infecciosas · CFGS Higiene Bucodental · 1.º curso</p>
+  <p style="margin-top:.25rem;">Recurso interactivo de elaboración propia para uso educativo</p>
+</footer>
+
+<script>
+// ── PROGRESS + NAVBAR ACTIVE ─────────────────────────────────
+window.addEventListener('scroll',()=>{
+  const s=document.documentElement;
+  document.getElementById('pbar').style.width=(s.scrollTop/(s.scrollHeight-s.clientHeight)*100)+'%';
+  ['intro','agentes','comparativa','cadena','actividades'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) document.querySelectorAll('.nav-a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+id&&el.getBoundingClientRect().top<80));
+  });
+});
+// ── REVEAL ────────────────────────────────────────────────────
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis');}),{threshold:.07});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+// ── SMOOTH SCROLL ─────────────────────────────────────────────
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();document.querySelector(a.getAttribute('href'))?.scrollIntoView({behavior:'smooth'});}));
+// ── TABS ──────────────────────────────────────────────────────
+function showTab(a){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelector(`[data-a="${a}"]`).classList.add('on');
+  document.getElementById('pan-'+a).classList.add('on');
+}
+// ── MCQ ───────────────────────────────────────────────────────
+function chk(btn,ok,qid){
+  btn.closest('.opts').querySelectorAll('.obt').forEach(b=>{b.disabled=true;b.classList.remove('ok','err');});
+  if(ok){btn.classList.add('ok');}
+  else{btn.classList.add('err');btn.closest('.opts').querySelectorAll('.obt').forEach(b=>{if(b.onclick&&b.onclick.toString().includes('true,'))b.classList.add('ok');});}
+}
+function th(id){document.getElementById(id).classList.toggle('on');}
+// ── ACCORDION ────────────────────────────────────────────────
+function togAc(card){const o=card.classList.contains('open');document.querySelectorAll('.ac').forEach(c=>c.classList.remove('open'));if(!o)card.classList.add('open');}
+
+// ── DIAGRAM INFO ──────────────────────────────────────────────
+const diagData={
+  b:{
+    capsula:{t:'Cápsula',d:'Rodea a la pared bacteriana. Entre otras funciones, <strong>protege a la bacteria de ser fagocitada</strong> por macrófagos y neutrófilos. Es un importante factor de virulencia. No todas las bacterias la tienen.'},
+    pared:{t:'Pared celular (peptidoglucano)',d:'Estructura rígida formada por peptidoglucano. Determina la forma y protege de la lisis osmótica. Su grosor distingue <strong>grampositivas</strong> (gruesa, tiñe violeta) de <strong>gramnegativas</strong> (fina + membrana externa, tiñe rojo). Diana de penicilinas y cefalosporinas. Los <strong>micoplasmas</strong> carecen de ella → β-lactámicos sin efecto.'},
+    membrana:{t:'Membrana plasmática',d:'Doble membrana lipídica <strong>sin colesterol</strong>, con mayor proporción de proteínas que en eucariotas. Regula el transporte de sustancias. En comparación con la de las células eucariotas, tiene mayor cantidad de proteínas.'},
+    mesosoma:{t:'Mesosoma',d:'Invaginación de la membrana plasmática. Se asocia con la <strong>respiración celular</strong> y con la segregación del ADN durante la división bacteriana. Equivalente funcional a las mitocondrias eucariotas.'},
+    ribosoma:{t:'Ribosomas (70S)',d:'Más pequeños que los ribosomas eucariotas (70S frente a 80S). Sintetizan las proteínas bacterianas. Son la <strong>diana de muchos antibióticos</strong>: aminoglucósidos, macrólidos, tetraciclinas y cloranfenicol actúan sobre ellos.'},
+    plasmido:{t:'Plásmido',d:'Molécula de ADN circular extracromosomal, pequeña y autorreplicante. Puede portar <strong>genes de resistencia a antibióticos</strong>. Se transfiere entre bacterias mediante conjugación a través de los pili → propagación de resistencias.'},
+    nucleoide:{t:'Nucleoide / Cromosoma bacteriano',d:'Región del citoplasma donde se sitúa el material genético. <strong>No está delimitada por ninguna membrana</strong> (procariota). Contiene una única molécula de ADN de <strong>doble cadena y circular</strong>: el cromosoma bacteriano.'},
+    fimbrias:{t:'Fimbrias',d:'Especie de <strong>pelos cortos</strong> que las bacterias utilizan para adherirse a superficies (células epiteliales, esmalte dental, material protésico). Clave en la formación de <strong>biofilm dental</strong> (placa bacteriana).'},
+    flagelo:{t:'Flagelos',d:'Largos apéndices filamentosos frecuentes principalmente en formas bacilares. <strong>Responsables del movimiento</strong> de la bacteria. La proteína flagelina puede activar la respuesta inmune innata.'},
+    pili:{t:'Pili',d:'Similares a las fimbrias pero un poco más largos. La bacteria solo tiene uno o dos. Intervienen en la <strong>conjugación</strong>: proceso de intercambio de material genético entre bacterias, incluidos plásmidos con genes de resistencia a antibióticos.'}
+  },
+  v:{
+    adn:{t:'Material genético (ADN o ARN)',d:'Puede ser <strong>ADN o ARN</strong>, de cadena doble o sencilla. <strong>Nunca ambos a la vez</strong>. Contiene la información para fabricar nuevas copias del virus usando la maquinaria de la célula hospedadora. Su naturaleza determina el tipo de virus (ADN: herpesviridae, VPH; ARN: influenza, SARS-CoV-2).'},
+    capside:{t:'Cápside proteica',d:'Cubierta de proteínas que envuelve y protege el material genético viral. Su forma puede ser <strong>icosaédrica, helicoidal o compleja</strong>. Junto con el material genético forma la <strong>nucleocápside</strong>.'},
+    nucleocapside:{t:'Nucleocápside',d:'El conjunto del <strong>material genético + cápside</strong> recibe el nombre de nucleocápside. Es la unidad mínima infecciosa en virus sin envoltura. La cápside protege el genoma viral frente a nucleasas y condiciones ambientales adversas.'},
+    envoltura:{t:'Envoltura externa (bicapa lipídica)',d:'Algunos virus forman una <strong>bicapa lipídica</strong> por encima de la cápside al salir de la célula hospedadora. Su composición lipídica proviene del hospedador. Al contener lípidos, es <strong>sensible al alcohol y detergentes</strong> → virus con envoltura más fáciles de inactivar. VHS-1 y VHB tienen envoltura.'},
+    proteinas:{t:'Proteínas de superficie (glicoproteínas)',d:'Espículas que sobresalen de la envoltura externa. <strong>Reconocen receptores específicos</strong> de la célula hospedadora y median la entrada del virus. Son el principal blanco de los <strong>anticuerpos neutralizantes</strong> y de muchos antivirales. Ejemplo: espícula S del SARS-CoV-2, hemaglutinina del virus gripal.'}
+  },
+  h:{
+    septo:{t:'Septo',d:'Tabique transversal que divide la hifa en compartimentos (células). En hongos <strong>septados</strong>, cada compartimento puede tener uno o varios núcleos. En hongos <strong>cenocíticos</strong> (sin septos), el citoplasma es continuo con muchos núcleos.'},
+    nucleo:{t:'Núcleo eucariota',d:'Los hongos son <strong>EUCARIOTAS</strong>: tienen núcleo definido rodeado por membrana nuclear, a diferencia de las bacterias (procariotas). También tienen orgánulos membranosos como mitocondrias y aparato de Golgi.'},
+    conidio:{t:'Conidióforo y conidios',d:'Estructura especializada que produce esporas asexuales llamadas <strong>conidios</strong>. En <em>Candida albicans</em> se forman blastoconidios. Las esporas se dispersan fácilmente y pueden colonizar mucosas orales en personas susceptibles (inmunodeprimidos, usuarios de prótesis).'},
+    espora:{t:'Esporas (dispersión)',d:'Unidades de reproducción y dispersión. Muy resistentes a condiciones adversas. En la cavidad oral, las esporas de <em>Candida</em> pueden persistir en <strong>prótesis dentales</strong> y reinfectar la mucosa si no se desinfectan correctamente con antifúngicos.'},
+    golgi:{t:'Aparato de Golgi',d:'Orgánulo eucariota encargado del procesamiento y transporte de proteínas y lípidos. <strong>Presente en hongos</strong>, ausente en bacterias. Su presencia confirma la naturaleza eucariota de los hongos y explica por qué los antibióticos no los afectan.'},
+    nucleoz:{t:'Núcleo (detalle ampliado)',d:'Núcleo eucariota con <strong>membrana nuclear y nucléolo</strong> visible. El ADN está organizado en <strong>cromosomas lineales</strong>, a diferencia del cromosoma circular bacteriano. Esta diferencia estructural es relevante para el diseño de antifúngicos selectivos.'},
+    mito:{t:'Mitocondria',d:'Orgánulo de la respiración celular. Presente en eucariotas (hongos, plantas, animales). <strong>Ausente en bacterias</strong>. Contiene ergosterol en su membrana, a diferencia del colesterol animal. El ergosterol es la <strong>diana de antifúngicos</strong> como los azoles (fluconazol) y la nistatina.'}
+  },
+  p:{
+    normal:{t:'PrPᶜ — Proteína priónica celular normal',d:'Proteína normal presente en neuronas sanas, codificada por <strong>genes propios del organismo</strong>. Su función exacta no está completamente establecida. Estructura predominante en <strong>α-hélice</strong>. Al ser proteína propia, el sistema inmune no la reconoce como extraña.'},
+    prion:{t:'PrPˢᶜ — Prion patológico',d:'Forma mal plegada de la misma proteína, con estructura predominante en <strong>β-lámina</strong>. Insoluble y resistente a proteasas. Al ser proteína propia del organismo, el sistema inmune <strong>no la reconoce como extraña</strong> y no genera respuesta inmune. Este es el motivo por el que no hay tratamiento eficaz.'},
+    cadena:{t:'Propagación en cadena',d:'Una sola proteína priónica (PrPˢᶜ) puede desencadenar toda la cadena. Al contactar con una proteína normal (PrPᶜ), la induce a cambiar su plegamiento. Los priones recién formados hacen lo mismo → <strong>reacción en cadena autocatalítica</strong> que forma muchos priones en poco tiempo.'},
+    consecuencia:{t:'Consecuencias en el SNC',d:'Los priones se acumulan preferentemente en el <strong>Sistema Nervioso Central</strong>. La acumulación de proteínas insolubles destruye las neuronas → <strong>encefalopatía espongiforme</strong> (imagen en "esponja"). Siempre fatal, sin tratamiento. En odontología: protocolos especiales para instrumental que contacta con tejido nervioso (hipoclorito concentrado + autoclave a 134°C mínimo).'}
+  }
+};
+
+function showDiagInfo(diag,key){
+  const data=diagData[diag][key];
+  const dd=document.getElementById('dd-'+diag);
+  dd.innerHTML=`<h5>${data.t}</h5><p>${data.d}</p>`;
+  dd.classList.add('show');
+  // resaltar etiqueta activa
+  document.querySelectorAll(`#svg-${diag} .svg-btn`).forEach(g=>g.classList.remove('active-lbl'));
+  document.getElementById(`lbl-${diag}-${key}`)?.classList.add('active-lbl');
+}
+
+// ── CADENA DATA ────────────────────────────────────────────────
+const cadData={
+  a:{icon:'🦠',t:'Agente infeccioso',txt:'El microorganismo patógeno capaz de causar enfermedad: bacteria, virus, hongo o prion.',items:['Virulencia: capacidad de causar daño','Infectividad: dosis mínima para infectar','Patogenicidad: % de infectados que enferman']},
+  e2:{icon:'🔓',t:'Puerta de entrada',txt:'Vía por la que el agente penetra en el organismo hospedador: respiratoria, digestiva, dérmica o mucosas.',items:['Respiratoria: inhalación de bioaerosoles','Digestiva: ingestión de alimento o agua contaminados','Dérmica/percutánea: heridas, cortes, pinchazos','Mucosa: bucal, nasal, conjuntival, genital']},
+  hh:{icon:'🧍',t:'Hospedador',txt:'Organismo que recibe el agente. Puede enfermar (con síntomas) o convertirse en portador (sin síntomas pero puede transmitir).',items:['Factores: cantidad de microorganismos, virulencia, resistencia personal, puerta de entrada','Enferma: manifiesta síntomas, transmite si la enfermedad es contagiosa','Portadora: sin síntomas, puede transmitir en algunos casos']},
+  s:{icon:'🚪',t:'Puerta de salida',txt:'Vía por la que el agente abandona el hospedador. Puede ser cualquiera de las puertas de entrada.',items:['Respiratoria: tos, estornudos, gotas de Flügge','Digestiva: heces, vómitos','Cutánea: heridas, exudados, sangre','Mucosas: saliva, secreciones']},
+  r:{icon:'🏠',t:'Reservorio',txt:'Medio que permite al patógeno mantenerse activo en espera de un nuevo hospedador. Puede ser ser vivo (vector) o material inanimado contaminado.',items:['Seres vivos/vectores: mosquitos, pulgas, garrapatas (transmiten por picadura)','Material: agua, suelo, alimentos, superficies, instrumental contaminado','Identificarlo permite adoptar medidas de profilaxis']},
+  t:{icon:'💨',t:'Vía de transmisión',txt:'Medio por el cual el patógeno llega del reservorio al nuevo hospedador. Puede ser directa (contagiosa) o indirecta (transmisible pero no contagiosa).',items:['Directa: contacto entre personas, gotas de Flügge, secreciones','Indirecta: a través de reservorio inanimado (instrumental, agua, alimentos)','Vectores: transmisión por picadura de mosquito, garrapata...']}
+};
+function showCad(k){
+  document.querySelectorAll('.cn').forEach(n=>n.classList.remove('on'));
+  const node=document.getElementById('cn-'+k);
+  if(node) node.classList.add('on');
+  const d=cadData[k];
+  if(!d) return;
+  document.getElementById('cadDetail').innerHTML=`<h4>${d.icon} ${d.t}</h4><p>${d.txt}</p><ul>${d.items.map(i=>`<li>${i}</li>`).join('')}</ul>`;
+}
+showCad('a');
+
+function exTrans(card){
+  const det=card.querySelector('.tdet');
+  const open=det.style.display!=='none';
+  document.querySelectorAll('.tdet').forEach(d=>d.style.display='none');
+  if(!open)det.style.display='block';
+}
+
+// ── ACORDEÓN (solo header lo activa) ─────────────────────────
+function togAc(card){
+  const open=card.classList.contains('open');
+  document.querySelectorAll('.ac').forEach(c=>c.classList.remove('open'));
+  if(!open) card.classList.add('open');
+}
+
+// ── TABLA COMPARATIVA CON SELECTS (compatible tablet/móvil) ──
+const selRows=[
+  {prop:'Tipo celular',      col:{b:'Procariota',v:'Acelular (sin células)',h:'Eucariota',p:'No celular (proteína)'}},
+  {prop:'Material genético', col:{b:'ADN circular',v:'ADN o ARN',h:'ADN lineal',p:'No tiene'}},
+  {prop:'Pared celular',     col:{b:'Peptidoglucano',v:'No tiene',h:'Quitina',p:'No tiene / no aplica'}},
+  {prop:'Replicación propia',col:{b:'Sí',v:'No (intracelular)',h:'Sí (por esporas)',p:'No (propagación)'}},
+  {prop:'Respuesta inmune',  col:{b:'Sí activa',v:'Sí activa',h:'Sí activa',p:'NO activa'}},
+  {prop:'Tratamiento',       col:{b:'Antibióticos',v:'Antivirales',h:'Antifúngicos',p:'Sin tto. eficaz'}},
+];
+const selCols=['b','v','h','p'];
+
+function buildSelTable(){
+  const tbody=document.getElementById('selBody');
+  if(!tbody) return;
+  tbody.innerHTML='';
+  selRows.forEach(row=>{
+    const tr=document.createElement('tr');
+    // Celda propiedad
+    const td0=document.createElement('td'); td0.className='prop-c'; td0.textContent=row.prop; tr.appendChild(td0);
+    selCols.forEach(col=>{
+      const td=document.createElement('td'); td.className='sel-wrap';
+      td.dataset.prop=row.prop; td.dataset.col=col;
+      const sel=document.createElement('select');
+      sel.dataset.prop=row.prop; sel.dataset.col=col;
+      // Opción vacía + todas las opciones de esa fila mezcladas
+      const opts=['-- elegir --',...shuffle_ret(Object.values(row.col))];
+      opts.forEach(o=>{
+        const opt=document.createElement('option');
+        opt.value=o; opt.textContent=o; sel.appendChild(opt);
+      });
+      td.appendChild(sel); tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+}
+
+function shuffle_ret(a){
+  const arr=[...a];
+  for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
+  return arr;
+}
+
+function checkSelTable(){
+  let ok=0, tot=selRows.length*selCols.length;
+  document.querySelectorAll('#selBody select').forEach(sel=>{
+    sel.classList.remove('ok','err');
+    const row=selRows.find(r=>r.prop===sel.dataset.prop);
+    const correct=row?.col[sel.dataset.col];
+    if(sel.value==='-- elegir --') return;
+    const good=sel.value===correct;
+    sel.classList.add(good?'ok':'err');
+    if(good) ok++;
+  });
+  const sc=document.getElementById('selScore'); sc.className='score on';
+  const pct=Math.round(ok/tot*100);
+  sc.innerHTML=`<strong>${ok}/${tot}</strong> correctas (${pct}%). ${pct===100?'🎉 ¡Tabla perfecta!':pct>=60?'👍 Buen intento, revisa las marcadas en rojo.':'💡 Repasa el contenido e inténtalo de nuevo.'}`;
+}
+
+function resetSelTable(){
+  document.getElementById('selScore').className='score';
+  buildSelTable();
+}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}}
+buildSelTable();
+
+// ── ACTIVIDADES DEL LIBRO ─────────────────────────────────────
+function togBact(card){
+  const open=card.classList.contains('open');
+  document.querySelectorAll('.bact').forEach(c=>c.classList.remove('open'));
+  if(!open) card.classList.add('open');
+}
+
+function checkTA(taId, fbId){
+  const ta=document.getElementById(taId);
+  const fb=document.getElementById(fbId);
+  if(!ta||!fb) return;
+  if(ta.value.trim().length < 10){
+    fb.className='feedback-msg err show';
+    fb.textContent='Escribe una respuesta más completa antes de comprobar.';
+    return;
+  }
+  fb.className='feedback-msg hint show';
+}
+
+
+
+// ── ACT 1: SELECTS EN HUECOS ─────────────────────────────────
+const fbData=[
+  {id:'h1', sentence:'Las bacterias son organismos ', word:'unicelulares', after:' que carecen de núcleo definido (procariotas).'},
+  {id:'h2', sentence:'El material genético bacteriano se localiza en el ', word:'nucleoide', after:': región del citoplasma no delimitada por membrana.'},
+  {id:'h3', sentence:'Los virus son parásitos ', word:'intracelulares', after:' estrictos: solo pueden multiplicarse dentro de células.'},
+  {id:'h4', sentence:'Material genético viral + cápside = ', word:'nucleocápside', after:'.'},
+  {id:'h5', sentence:'Los hongos tienen pared celular de ', word:'quitina', after:', a diferencia del peptidoglucano bacteriano.'},
+  {id:'h6', sentence:'Los priones ', word:'NO', after:' activan respuesta inmune: son proteínas propias del organismo.'},
+];
+const fbAllWords=['unicelulares','nucleoide','intracelulares','nucleocápside','quitina','NO',
+  'pluricelulares','nucleótido','extracelulares','cápside','celulosa','SÍ'];
+
+function buildFill(){
+  const cont=document.getElementById('fb-sentences'); cont.innerHTML='';
+  fbData.forEach((item,i)=>{
+    const line=document.createElement('div');
+    line.style.cssText='margin-bottom:.85rem;display:flex;align-items:center;flex-wrap:wrap;gap:.3rem;font-size:.9rem;line-height:1.9;';
+    const num=document.createElement('span');
+    num.style.cssText='background:var(--sur2);color:var(--mut);border-radius:6px;padding:.1rem .5rem;font-size:.75rem;font-weight:700;margin-right:.25rem;flex-shrink:0;';
+    num.textContent=i+1; line.appendChild(num);
+    const before=document.createElement('span'); before.textContent=item.sentence; line.appendChild(before);
+    // Select en lugar de hueco drag
+    const sel=document.createElement('select');
+    sel.id='slot-'+item.id; sel.dataset.correct=item.word;
+    sel.style.cssText='padding:.3rem .6rem;border:2px solid var(--bor);border-radius:100px;background:var(--sur);color:var(--txt);font-family:"Plus Jakarta Sans",sans-serif;font-size:.82rem;cursor:pointer;transition:border-color .2s;margin:0 .3rem;';
+    // Opciones: la correcta + otras plausibles mezcladas
+    const opts=shuffle_ret([item.word,...fbAllWords.filter(w=>w!==item.word).slice(0,3)]);
+    const def=document.createElement('option'); def.value=''; def.textContent='-- elegir --'; sel.appendChild(def);
+    opts.forEach(o=>{const opt=document.createElement('option');opt.value=o;opt.textContent=o;sel.appendChild(opt);});
+    line.appendChild(sel);
+    const after=document.createElement('span'); after.textContent=item.after; line.appendChild(after);
+    cont.appendChild(line);
+  });
+}
+
+function checkFill(){
+  let ok=0;
+  fbData.forEach(item=>{
+    const sel=document.getElementById('slot-'+item.id); if(!sel) return;
+    sel.style.borderColor=''; sel.style.background='';
+    if(sel.value===item.word){sel.style.borderColor='var(--ok)';sel.style.background='#e6f5ee';ok++;}
+    else if(sel.value!==''){sel.style.borderColor='var(--err)';sel.style.background='#fdedf0';}
+  });
+  const sc=document.getElementById('fb-score'); sc.className='score on';
+  sc.innerHTML=`<strong>${ok}/${fbData.length}</strong> correctas. ${ok===fbData.length?'🎉 ¡Perfecto!':'Revisa las marcadas en rojo.'}`;
+}
+
+function resetFill(){
+  document.getElementById('fb-score').className='score';
+  buildFill();
+}
+buildFill();
+
+// ── ACT 2: ORDENAR CON SELECTS ───────────────────────────────
+const orderCorrect=['Agente infeccioso','Puerta de entrada','Hospedador','Puerta de salida','Reservorio','Vía de transmisión'];
+
+function buildOrder(){
+  const cont=document.getElementById('orderSelects'); if(!cont) return;
+  cont.innerHTML='';
+  const shuffled=shuffle_ret([...orderCorrect]);
+  for(let pos=0;pos<6;pos++){
+    const row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:.75rem;background:var(--sur2);border:1px solid var(--bor);border-radius:var(--r);padding:.55rem .9rem;';
+    const lbl=document.createElement('div');
+    lbl.style.cssText='width:26px;height:26px;border-radius:50%;background:var(--cad-bg);color:var(--cad);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0;';
+    lbl.textContent=pos+1; row.appendChild(lbl);
+    const ltext=document.createElement('span');
+    ltext.style.cssText='font-size:.82rem;color:var(--mut);flex-shrink:0;min-width:60px;';
+    ltext.textContent='Posición '+(pos+1)+':'; row.appendChild(ltext);
+    const sel=document.createElement('select');
+    sel.dataset.pos=pos;
+    sel.style.cssText='flex:1;padding:.35rem .6rem;border:2px solid var(--bor);border-radius:8px;background:var(--sur);color:var(--txt);font-family:"Plus Jakarta Sans",sans-serif;font-size:.82rem;';
+    const def=document.createElement('option'); def.value=''; def.textContent='-- elegir eslabón --'; sel.appendChild(def);
+    shuffled.forEach(s=>{const opt=document.createElement('option');opt.value=s;opt.textContent=s;sel.appendChild(opt);});
+    row.appendChild(sel); cont.appendChild(row);
+  }
+}
+
+function checkOrder(){
+  let ok=0;
+  document.querySelectorAll('#orderSelects select').forEach((sel,i)=>{
+    sel.style.borderColor=''; sel.style.background='';
+    const good=sel.value===orderCorrect[i];
+    if(good){sel.style.borderColor='var(--ok)';sel.style.background='#e6f5ee';ok++;}
+    else if(sel.value!==''){sel.style.borderColor='var(--err)';sel.style.background='#fdedf0';}
+  });
+  const sc=document.getElementById('order-score'); sc.className='score on';
+  sc.innerHTML=ok===6?'🎉 ¡Orden correcto!':ok+'/6 en posición correcta. Revisa los marcados en rojo.';
+}
+function resetOrder(){document.getElementById('order-score').className='score';buildOrder();}
+buildOrder();
+
+// ── ACT 3: MATCHING 2 PASOS ───────────────────────────────────
+const matchAgents=[
+  {agent:'S. mutans',  type:'bacteria', disease:'Caries dental',            tto:'Flúor + higiene oral'},
+  {agent:'P. gingivalis',type:'bacteria',disease:'Periodontitis',            tto:'Raspado + alisado + metronidazol'},
+  {agent:'VHS-1',      type:'virus',    disease:'Herpes labial',             tto:'Aciclovir (antiviral)'},
+  {agent:'VPH',        type:'virus',    disease:'Papiloma / lesiones mucosa',tto:'Sin tto. antiviral directo'},
+  {agent:'C. albicans',type:'hongo',    disease:'Candidiasis oral (muguet)', tto:'Nistatina / fluconazol'},
+];
+const typeColor={bacteria:'var(--bac)',virus:'var(--vir)',hongo:'var(--hon)'};
+const typeBg={bacteria:'var(--bac-bg)',virus:'var(--vir-bg)',hongo:'var(--hon-bg)'};
+let m1Sel=null, m2Sel=null;
+const m1Pairs={}, m2Pairs={};
+
+function buildMatch1(){
+  m1Sel=null; Object.keys(m1Pairs).forEach(k=>delete m1Pairs[k]);
+  const grid=document.getElementById('match1Grid'); grid.innerHTML='';
+  const leftCol=document.createElement('div');
+  const rightCol=document.createElement('div');
+  const diseases=[...matchAgents.map(a=>a.disease)]; shuffle(diseases);
+
+  // Columna izquierda — todos neutros al inicio
+  matchAgents.forEach((a,i)=>{
+    const lDiv=document.createElement('div');
+    lDiv.style.cssText='padding:.5rem .85rem;border-radius:var(--r);border:1.5px solid var(--bor);background:var(--sur2);font-size:.83rem;cursor:pointer;transition:all .15s;margin-bottom:.4rem;';
+    const agSpan=document.createElement('span');
+    agSpan.style.cssText='font-style:italic;font-weight:600;';
+    agSpan.textContent=a.agent;
+    lDiv.appendChild(agSpan);
+    const ind=document.createElement('span');
+    ind.className='m1-ind';
+    ind.style.cssText='font-size:.74rem;color:var(--mut);font-weight:400;margin-left:.35rem;';
+    lDiv.appendChild(ind);
+    lDiv.dataset.idx=String(i);
+    lDiv.classList.add('m1-left');
+    lDiv.addEventListener('click',()=>{
+      // Limpiar selección activa anterior (solo si no ha sido comprobado ok)
+      document.querySelectorAll('.m1-left').forEach(e=>{
+        e.style.outline='';
+        if(!e.dataset.ok) e.style.background='var(--sur2)';
+      });
+      lDiv.style.background='#d4d8e2';
+      lDiv.style.outline='2.5px solid #5a6a88';
+      m1Sel=i;
+    });
+    leftCol.appendChild(lDiv);
+  });
+
+  // Columna derecha — enfermedades, todas neutras al inicio
+  diseases.forEach(dis=>{
+    const rDiv=document.createElement('div');
+    rDiv.style.cssText='padding:.5rem .85rem;border-radius:var(--r);border:1.5px solid var(--bor);background:var(--sur2);font-size:.83rem;cursor:pointer;transition:all .15s;margin-bottom:.4rem;';
+    rDiv.textContent=dis; rDiv.dataset.dis=dis;
+    rDiv.classList.add('m1-right');
+    rDiv.addEventListener('click',()=>{
+      if(m1Sel===null) return;
+      // Si este agente ya tenía asignación previa, restaurar esa opción derecha
+      const prev1=m1Pairs[m1Sel];
+      if(prev1){
+        document.querySelectorAll('.m1-right').forEach(r=>{
+          if(r.dataset.dis===prev1){
+            r.style.background='var(--sur2)'; r.style.color=''; r.style.textDecoration=''; r.style.opacity='1';
+          }
+        });
+      }
+      m1Pairs[m1Sel]=dis;
+      // Actualizar indicador del agente emparejado
+      document.querySelectorAll('.m1-left').forEach((e,idx)=>{
+        if(idx===m1Sel){
+          const ind=e.querySelector('.m1-ind');
+          if(ind) ind.textContent='→ '+dis;
+          e.style.background='#c4c9d6';
+          e.style.outline='';
+          delete e.dataset.ok;
+        }
+      });
+      // Marcar enfermedad elegida como usada
+      document.querySelectorAll('.m1-right').forEach(r=>{
+        if(r.dataset.dis===dis){
+          r.style.background='#c4c9d6';
+          r.style.color='var(--mut)';
+          r.style.textDecoration='line-through';
+          r.style.opacity='.6';
+        }
+      });
+      m1Sel=null;
+    });
+    rightCol.appendChild(rDiv);
+  });
+
+  grid.appendChild(leftCol); grid.appendChild(rightCol);
+}
+
+function checkMatch1(){
+  let ok=0;
+  document.querySelectorAll('.m1-left').forEach((el,i)=>{
+    const correct=matchAgents[i].disease;
+    const good=m1Pairs[i]===correct;
+    el.style.outline='';
+    el.style.background=good?'#e6f5ee':'#fdedf0';
+    el.style.borderColor=good?'var(--ok)':'var(--err)';
+    if(good){ el.dataset.ok='1'; ok++; }
+    else delete el.dataset.ok;
+  });
+  const sc=document.getElementById('match1-score'); sc.className='score on';
+  if(ok===matchAgents.length){
+    sc.innerHTML='🎉 ¡Paso 1 completado! Ahora relaciona los tratamientos.';
+    sc.style.background='#e6f5ee'; sc.style.color='var(--ok)';
+    document.getElementById('match-step2').style.display='block';
+    buildMatch2();
+  } else {
+    sc.innerHTML=`${ok}/${matchAgents.length} correctas. Los incorrectos están en rojo — pulsa el agente y luego la enfermedad correcta para rectificar.`;
+    sc.style.background=''; sc.style.color='';
+  }
+}
+
+function resetMatch1(){
+  document.getElementById('match1-score').className='score';
+  document.getElementById('match-step2').style.display='none';
+  buildMatch1();
+}
+
+function buildMatch2(){
+  m2Sel=null; Object.keys(m2Pairs).forEach(k=>delete m2Pairs[k]);
+  const grid=document.getElementById('match2Grid'); grid.innerHTML='';
+  const leftCol=document.createElement('div');
+  const rightCol=document.createElement('div');
+  const ttos=[...matchAgents.map(a=>a.tto)]; shuffle(ttos);
+
+  // Columna izquierda — pares agente+enfermedad ya confirmados, neutros al inicio
+  matchAgents.forEach((a,i)=>{
+    const lDiv=document.createElement('div');
+    lDiv.style.cssText='padding:.5rem .85rem;border-radius:var(--r);border:1.5px solid var(--bor);background:var(--sur2);font-size:.82rem;cursor:pointer;transition:all .15s;margin-bottom:.4rem;line-height:1.4;';
+    const top=document.createElement('div');
+    top.style.cssText='font-weight:600;font-style:italic;';
+    top.textContent=a.agent;
+    const dis=document.createElement('div');
+    dis.style.cssText='color:var(--mut);font-size:.79rem;font-weight:400;';
+    dis.textContent='→ '+a.disease;
+    const ind=document.createElement('div');
+    ind.className='m2-ind';
+    ind.style.cssText='font-size:.74rem;color:var(--mut);font-weight:400;margin-top:.1rem;';
+    lDiv.appendChild(top); lDiv.appendChild(dis); lDiv.appendChild(ind);
+    lDiv.dataset.idx=String(i);
+    lDiv.classList.add('m2-left');
+    lDiv.addEventListener('click',()=>{
+      document.querySelectorAll('.m2-left').forEach(e=>{
+        e.style.outline='';
+        if(!e.dataset.ok2) e.style.background='var(--sur2)';
+      });
+      lDiv.style.background='#d4d8e2';
+      lDiv.style.outline='2.5px solid #5a6a88';
+      m2Sel=i;
+    });
+    leftCol.appendChild(lDiv);
+  });
+
+  // Columna derecha — tratamientos, todos neutros al inicio
+  ttos.forEach(t=>{
+    const rDiv=document.createElement('div');
+    rDiv.style.cssText='padding:.5rem .85rem;border-radius:var(--r);border:1.5px solid var(--bor);background:var(--sur2);font-size:.82rem;cursor:pointer;transition:all .15s;margin-bottom:.4rem;';
+    rDiv.textContent=t; rDiv.dataset.tto=t;
+    rDiv.classList.add('m2-right');
+    rDiv.addEventListener('click',()=>{
+      if(m2Sel===null) return;
+      // Restaurar tratamiento previo si existía
+      const prev2=m2Pairs[m2Sel];
+      if(prev2){
+        document.querySelectorAll('.m2-right').forEach(r=>{
+          if(r.dataset.tto===prev2){
+            r.style.background='var(--sur2)'; r.style.color=''; r.style.textDecoration=''; r.style.opacity='1';
+          }
+        });
+      }
+      m2Pairs[m2Sel]=t;
+      document.querySelectorAll('.m2-left').forEach((e,idx)=>{
+        if(idx===m2Sel){
+          const ind=e.querySelector('.m2-ind');
+          if(ind) ind.textContent='Tto: '+t;
+          e.style.background='#c4c9d6';
+          e.style.outline='';
+          delete e.dataset.ok2;
+        }
+      });
+      // Marcar tratamiento elegido como usado
+      document.querySelectorAll('.m2-right').forEach(r=>{
+        if(r.dataset.tto===t){
+          r.style.background='#c4c9d6';
+          r.style.color='var(--mut)';
+          r.style.textDecoration='line-through';
+          r.style.opacity='.6';
+        }
+      });
+      m2Sel=null;
+    });
+    rightCol.appendChild(rDiv);
+  });
+
+  grid.appendChild(leftCol); grid.appendChild(rightCol);
+}
+
+function checkMatch2(){
+  let ok=0;
+  document.querySelectorAll('.m2-left').forEach((el,i)=>{
+    const correct=matchAgents[i].tto;
+    const good=m2Pairs[i]===correct;
+    el.style.outline='';
+    el.style.background=good?'#e6f5ee':'#fdedf0';
+    el.style.borderColor=good?'var(--ok)':'var(--err)';
+    if(good){ el.dataset.ok2='1'; ok++; }
+    else delete el.dataset.ok2;
+  });
+  const sc=document.getElementById('match2-score'); sc.className='score on';
+  if(ok===matchAgents.length){
+    sc.innerHTML='🎉 ¡Actividad completa! Conoces todos los agentes, enfermedades y tratamientos.';
+    sc.style.background='#e6f5ee'; sc.style.color='var(--ok)';
+  } else {
+    sc.innerHTML=`${ok}/${matchAgents.length} correctas. Los incorrectos están en rojo — pulsa el par y luego el tratamiento correcto para rectificar.`;
+    sc.style.background=''; sc.style.color='';
+  }
+}
+
+function resetMatch2(){
+  document.getElementById('match2-score').className='score';
+  buildMatch2();
+}
+buildMatch1();
+
+// ── ACT 4: TEST QUESTIONS ────────────────────────────────────
+const testData=[
+  {q:'Una paciente con candidiasis oral recibe amoxicilina para otra infección. Días después la candidiasis empeora. ¿Por qué?',
+   opts:['La amoxicilina estimula directamente el crecimiento de Candida.','La amoxicilina elimina bacterias competidoras de la flora oral, favoreciendo el sobrecrecimiento de Candida.','La amoxicilina destruye las células del sistema inmune.','La candidiasis es causada por el mismo agente que la infección tratada.'],
+   correct:1,hint:'Piensa en el equilibrio de la flora oral (microbioma). ¿Qué ocurre cuando se eliminan las bacterias que compiten con Candida?'},
+  {q:'Una higienista sufre un pinchazo accidental con una aguja usada en un paciente con VHB. ¿Qué eslabón de la cadena epidemiológica se ha producido?',
+   opts:['Se ha eliminado el reservorio.','Se ha producido la entrada por vía percutánea al hospedador susceptible.','Se ha interrumpido la vía de transmisión.','El agente infeccioso ha cambiado de reservorio animal a humano.'],
+   correct:1,hint:'Recuerda los eslabones. La aguja actúa de vehículo (vía de transmisión). La entrada de la aguja en la higienista corresponde a la puerta de entrada.'},
+  {q:'Un paciente presenta lesiones herpéticas orales en los exámenes cada año. El médico dice que está "reactivando" una infección antigua. ¿Qué tipo de agente explica esto?',
+   opts:['Una bacteria que forma endosporas.','Un hongo que forma esporas de resistencia.','Un virus con capacidad de latencia intracelular.','Un prion que se activa con el estrés.'],
+   correct:2,hint:'¿Qué tipo de agente puede permanecer inactivo en el organismo durante años y reactivarse con situaciones de estrés o inmunosupresión?'},
+  {q:'¿Por qué los priones son especialmente peligrosos para el personal dental que realiza cirugías del nervio?',
+   opts:['Porque se transmiten por aerosoles con mayor facilidad que los virus.','Porque son resistentes a los métodos de esterilización habituales y no son inmunogénicos.','Porque producen toxinas que destruyen el material del instrumental.','Porque se multiplican en el medio ambiente del laboratorio.'],
+   correct:1,hint:'Piensa en dos características únicas de los priones: su resistencia a métodos físicos/químicos habituales y la respuesta del sistema inmune.'},
+];
+function buildTest(){
+  const cont=document.getElementById('testQuestions'); cont.innerHTML='';
+  testData.forEach((q,qi)=>{
+    const div=document.createElement('div'); div.style.cssText='margin-bottom:1.5rem;background:var(--sur);border:1px solid var(--bor);border-radius:var(--rl);padding:1.1rem;box-shadow:var(--sh);';
+    // Enunciado
+    const enun=document.createElement('div');
+    enun.style.cssText='font-size:.88rem;font-weight:600;margin-bottom:.75rem;line-height:1.6;color:var(--txt);';
+    enun.textContent=(qi+1)+'. '+q.q;
+    div.appendChild(enun);
+    // Opciones
+    const optDiv=document.createElement('div'); optDiv.className='opts';
+    q.opts.forEach((opt,oi)=>{
+      const btn=document.createElement('button'); btn.className='obt'; btn.textContent=opt;
+      btn.addEventListener('click',()=>{
+        optDiv.querySelectorAll('.obt').forEach(b=>b.disabled=true);
+        const ok=oi===q.correct;
+        btn.classList.add(ok?'ok':'err');
+        if(!ok) optDiv.querySelectorAll('.obt')[q.correct].classList.add('ok');
+        hbox.classList.add('on'); // mostrar pista automáticamente al responder
+      });
+      optDiv.appendChild(btn);
+    });
+    div.appendChild(optDiv);
+    // Botón pista + caja pista
+    const hintRow=document.createElement('div');
+    hintRow.style.cssText='margin-top:.6rem;';
+    const hbtn=document.createElement('button'); hbtn.className='hbtn';
+    hbtn.textContent='💡 Ver pista';
+    const hbox=document.createElement('div'); hbox.className='hbox';
+    hbox.innerHTML=`<strong>Pista:</strong> ${q.hint}`;
+    hbtn.addEventListener('click',()=>hbox.classList.toggle('on'));
+    hintRow.appendChild(hbtn);
+    hintRow.appendChild(hbox);
+    div.appendChild(hintRow);
+    cont.appendChild(div);
+  });
+}
+buildTest();
+
+// ── ACT 5: CASO BROTE con selects ────────────────────────────
+const caseItems=[
+  {text:'Virus de la Hepatitis B (VHB)',slot:'Agente infeccioso'},
+  {text:'Paciente portador asintomático',slot:'Reservorio'},
+  {text:'Sangre del paciente durante el procedimiento',slot:'Puerta de salida'},
+  {text:'Instrumental dental no esterilizado',slot:'Vía de transmisión'},
+  {text:'Mucosa oral/sangre de los otros pacientes',slot:'Puerta de entrada'},
+  {text:'Pacientes sin vacuna VHB',slot:'Hospedador susceptible'},
+];
+const caseSlots=['Agente infeccioso','Reservorio','Puerta de salida','Vía de transmisión','Puerta de entrada','Hospedador susceptible'];
+
+function buildCaseSelect(){
+  const cont=document.getElementById('caseSlotsSelect'); if(!cont) return;
+  cont.innerHTML='';
+  const shuffled=shuffle_ret(caseItems.map(i=>i.text));
+  caseSlots.forEach(slot=>{
+    const row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:.75rem;padding:.4rem 0;';
+    const lbl=document.createElement('div');
+    lbl.style.cssText='font-size:.8rem;font-weight:700;color:var(--cad);background:var(--cad-bg);border-radius:6px;padding:.3rem .7rem;min-width:160px;flex-shrink:0;';
+    lbl.textContent=slot; row.appendChild(lbl);
+    const sel=document.createElement('select');
+    sel.dataset.slot=slot;
+    sel.style.cssText='flex:1;padding:.35rem .6rem;border:2px solid var(--bor);border-radius:8px;background:var(--sur);color:var(--txt);font-family:"Plus Jakarta Sans",sans-serif;font-size:.82rem;';
+    const def=document.createElement('option'); def.value=''; def.textContent='-- seleccionar --'; sel.appendChild(def);
+    shuffled.forEach(s=>{const opt=document.createElement('option');opt.value=s;opt.textContent=s;sel.appendChild(opt);});
+    row.appendChild(sel); cont.appendChild(row);
+  });
+}
+
+function checkCaseSelect(){
+  let ok=0;
+  document.querySelectorAll('#caseSlotsSelect select').forEach(sel=>{
+    sel.style.borderColor=''; sel.style.background='';
+    const correct=caseItems.find(i=>i.slot===sel.dataset.slot)?.text;
+    if(!sel.value) return;
+    const good=sel.value===correct;
+    if(good){sel.style.borderColor='var(--ok)';sel.style.background='#e6f5ee';ok++;}
+    else{sel.style.borderColor='var(--err)';sel.style.background='#fdedf0';}
+  });
+  const sc=document.getElementById('case-score'); sc.className='score on';
+  sc.innerHTML=ok===caseSlots.length?'🎉 ¡Cadena completa y correcta!':ok+'/'+caseSlots.length+' correctos. Revisa los marcados en rojo.';
+}
+function resetCaseSelect(){document.getElementById('case-score').className='score';buildCaseSelect();}
+buildCaseSelect();
+
+// ── PRINT ─────────────────────────────────────────────────────
+function doPrint(){
+  // Ocultar todo excepto actividades
+  document.querySelectorAll('section:not(#actividades), .hero, .nav, .pbar-w, footer').forEach(el=>el.style.display='none');
+  document.getElementById('printHeader').style.display='block';
+  document.querySelectorAll('.ac, .bact').forEach(a=>a.classList.add('open'));
+  window.print();
+  setTimeout(()=>{
+    document.querySelectorAll('section:not(#actividades), .hero, .nav, .pbar-w, footer').forEach(el=>el.style.display='');
+    document.getElementById('printHeader').style.display='none';
+  },1500);
+}
+
+function doDownload(){
+  const name=document.getElementById('studentName').value.trim()||'actividades';
+  const safe=name.replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s_-]/g,'').replace(/\s+/g,'_');
+  const html=document.documentElement.outerHTML;
+  const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download='UD9_enfermedades_infecciosas_'+safe+'.html';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
