@@ -67,7 +67,8 @@ section+section{border-top:1px solid var(--bor);}
 .tab[data-a="p"].on{background:var(--sur);border-color:var(--bor);border-bottom-color:var(--sur);color:var(--pri);border-top:3px solid var(--pri);}
 .panel{display:none;background:var(--sur);border:1px solid var(--bor);border-top:none;border-radius:0 0 var(--rl) var(--rl);padding:1.75rem;box-shadow:var(--sh);animation:fadeup .3s ease;}
 .panel.on{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;}
-@media(max-width:700px){.panel.on{grid-template-columns:1fr;}}
+.panel-diag{position:sticky;top:80px;}
+@media(max-width:700px){.panel.on{grid-template-columns:1fr;} .panel-diag{position:static;}}
 @keyframes fadeup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
 /* AGENT INFO */
@@ -367,6 +368,7 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
 
 <!-- ════ BACTERIA ════ -->
 <div class="panel on" id="pan-b">
+  <!-- COL IZQUIERDA: contenido -->
   <div>
     <div class="ag-t" style="color:var(--bac)">Bacterias</div>
     <div class="ag-sub">Organismos unicelulares procariotas</div>
@@ -402,7 +404,6 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
       </div>
     </div>
     <div class="cbox"><div class="cl" style="color:var(--bac)">💡 Relevancia bucodental</div><p><em>Streptococcus mutans</em> (grampositivo) produce ácidos → caries. <em>Porphyromonas gingivalis</em> (gramnegativo) libera toxinas → periodontitis. La bacteria puede haber desaparecido y la toxina seguir causando daño.</p></div>
-    <!-- mini-act bacteria -->
     <div class="mact">
       <span class="mbadge">Actividad rápida</span>
       <h4>Bacterias en la clínica dental</h4>
@@ -417,12 +418,10 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
       <button class="hbtn" onclick="th('bm-h')">Ver pista</button>
     </div>
   </div>
-
-  <!-- SVG bacteria -->
-  <div>
+  <!-- COL DERECHA: diagrama sticky -->
+  <div class="panel-diag">
     <div class="diag-lbl" style="padding-bottom:.35rem;">Fig. 9.1 · Célula bacteriana</div>
-    <div class="diag-wrap" id="dw-b">
-      <svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" id="svg-b">
+    <div class="diag-wrap" id="dw-b"><svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" id="svg-b">
         <!-- Cápsula -->
         <ellipse cx="192" cy="182" rx="168" ry="122" fill="none" stroke="#1a7a4a" stroke-width="2" stroke-dasharray="7,4" opacity=".55"/>
         <!-- Pared celular -->
@@ -461,65 +460,52 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
         <line x1="192" y1="287" x2="192" y2="307" stroke="#1a7a4a" stroke-width="1.5"/>
         <line x1="215" y1="282" x2="219" y2="302" stroke="#1a7a4a" stroke-width="1.5"/>
         <line x1="170" y1="283" x2="165" y2="303" stroke="#1a7a4a" stroke-width="1.5"/>
-
-        <!-- ─── ETIQUETAS CLICABLES (grupos SVG) ─── -->
-        <!-- Cada grupo tiene: línea guía + rectángulo + texto clicable -->
-
-        <!-- Cápsula -->
+        <!-- ETIQUETAS CLICABLES -->
         <g class="svg-btn" id="lbl-b-capsula" onclick="showDiagInfo('b','capsula')">
           <line x1="80" y1="268" x2="112" y2="278" stroke="#1a7a4a" stroke-width="1.5"/>
           <rect x="4" y="258" width="76" height="22" rx="5" fill="var(--bac-bg)" stroke="var(--bac-bor)" stroke-width="1.2"/>
           <text x="42" y="273" font-family="Plus Jakarta Sans" font-size="10.5" fill="var(--bac)" text-anchor="middle" font-weight="600" text-decoration="underline">Cápsula</text>
         </g>
-        <!-- Pared celular -->
         <g class="svg-btn" id="lbl-b-pared" onclick="showDiagInfo('b','pared')">
           <line x1="80" y1="242" x2="118" y2="252" stroke="#1a7a4a" stroke-width="1.5"/>
           <rect x="2" y="232" width="78" height="22" rx="5" fill="var(--bac-bg)" stroke="var(--bac-bor)" stroke-width="1.2"/>
           <text x="41" y="247" font-family="Plus Jakarta Sans" font-size="10.5" fill="var(--bac)" text-anchor="middle" font-weight="600" text-decoration="underline">Pared celular</text>
         </g>
-        <!-- Membrana -->
         <g class="svg-btn" id="lbl-b-membrana" onclick="showDiagInfo('b','membrana')">
           <line x1="82" y1="218" x2="122" y2="225" stroke="#1a7a4a" stroke-width="1.5"/>
           <rect x="2" y="207" width="80" height="22" rx="5" fill="var(--bac-bg)" stroke="var(--bac-bor)" stroke-width="1.2"/>
           <text x="42" y="222" font-family="Plus Jakarta Sans" font-size="10" fill="var(--bac)" text-anchor="middle" font-weight="600" text-decoration="underline">Mb. plasmática</text>
         </g>
-        <!-- Mesosoma -->
         <g class="svg-btn" id="lbl-b-mesosoma" onclick="showDiagInfo('b','mesosoma')">
           <line x1="250" y1="118" x2="218" y2="136" stroke="#1a7a4a" stroke-width="1.5"/>
           <rect x="250" y="107" width="82" height="22" rx="5" fill="var(--bac-bg)" stroke="var(--bac-bor)" stroke-width="1.2"/>
           <text x="291" y="122" font-family="Plus Jakarta Sans" font-size="10.5" fill="var(--bac)" text-anchor="middle" font-weight="600" text-decoration="underline">Mesosoma</text>
         </g>
-        <!-- Ribosoma -->
         <g class="svg-btn" id="lbl-b-ribosoma" onclick="showDiagInfo('b','ribosoma')">
           <line x1="256" y1="142" x2="248" y2="157" stroke="#6040a0" stroke-width="1.5"/>
           <rect x="256" y="131" width="82" height="22" rx="5" fill="var(--hon-bg)" stroke="var(--hon-bor)" stroke-width="1.2"/>
           <text x="297" y="146" font-family="Plus Jakarta Sans" font-size="10.5" fill="var(--hon)" text-anchor="middle" font-weight="600" text-decoration="underline">Ribosoma</text>
         </g>
-        <!-- Plásmido -->
         <g class="svg-btn" id="lbl-b-plasmido" onclick="showDiagInfo('b','plasmido')">
           <line x1="176" y1="212" x2="192" y2="222" stroke="#a05010" stroke-width="1.5"/>
           <rect x="96" y="222" width="72" height="22" rx="5" fill="var(--pri-bg)" stroke="var(--pri-bor)" stroke-width="1.2"/>
           <text x="132" y="237" font-family="Plus Jakarta Sans" font-size="10.5" fill="var(--pri)" text-anchor="middle" font-weight="600" text-decoration="underline">Plásmido</text>
         </g>
-        <!-- Nucleoide -->
         <g class="svg-btn" id="lbl-b-nucleoide" onclick="showDiagInfo('b','nucleoide')">
           <line x1="192" y1="156" x2="192" y2="136" stroke="#00796b" stroke-width="1.5"/>
           <rect x="148" y="116" width="88" height="22" rx="5" fill="#e0f5f2" stroke="#80cbc4" stroke-width="1.2"/>
           <text x="192" y="131" font-family="Plus Jakarta Sans" font-size="10" fill="#00796b" text-anchor="middle" font-weight="600" text-decoration="underline">Nucleoide / crom.</text>
         </g>
-        <!-- Fimbrias -->
         <g class="svg-btn" id="lbl-b-fimbrias" onclick="showDiagInfo('b','fimbrias')">
           <line x1="205" y1="304" x2="220" y2="320" stroke="#1a7a4a" stroke-width="1.5"/>
           <rect x="194" y="320" width="68" height="22" rx="5" fill="var(--bac-bg)" stroke="var(--bac-bor)" stroke-width="1.2"/>
           <text x="228" y="335" font-family="Plus Jakarta Sans" font-size="10.5" fill="var(--bac)" text-anchor="middle" font-weight="600" text-decoration="underline">Fimbrias</text>
         </g>
-        <!-- Flagelo -->
         <g class="svg-btn" id="lbl-b-flagelo" onclick="showDiagInfo('b','flagelo')">
           <line x1="356" y1="28" x2="356" y2="10" stroke="#1a7a4a" stroke-width="1.5"/>
           <rect x="322" y="0" width="68" height="22" rx="5" fill="var(--bac-bg)" stroke="var(--bac-bor)" stroke-width="1.2"/>
           <text x="356" y="15" font-family="Plus Jakarta Sans" font-size="10.5" fill="var(--bac)" text-anchor="middle" font-weight="600" text-decoration="underline">Flagelo</text>
         </g>
-        <!-- Pili (label extra) -->
         <g class="svg-btn" id="lbl-b-pili" onclick="showDiagInfo('b','pili')">
           <line x1="118" y1="100" x2="138" y2="112" stroke="#1a7a4a" stroke-width="1.5"/>
           <rect x="64" y="90" width="54" height="22" rx="5" fill="var(--bac-bg)" stroke="var(--bac-bor)" stroke-width="1.2"/>
@@ -528,7 +514,6 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
       </svg>
       <p style="font-size:.7rem;color:var(--mut);text-align:center;padding:.3rem 0 .5rem;">▲ Pulsa los nombres subrayados para ver la descripción</p>
     </div>
-    <!-- Panel descripción bacteria -->
     <div class="diag-desc" id="dd-b">
       <h5>Selecciona una estructura</h5>
       <p>Haz clic en cualquier nombre subrayado del diagrama para ver aquí su descripción detallada.</p>
@@ -574,11 +559,9 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
       <button class="hbtn" onclick="th('vm-h')">Ver pista</button>
     </div>
   </div>
-  <!-- SVG virus -->
-  <div>
+  <div class="panel-diag">
     <div class="diag-lbl" style="padding-bottom:.35rem;">Fig. 9.2 · Componentes del virus</div>
-    <div class="diag-wrap" id="dw-v">
-      <svg viewBox="0 0 360 310" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" id="svg-v">
+    <div class="diag-wrap" id="dw-v"><svg viewBox="0 0 360 310" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" id="svg-v">
         <!-- Envoltura externa bicapa -->
         <circle cx="180" cy="158" r="118" fill="#fdedf0" stroke="#b03040" stroke-width="9" opacity=".45"/>
         <!-- Espículas / proteínas de superficie -->
@@ -653,10 +636,7 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
       </svg>
       <p style="font-size:.7rem;color:var(--mut);text-align:center;padding:.3rem 0 .5rem;">▲ Pulsa los nombres subrayados para ver la descripción</p>
     </div>
-    <div class="diag-desc" id="dd-v">
-      <h5>Selecciona una estructura</h5>
-      <p>Haz clic en cualquier nombre subrayado del diagrama para ver aquí su descripción detallada.</p>
-    </div>
+    <div class="diag-desc" id="dd-v"><h5>Selecciona una estructura</h5><p>Haz clic en cualquier nombre subrayado del diagrama para ver aquí su descripción detallada.</p></div>
   </div>
 </div><!-- fin panel virus -->
 
@@ -693,11 +673,9 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
       <button class="hbtn" onclick="th('hm-h')">Ver pista</button>
     </div>
   </div>
-  <!-- SVG hongo -->
-  <div>
+  <div class="panel-diag">
     <div class="diag-lbl" style="padding-bottom:.35rem;">Fig. 9.3 · Hongo filamentoso</div>
-    <div class="diag-wrap" id="dw-h">
-      <svg viewBox="0 0 380 330" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" id="svg-h">
+    <div class="diag-wrap" id="dw-h"><svg viewBox="0 0 380 330" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" id="svg-h">
         <!-- Hifa principal -->
         <path d="M22,268 Q68,246 108,228 Q148,210 188,198 Q228,186 266,173 Q303,161 338,146" fill="none" stroke="#6040a0" stroke-width="21" stroke-linecap="round" opacity=".18"/>
         <path d="M22,268 Q68,246 108,228 Q148,210 188,198 Q228,186 266,173 Q303,161 338,146" fill="none" stroke="#6040a0" stroke-width="2.5" stroke-linecap="round"/>
@@ -783,10 +761,7 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
       </svg>
       <p style="font-size:.7rem;color:var(--mut);text-align:center;padding:.3rem 0 .5rem;">▲ Pulsa los nombres subrayados para ver la descripción</p>
     </div>
-    <div class="diag-desc" id="dd-h">
-      <h5>Selecciona una estructura</h5>
-      <p>Haz clic en cualquier nombre subrayado del diagrama para ver aquí su descripción detallada.</p>
-    </div>
+    <div class="diag-desc" id="dd-h"><h5>Selecciona una estructura</h5><p>Haz clic en cualquier nombre subrayado del diagrama para ver aquí su descripción detallada.</p></div>
   </div>
 </div><!-- fin panel hongo -->
 
@@ -818,11 +793,9 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
       <button class="hbtn" onclick="th('pm-h')">Ver pista</button>
     </div>
   </div>
-  <!-- SVG prion -->
-  <div>
+  <div class="panel-diag">
     <div class="diag-lbl" style="padding-bottom:.35rem;">Fig. 9.4 · Alteración proteica por prion</div>
-    <div class="diag-wrap" id="dw-p">
-      <svg viewBox="0 0 380 330" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" id="svg-p">
+    <div class="diag-wrap" id="dw-p"><svg viewBox="0 0 380 330" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;" id="svg-p">
         <!-- PROTEÍNA NORMAL -->
         <text x="28" y="26" font-family="Plus Jakarta Sans" font-size="9.5" fill="var(--bac)" font-weight="700">PROTEÍNA NORMAL (PrPᶜ)</text>
         <path d="M48,50 Q60,38 74,50 Q88,62 102,50 Q116,38 130,50 Q144,62 158,50 Q172,38 186,50" fill="none" stroke="var(--bac)" stroke-width="3.5" stroke-linecap="round"/>
@@ -886,10 +859,7 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
       </svg>
       <p style="font-size:.7rem;color:var(--mut);text-align:center;padding:.3rem 0 .5rem;">▲ Pulsa los nombres subrayados para ver la descripción</p>
     </div>
-    <div class="diag-desc" id="dd-p">
-      <h5>Selecciona una estructura</h5>
-      <p>Haz clic en cualquier nombre subrayado del diagrama para ver aquí su descripción detallada.</p>
-    </div>
+    <div class="diag-desc" id="dd-p"><h5>Selecciona una estructura</h5><p>Haz clic en cualquier nombre subrayado del diagrama para ver aquí su descripción detallada.</p></div>
   </div>
 </div><!-- fin panel prion -->
 
@@ -904,26 +874,119 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
   <div class="reveal">
     <p class="sec-lbl">9.1.1 · Apartado 3</p>
     <h2 class="sec-h">Patógenos y oportunistas</h2>
-    <p class="sec-sub">No todos los microorganismos son igualmente peligrosos. La distinción entre patógeno y oportunista es clave para entender cuándo y por qué aparece una infección.</p>
+    <p class="sec-sub">No todos los microorganismos son igualmente peligrosos. Pulsa cada elemento para explorar la diferencia.</p>
   </div>
-  <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
-    <div style="background:var(--sur);border:1px solid var(--bac-bor);border-left:4px solid var(--bac);border-radius:var(--r);padding:1.3rem;box-shadow:var(--sh);">
-      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--bac);margin-bottom:.5rem;">Microorganismo patógeno</div>
-      <div class="def-box" style="margin-bottom:.75rem;font-size:.85rem;">Los microorganismos que pueden infectar al ser humano y causarle una determinada enfermedad infecciosa se denominan <strong>microorganismos patógenos</strong>.</div>
-      <p style="font-size:.85rem;color:var(--mut);line-height:1.65;">Cuando un microorganismo patógeno penetra en un organismo humano, la enfermedad que provoca va a manifestarse en mayor o menor grado <strong>(excepto si está inmunizado contra él)</strong>.</p>
+
+  <!-- Comparador interactivo -->
+  <div class="reveal" style="background:var(--sur);border:1px solid var(--bor);border-radius:var(--rl);padding:1.75rem;box-shadow:var(--sh);margin-bottom:1.25rem;">
+    <div style="display:flex;gap:.5rem;margin-bottom:1.25rem;flex-wrap:wrap;">
+      <button id="btn-pat" onclick="showPat('pat')" style="flex:1;padding:.65rem 1rem;border-radius:var(--r);border:2px solid var(--bac);background:var(--bac);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s;">🦠 Microorganismo patógeno</button>
+      <button id="btn-opp" onclick="showPat('opp')" style="flex:1;padding:.65rem 1rem;border-radius:var(--r);border:2px solid var(--acc);background:var(--sur);color:var(--acc);font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s;">⚠️ Microorganismo oportunista</button>
     </div>
-    <div style="background:var(--sur);border:1px solid var(--acc-bor);border-left:4px solid var(--acc);border-radius:var(--r);padding:1.3rem;box-shadow:var(--sh);">
-      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--acc);margin-bottom:.5rem;">Microorganismo oportunista</div>
-      <div class="def-box" style="margin-bottom:.75rem;font-size:.85rem;">Los <strong>microorganismos oportunistas</strong> son microorganismos no patógenos pero que pueden provocar procesos patológicos en determinadas circunstancias.</div>
-      <p style="font-size:.85rem;color:var(--mut);line-height:1.65;">Lo más frecuente es que se trate de bacterias u hongos que actúan como patógenos cuando el sistema inmunitario de la persona infectada no funciona correctamente. Suelen estar ampliamente distribuidos o pueden formar parte de la microbiota natural.</p>
+
+    <!-- Panel patógeno -->
+    <div id="panel-pat" style="animation:fadeup .3s ease;">
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:1.25rem;align-items:start;">
+        <div style="width:80px;flex-shrink:0;">
+          <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+            <circle cx="40" cy="40" r="28" fill="var(--bac-bg)" stroke="var(--bac)" stroke-width="2.5"/>
+            <circle cx="40" cy="40" r="14" fill="var(--bac)" opacity=".25"/>
+            <!-- spikes -->
+            <line x1="40" y1="12" x2="40" y2="4" stroke="var(--bac)" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="61" y1="21" x2="67" y2="15" stroke="var(--bac)" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="68" y1="40" x2="76" y2="40" stroke="var(--bac)" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="61" y1="59" x2="67" y2="65" stroke="var(--bac)" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="40" y1="68" x2="40" y2="76" stroke="var(--bac)" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="19" y1="59" x2="13" y2="65" stroke="var(--bac)" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="12" y1="40" x2="4" y2="40" stroke="var(--bac)" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="19" y1="21" x2="13" y2="15" stroke="var(--bac)" stroke-width="2.5" stroke-linecap="round"/>
+            <text x="40" y="44" text-anchor="middle" font-size="14" fill="var(--bac)" font-weight="700">!</text>
+          </svg>
+        </div>
+        <div>
+          <div class="def-box" style="font-size:.87rem;margin-bottom:.75rem;">Los microorganismos que pueden infectar al ser humano y causarle una determinada enfermedad infecciosa se denominan <strong>microorganismos patógenos</strong>.</div>
+          <p style="font-size:.85rem;color:var(--mut);line-height:1.65;margin-bottom:.6rem;">Cuando penetra en el organismo, la enfermedad se va a manifestar en <strong>mayor o menor grado</strong> — excepto si la persona está inmunizada contra él.</p>
+          <!-- Escenario visual -->
+          <div style="display:flex;align-items:center;gap:.75rem;background:var(--bac-bg);border-radius:var(--r);padding:.85rem 1rem;font-size:.83rem;">
+            <span style="font-size:1.6rem;">🧍</span>
+            <div style="flex:1;">
+              <div style="font-weight:700;color:var(--bac);margin-bottom:.2rem;">Sistema inmune NORMAL</div>
+              <div style="color:var(--mut);">El patógeno <strong>siempre intenta causar enfermedad</strong>, el sistema inmune lucha para controlarlo.</div>
+            </div>
+            <span style="font-size:1.6rem;">⚔️</span>
+            <span style="font-size:1.6rem;">🦠</span>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="reveal" style="background:var(--acc-bg);border:1px solid var(--acc-bor);border-left:4px solid var(--acc);border-radius:var(--r);padding:1.1rem;margin-top:1rem;">
-    <p style="font-size:.82rem;font-weight:700;color:var(--acc);margin-bottom:.4rem;">💡 Mayor riesgo: personas inmunodeprimidas</p>
-    <p style="font-size:.84rem;color:var(--mut);">Las personas inmunodeprimidas, hospitalizadas o tratadas con procedimientos invasivos (catéteres, sondas urinarias, respiradores mecánicos…) tienen mayores probabilidades de contraer una infección por un microorganismo oportunista. Ejemplo: las personas con SIDA son más susceptibles a <em>Candida albicans</em>, neumonía, salmonelosis, toxoplasmosis y tuberculosis.</p>
+
+    <!-- Panel oportunista (oculto por defecto) -->
+    <div id="panel-opp" style="display:none;animation:fadeup .3s ease;">
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:1.25rem;align-items:start;">
+        <div style="width:80px;flex-shrink:0;">
+          <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+            <circle cx="40" cy="40" r="28" fill="var(--acc-bg)" stroke="var(--acc)" stroke-width="2" stroke-dasharray="5,3"/>
+            <circle cx="40" cy="40" r="14" fill="var(--acc)" opacity=".2"/>
+            <text x="40" y="44" text-anchor="middle" font-size="14" fill="var(--acc)" font-weight="700">?</text>
+          </svg>
+        </div>
+        <div>
+          <div class="def-box" style="font-size:.87rem;margin-bottom:.75rem;border-left-color:var(--acc);">Los <strong>microorganismos oportunistas</strong> son microorganismos no patógenos pero que pueden provocar procesos patológicos en <strong>determinadas circunstancias</strong>.</div>
+          <p style="font-size:.85rem;color:var(--mut);line-height:1.65;margin-bottom:.6rem;">Lo más frecuente es que se trate de bacterias u hongos de la microbiota natural que actúan como patógenos cuando el <strong>sistema inmunitario no funciona correctamente</strong>.</p>
+          <!-- Dos escenarios -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:1rem;">
+            <div style="background:var(--bac-bg);border-radius:var(--r);padding:.75rem;font-size:.82rem;text-align:center;">
+              <div style="font-size:1.4rem;margin-bottom:.3rem;">🧍✅</div>
+              <div style="font-weight:700;color:var(--bac);margin-bottom:.2rem;">Inmune normal</div>
+              <div style="color:var(--mut);">Oportunista inofensivo — convive sin causar daño</div>
+            </div>
+            <div style="background:var(--vir-bg);border-radius:var(--r);padding:.75rem;font-size:.82rem;text-align:center;">
+              <div style="font-size:1.4rem;margin-bottom:.3rem;">🧍❌</div>
+              <div style="font-weight:700;color:var(--vir);margin-bottom:.2rem;">Inmune débil</div>
+              <div style="color:var(--mut);">Oportunista activo → causa enfermedad</div>
+            </div>
+          </div>
+          <!-- Factores de riesgo dentro del panel oportunista -->
+          <p style="font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--acc);margin-bottom:.6rem;">¿Cuándo se convierte en patógeno? — Pulsa cada factor:</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.6rem;">
+            <div class="tcard" onclick="exTrans(this)" style="text-align:center;border-top:3px solid var(--vir);padding:.85rem;">
+              <div style="font-size:1.6rem;margin-bottom:.3rem;">🏥</div>
+              <h4 style="font-size:.82rem;color:var(--vir);">Inmunodepresión</h4>
+              <p style="font-size:.76rem;">SIDA, quimioterapia, trasplantes…</p>
+              <div class="tdet"><p style="font-size:.81rem;color:var(--mut);">El sistema inmune está debilitado y no puede controlar microorganismos normalmente inofensivos. En pacientes con SIDA son frecuentes: <em>Candida albicans</em>, neumonía, salmonelosis, toxoplasmosis y tuberculosis.</p></div>
+            </div>
+            <div class="tcard" onclick="exTrans(this)" style="text-align:center;border-top:3px solid var(--acc);padding:.85rem;">
+              <div style="font-size:1.6rem;margin-bottom:.3rem;">🏨</div>
+              <h4 style="font-size:.82rem;color:var(--acc);">Hospitalización</h4>
+              <p style="font-size:.76rem;">Exposición a microorganismos nosocomiales.</p>
+              <div class="tdet"><p style="font-size:.81rem;color:var(--mut);">En el hospital, el paciente está expuesto a microorganismos del entorno con los que normalmente no contactaría. Además, su estado general suele estar comprometido.</p></div>
+            </div>
+            <div class="tcard" onclick="exTrans(this)" style="text-align:center;border-top:3px solid var(--hon);padding:.85rem;">
+              <div style="font-size:1.6rem;margin-bottom:.3rem;">💊</div>
+              <h4 style="font-size:.82rem;color:var(--hon);">Antibioterapia</h4>
+              <p style="font-size:.76rem;">Altera el equilibrio de la microbiota.</p>
+              <div class="tdet"><p style="font-size:.81rem;color:var(--mut);">Los antibióticos eliminan bacterias competidoras de la flora normal, permitiendo el sobrecrecimiento de hongos como <em>Candida albicans</em> → candidiasis oral frecuente en tratamientos prolongados.</p></div>
+            </div>
+            <div class="tcard" onclick="exTrans(this)" style="text-align:center;border-top:3px solid var(--cad);padding:.85rem;">
+              <div style="font-size:1.6rem;margin-bottom:.3rem;">🩺</div>
+              <h4 style="font-size:.82rem;color:var(--cad);">Procedimientos invasivos</h4>
+              <p style="font-size:.76rem;">Catéteres, sondas, respiradores…</p>
+              <div class="tdet"><p style="font-size:.81rem;color:var(--mut);">Rompen las barreras naturales (piel, mucosas) y permiten que microorganismos superficiales accedan a zonas normalmente estériles del organismo.</p></div>
+            </div>
+            <div class="tcard" onclick="exTrans(this)" style="text-align:center;border-top:3px solid var(--pri);padding:.85rem;">
+              <div style="font-size:1.6rem;margin-bottom:.3rem;">🦷</div>
+              <h4 style="font-size:.82rem;color:var(--pri);">Relevancia dental</h4>
+              <p style="font-size:.76rem;">Prótesis, xerostomía, inmunosupresión.</p>
+              <div class="tdet"><p style="font-size:.81rem;color:var(--mut);"><em>Candida albicans</em> es el oportunista oral más frecuente. Causa candidiasis en portadores de prótesis removibles, pacientes con xerostomía, bajo antibioterapia o inmunodeprimidos. El higienista debe identificar estos factores en la historia clínica.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 </section>
+
 
 <!-- ═══════════════ FASES ═══════════════ -->
 <section id="fases">
@@ -1470,6 +1533,21 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
 </footer>
 
 <script>
+function showPat(which){
+  const btnPat=document.getElementById('btn-pat');
+  const btnOpp=document.getElementById('btn-opp');
+  const panPat=document.getElementById('panel-pat');
+  const panOpp=document.getElementById('panel-opp');
+  if(which==='pat'){
+    panPat.style.display='block'; panOpp.style.display='none';
+    btnPat.style.background='var(--bac)'; btnPat.style.color='#fff'; btnPat.style.borderColor='var(--bac)';
+    btnOpp.style.background='var(--sur)'; btnOpp.style.color='var(--acc)'; btnOpp.style.borderColor='var(--acc)';
+  } else {
+    panPat.style.display='none'; panOpp.style.display='block';
+    btnOpp.style.background='var(--acc)'; btnOpp.style.color='#fff'; btnOpp.style.borderColor='var(--acc)';
+    btnPat.style.background='var(--sur)'; btnPat.style.color='var(--bac)'; btnPat.style.borderColor='var(--bac)';
+  }
+}
 // ── PROGRESS + NAVBAR ACTIVE ─────────────────────────────────
 window.addEventListener('scroll',()=>{
   const s=document.documentElement;
