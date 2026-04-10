@@ -162,6 +162,8 @@ section+section{border-top:1px solid var(--bor);}
 .cn{display:flex;flex-direction:column;align-items:center;gap:.35rem;cursor:pointer;padding:.4rem;}
 .ccirc{width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;border:3px solid var(--bor);background:var(--sur);transition:all .2s;box-shadow:var(--sh);}
 .cn.on .ccirc{border-color:var(--cad);box-shadow:0 0 0 4px #1550a018;transform:scale(1.1);}
+.cn.on span{color:var(--cad);font-weight:700;}
+.cad-hint{text-align:center;font-size:.75rem;color:var(--mut);margin-top:.6rem;font-style:italic;}
 .cn span{font-size:.7rem;font-weight:600;color:var(--mut);text-align:center;max-width:76px;}
 .carrow{color:var(--mut);font-size:1.2rem;flex-shrink:0;}
 .cdet{background:var(--cad-bg);border:1px solid var(--cad-bor);border-radius:var(--r);padding:1.1rem;min-height:90px;animation:fadeup .25s ease;}
@@ -1084,10 +1086,11 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
       <div class="cn" id="cn-t" onclick="showCad('t')"><div class="ccirc">💨</div><span>Vía de transmisión</span></div>
     </div>
     <div class="cdet" id="cadDetail"></div>
+    <p class="cad-hint">▲ Pulsa cada eslabón para ver su contenido detallado</p>
   </div>
 
   <!-- Puerta de entrada -->
-  <div class="reveal" style="margin-top:2rem;">
+  <div class="reveal cad-sec" id="sec-e2" style="margin-top:2rem;">
     <h3 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;margin-bottom:.3rem;">La puerta de entrada</h3>
     <div class="def-box" style="margin-bottom:1rem;font-size:.88rem;">El agente infeccioso penetra en el organismo hospedador por una <strong>puerta de entrada</strong>. Las más habituales son: respiratoria, digestiva, dérmica o a través de las mucosas.</div>
     <div class="tgrid">
@@ -1115,7 +1118,7 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
   </div>
 
   <!-- Organismo hospedador -->
-  <div class="reveal" style="margin-top:2rem;">
+  <div class="reveal cad-sec" id="sec-hh" style="margin-top:2rem;">
     <h3 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;margin-bottom:.3rem;">El organismo hospedador</h3>
     <p style="color:var(--mut);font-size:.87rem;margin-bottom:1rem;">Cuando el agente infeccioso penetra en él, se multiplica y se desplaza. Puede ocurrir que la persona manifieste síntomas (<strong>enferma</strong>) o no (<strong>portadora</strong>), pudiendo transmitir en ambos casos.</p>
     <!-- Acordeón factores -->
@@ -1140,7 +1143,7 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
   </div>
 
   <!-- Puerta de salida -->
-  <div class="reveal" style="margin-top:2rem;">
+  <div class="reveal cad-sec" id="sec-s" style="margin-top:2rem;">
     <h3 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;margin-bottom:.3rem;">La puerta de salida</h3>
     <p style="color:var(--mut);font-size:.87rem;margin-bottom:1rem;">Transcurrido un tiempo, el organismo hospedador libera microorganismos. <strong>La puerta de salida puede ser cualquiera de las que hemos explicado como puertas de entrada.</strong></p>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.75rem;">
@@ -1152,7 +1155,7 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
   </div>
 
   <!-- Reservorio -->
-  <div class="reveal" style="margin-top:2rem;">
+  <div class="reveal cad-sec" id="sec-r" style="margin-top:2rem;">
     <h3 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;margin-bottom:.3rem;">El reservorio</h3>
     <div class="def-box" style="margin-bottom:1rem;font-size:.88rem;">Un <strong>reservorio</strong> es un medio que permite a un microorganismo patógeno mantenerse activo en espera de un nuevo hospedador.</div>
     <p style="color:var(--mut);font-size:.87rem;margin-bottom:1rem;">Los microorganismos expulsados del hospedador pueden pasar directamente a un nuevo hospedador o mantenerse en un reservorio. La identificación del agente causante de una enfermedad permite saber si puede subsistir en algún reservorio — clave para adoptar medidas de profilaxis.</p>
@@ -1169,7 +1172,7 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
   </div>
 
   <!-- Vías de transmisión -->
-  <div class="reveal" style="margin-top:2rem;">
+  <div class="reveal cad-sec" id="sec-t" style="margin-top:2rem;">
     <h3 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;margin-bottom:.3rem;">La vía de transmisión</h3>
     <div class="def-box" style="margin-bottom:1rem;font-size:.88rem;">La <strong>vía de transmisión</strong> es el medio por el cual un microorganismo patógeno se transmite de un organismo hospedador a otro. La transmisión puede ser <strong>directa</strong> o <strong>indirecta</strong>.</div>
     <!-- Comparador interactivo directo vs indirecto -->
@@ -1262,8 +1265,8 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
       <p class="bq">Desarrolla las diferencias de composición química de la pared celular en cada tipo:</p>
       <textarea id="ta3" placeholder="Escribe tu respuesta aquí..."></textarea>
       <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
-        <button class="btn btn-p" onclick="checkTA('ta3','fb3')">Comprobar</button>
-        <button class="btn btn-g" onclick="document.getElementById('ta3').value='';document.getElementById('fb3').className='feedback-msg'">Borrar</button>
+        <button class="btn btn-p" onclick="event.stopPropagation();checkTA('ta3','fb3')">Comprobar</button>
+        <button class="btn btn-g" onclick="event.stopPropagation();document.getElementById('ta3').value='';document.getElementById('fb3').className='feedback-msg'">Borrar</button>
         <button class="hbtn" onclick="var h=document.getElementById('b3-h');h.classList.toggle('on')">Ver pista</button>
       </div>
       <div class="hbox" id="b3-h">💡 Tres materiales distintos: vegetales → celulosa · bacterias → peptidoglucano · hongos → quitina. Recuerda que los micoplasmas son la excepción bacteriana (sin pared).</div>
@@ -1275,8 +1278,8 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
     <div class="bact-b">
       <textarea id="ta4" placeholder="Escribe tu respuesta aquí..."></textarea>
       <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
-        <button class="btn btn-p" onclick="checkTA('ta4','fb4')">Comprobar</button>
-        <button class="btn btn-g" onclick="document.getElementById('ta4').value='';document.getElementById('fb4').className='feedback-msg'">Borrar</button>
+        <button class="btn btn-p" onclick="event.stopPropagation();checkTA('ta4','fb4')">Comprobar</button>
+        <button class="btn btn-g" onclick="event.stopPropagation();document.getElementById('ta4').value='';document.getElementById('fb4').className='feedback-msg'">Borrar</button>
         <button class="hbtn" onclick="var h=document.getElementById('b4-h');h.classList.toggle('on')">Ver pista</button>
       </div>
       <div class="hbox" id="b4-h">💡 Los priones son proteínas (no tienen ácidos nucleicos), no son inmunogénicos (el sistema inmune no los detecta), y son resistentes al calor, radiación UV y desinfectantes habituales. Se propagan por reacción en cadena modificando proteínas normales.</div>
@@ -1301,8 +1304,8 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
     <div class="bact-b">
       <textarea id="ta6" placeholder="Escribe tu respuesta aquí..."></textarea>
       <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
-        <button class="btn btn-p" onclick="checkTA('ta6','fb6')">Comprobar</button>
-        <button class="btn btn-g" onclick="document.getElementById('ta6').value='';document.getElementById('fb6').className='feedback-msg'">Borrar</button>
+        <button class="btn btn-p" onclick="event.stopPropagation();checkTA('ta6','fb6')">Comprobar</button>
+        <button class="btn btn-g" onclick="event.stopPropagation();document.getElementById('ta6').value='';document.getElementById('fb6').className='feedback-msg'">Borrar</button>
         <button class="hbtn" onclick="var h=document.getElementById('b6-h');h.classList.toggle('on')">Ver pista</button>
       </div>
       <div class="hbox" id="b6-h">💡 Período de incubación: desde la entrada del microorganismo hasta los primeros síntomas (el patógeno se multiplica y se desplaza). Fase clínica: aparecen pródromos → cuadro clínico → resolución (curación, cronicidad o fallecimiento).</div>
@@ -1314,8 +1317,8 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
     <div class="bact-b">
       <textarea id="ta7" placeholder="Escribe tu respuesta aquí..."></textarea>
       <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
-        <button class="btn btn-p" onclick="checkTA('ta7','fb7')">Comprobar</button>
-        <button class="btn btn-g" onclick="document.getElementById('ta7').value='';document.getElementById('fb7').className='feedback-msg'">Borrar</button>
+        <button class="btn btn-p" onclick="event.stopPropagation();checkTA('ta7','fb7')">Comprobar</button>
+        <button class="btn btn-g" onclick="event.stopPropagation();document.getElementById('ta7').value='';document.getElementById('fb7').className='feedback-msg'">Borrar</button>
         <button class="hbtn" onclick="var h=document.getElementById('b7-h');h.classList.toggle('on')">Ver pista</button>
       </div>
       <div class="hbox" id="b7-h">💡 Una persona portadora tiene el agente infeccioso en su organismo pero no manifiesta síntomas. Sin embargo, en algunos casos puede transmitir la enfermedad a otras personas.</div>
@@ -1327,8 +1330,8 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
     <div class="bact-b">
       <textarea id="ta8" placeholder="Escribe tu respuesta aquí..."></textarea>
       <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
-        <button class="btn btn-p" onclick="checkTA('ta8','fb8')">Comprobar</button>
-        <button class="btn btn-g" onclick="document.getElementById('ta8').value='';document.getElementById('fb8').className='feedback-msg'">Borrar</button>
+        <button class="btn btn-p" onclick="event.stopPropagation();checkTA('ta8','fb8')">Comprobar</button>
+        <button class="btn btn-g" onclick="event.stopPropagation();document.getElementById('ta8').value='';document.getElementById('fb8').className='feedback-msg'">Borrar</button>
         <button class="hbtn" onclick="var h=document.getElementById('b8-h');h.classList.toggle('on')">Ver pista</button>
       </div>
       <div class="hbox" id="b8-h">💡 Directa: contacto entre personas, la enfermedad es contagiosa (gotas de Flügge, secreciones). Indirecta: a través de un reservorio (agua, alimentos, instrumental), la enfermedad es transmisible pero no contagiosa. Recuerda incluir vectores en la indirecta.</div>
@@ -1353,8 +1356,8 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
     <div class="bact-b">
       <textarea id="ta10" placeholder="Escribe tu respuesta aquí..."></textarea>
       <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
-        <button class="btn btn-p" onclick="checkTA('ta10','fb10')">Comprobar</button>
-        <button class="btn btn-g" onclick="document.getElementById('ta10').value='';document.getElementById('fb10').className='feedback-msg'">Borrar</button>
+        <button class="btn btn-p" onclick="event.stopPropagation();checkTA('ta10','fb10')">Comprobar</button>
+        <button class="btn btn-g" onclick="event.stopPropagation();document.getElementById('ta10').value='';document.getElementById('fb10').className='feedback-msg'">Borrar</button>
         <button class="hbtn" onclick="var h=document.getElementById('b10-h');h.classList.toggle('on')">Ver pista</button>
       </div>
       <div class="hbox" id="b10-h">💡 El libro cita cuatro factores: (1) cantidad de microorganismos recibidos, (2) virulencia del microorganismo, (3) resistencia de la persona y estado de salud previo, (4) puerta de entrada utilizada.</div>
@@ -1366,8 +1369,8 @@ footer{text-align:center;padding:2.2rem 1.5rem;color:var(--mut);font-size:.77rem
     <div class="bact-b">
       <textarea id="ta11" placeholder="Escribe tu respuesta aquí..."></textarea>
       <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
-        <button class="btn btn-p" onclick="checkTA('ta11','fb11')">Comprobar</button>
-        <button class="btn btn-g" onclick="document.getElementById('ta11').value='';document.getElementById('fb11').className='feedback-msg'">Borrar</button>
+        <button class="btn btn-p" onclick="event.stopPropagation();checkTA('ta11','fb11')">Comprobar</button>
+        <button class="btn btn-g" onclick="event.stopPropagation();document.getElementById('ta11').value='';document.getElementById('fb11').className='feedback-msg'">Borrar</button>
         <button class="hbtn" onclick="var h=document.getElementById('b11-h');h.classList.toggle('on')">Ver pista</button>
       </div>
       <div class="hbox" id="b11-h">💡 Reservorio: medio que permite al patógeno mantenerse activo esperando un nuevo hospedador. Conocerlo permite cortar la cadena de transmisión. Ejemplos de eliminación: desinfección del agua, esterilización de instrumental, control de vectores (mosquitos), pasteurización de alimentos, aislamiento de portadores.</div>
@@ -1643,7 +1646,24 @@ function showCad(k){
   const d=cadData[k];
   if(!d) return;
   document.getElementById('cadDetail').innerHTML=`<h4>${d.icon} ${d.t}</h4><p>${d.txt}</p><ul>${d.items.map(i=>`<li>${i}</li>`).join('')}</ul>`;
+  // Mostrar solo la sección del eslabón pulsado, ocultar las demás
+  ['e2','hh','s','r','t'].forEach(sk=>{
+    const sec=document.getElementById('sec-'+sk);
+    if(!sec) return;
+    if(sk===k){
+      sec.style.display='block';
+      // scroll suave hasta la sección
+      setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),50);
+    } else {
+      sec.style.display='none';
+    }
+  });
 }
+// Ocultar todas las secciones al cargar — solo se muestra al pulsar un nodo
+['e2','hh','s','r','t'].forEach(sk=>{
+  const sec=document.getElementById('sec-'+sk);
+  if(sec) sec.style.display='none';
+});
 showCad('a');
 
 function exTrans(card){
